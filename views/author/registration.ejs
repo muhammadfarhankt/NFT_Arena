@@ -1,0 +1,118 @@
+<%- include('../partials/header') %>
+  <!-- navbar -->
+  <%- include('../partials/categories-navbar') %>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5 m-auto">
+          <h1 class="mt-4 mb-4">Author Sign Up</h1>
+
+          <% if(typeof message !=='undefined' ) {%>
+            <div id="flash-msg" class="alert alert-danger">
+              <%= message %>
+            </div>
+
+            <%}%>
+
+              <form action="" method="POST" >
+                <div class="form-group">
+                  <label for="name">Name<span style="color: red;">*</span></label>
+                  <input type="text" class="form-control" name="name" id="name" required
+                    placeholder="Enter Your Full Name" />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email address<span style="color: red;">*</span></label>
+                  <input type="email" class="form-control" name="email" id="email" placeholder="Enter Your Email ID" required />
+                </div>
+                <div class="form-group">
+                  <label for="mobile">Mobile Number<span style="color: red;">*</span></label>
+                  <input type="text" class="form-control" name="mobile" id="mobile"
+                    placeholder="Enter Your 10 digit Mobile Number" required />
+                 
+                </div>
+
+                <div class="form-group">
+                  <label for="password">Password<span style="color: red;">*</span></label>
+                  <input type="password" class="form-control" name="password" id="password"
+                    placeholder="Enter Your Password" required />
+                </div>
+                <div class="form-group">
+                  <label for="password2">Verify Password<span style="color: red;">*</span></label>
+                  <input type="password" class="form-control" name="password2" id="password2"
+                    placeholder="Re-enter Your Password" required />
+                </div>
+                <button type="submit" class="btn btn-primary button-style">
+                  Sign Up
+                </button>
+              </form>
+              <p class="mt-3">
+                Already have an account ?
+                <a href="/author/login">
+                <button type="button" class="btn btn-primary btn-sm button-style">
+                  Login Now
+                </button>
+                </a>
+              </p>
+        </div>
+      </div>
+    </div>
+
+    <scipt src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <script>
+      document.getElementById("password2").addEventListener("input", function () {
+        console.log("password2")
+        var password = document.getElementById("password").value.trim();
+        var password2 = document.getElementById("password2").value.trim();
+        if(password2 == ""){
+          document.getElementById("password2").setCustomValidity("Password Cannot be null");
+        } else if (password === password2) {
+          document.getElementById("password2").setCustomValidity("");
+        } else {
+          document.getElementById("password2").setCustomValidity("Passwords do not match.");
+        }
+      });
+
+      document.getElementById("password").addEventListener("input", function () {
+        console.log("password1")
+        var password = document.getElementById("password").value.trim();
+        var password2 = document.getElementById("password2").value.trim();
+        if(password == ""){
+          document.getElementById("password").setCustomValidity("Password Cannot be null");
+        } else if (password === password2) {
+          document.getElementById("password2").setCustomValidity("");
+        } else {
+          document.getElementById("password2").setCustomValidity("Passwords do not match.");
+        }
+      });
+
+      document.getElementById("mobile").addEventListener("input", function () {
+        var mobilenumber = document.getElementById("mobile").value;
+        console.log(mobilenumber)
+       
+        if (mobilenumber.trim().length < 10) {
+          document.getElementById("mobile").setCustomValidity("Mobile Digits less than 10");
+          console.log("less than 10")
+        } else if (mobilenumber.trim().length > 10) {
+          document.getElementById("mobile").setCustomValidity("Mobile Digits greater than 10");
+        } else {
+          document.getElementById("mobile").setCustomValidity("");
+        }
+      });
+
+
+      document.getElementById("name").addEventListener("input", function () {
+        var Uname = document.getElementById("name").value;
+        console.log(name)
+       
+        if (Uname.trim()== "" ) {
+          document.getElementById("name").setCustomValidity("Name cannot be null");
+          console.log("Name null")
+        } else {
+          document.getElementById("name").setCustomValidity("");
+        }
+      });
+
+    </script>
+
+    <%- include('../partials/footer') %>

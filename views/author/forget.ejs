@@ -1,0 +1,41 @@
+<%- include('../partials/header') %>
+<!-- navbar -->
+<%- include('../partials/categories-navbar') %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-5 m-auto">
+      <h1 class="mt-4 mb-4">Lost your password ?</h1>
+      <!-- Flash message -->
+	  <p> Change your password following instructions below. This helps to keep your new password secure.
+		</p>
+		<ol>
+			<li>
+				Please enter your email address.
+			</li>
+			<li>
+				You will receive a link to create a new password via email.
+			</li>
+		</ol>
+      <% if(typeof message !=='undefined' ) {%>
+        <div id="flash-msg" class="alert alert-danger">
+          <%= message %>
+        </div>
+
+        <%}%>
+      <form action="/author/forget" method="POST">
+        <div class="form-group">
+          <label for="email">Email address<span style="color: red;">*</span></label>
+          <input type="email" class="form-control" name="email" id="email" required />
+        </div>
+        <button type="submit" class="btn btn-primary button-style">
+          Reset
+        </button>
+      </form>
+      
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
+

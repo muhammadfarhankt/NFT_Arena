@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Author | NFT Arena
+  </title>
+  <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+  <script src="https://kit.fontawesome.com/91abd10b8f.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Mapbox -->
+  <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div id="page-container">
+    <div id="content-wrap">
+      <div class="row nav-container mx-auto">
+
+
+        <div class="col-md-4 col-sm-12 col-xs-12 logo-container">
+          <a href="/">
+            <img class="logo-img img-fluid" style="margin-right:3px;" src="/images/logo.png" alt="logo" />
+            <h4 style="margin-top: auto;" class="logo-title">NFT Arena</h4>
+          </a>
+        </div>
+
+        <div class="col-md-4 col-sm-12 col-xs-12">
+          <div class="search-container">
+            <form class="form-inline" action="/products/search" method="GET">
+              <input class="search-input" type="search" placeholder="Search" name="search" />
+            </form>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12 col-xs-12 right-nav">
+          <ul>
+            <ul>
+              <li>
+                <a href="/wishlist">
+                  <i class="fas fa-heart" style="font-size: 20px;"></i>
+                  <span class="badge badge-pill badge-info">
+                    0
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="/cart">
+                  <i class="fa fa-shopping-cart fa-2x" style="font-size: 20px;"></i>
+                  <span class="badge badge-pill badge-info">
+                    0
+                  </span>
+                </a>
+              </li>
+
+              <li>
+                <button type="button" class="btn btn-outline-secondary">
+                  <a href="/register"> Sign Up</a>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="btn btn-outline-secondary">
+                  <a href="/login"> Sign In</a>
+                </button>
+              </li>
+            </ul>
+        </div>
+      </div>
+
+
+      <nav class="navbar navbar-expand-md navbar-custom navbar-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse mx-auto order-0" id="navbarNav">
+          <ul class="navbar-nav mx-auto">
+            <button type="button" class="btn btn-info btn-sm" style="margin-right: 10px;">
+            <li class="nav-item">
+              <a class="nav-link" href="/home">Home</a>
+            </li>
+            </button>
+      
+            <button type="button" class="btn btn-info btn-sm" style="margin-right: 10px;">
+              <li class="nav-item">
+                <a class="nav-link" href="/shop">
+                  Browse NFTs
+                </a>
+              </li>
+            </button>
+      
+            <button type="button" class="btn btn-info btn-sm" style="margin-right: 10px;">
+            <li class="nav-item">
+              <a class="nav-link" href="">
+                Sell Your NFTs
+              </a>
+            </li>
+          </button>
+      
+          <button type="button" class="btn btn-info btn-sm" style="margin-right: 10px;">
+            <li class="nav-item">
+              <a class="nav-link" href="">
+                Learn NFT Technology
+              </a>
+            </li>
+            </button>
+      
+            <button type="button" class="btn btn-info btn-sm" style="margin-right: 10px;">
+            <li class="nav-item">
+              <a class="nav-link" href="">
+                NFT News
+              </a>
+            </li>
+          </button>
+      
+          </ul>
+        </div>
+      </nav>
+
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-5 m-auto">
+            <h1 class="mt-4 mb-4">Author Sign In</h1>
+            <!-- Flash message -->
+      
+            <% if(typeof message !=='undefined' ) {%>
+              <div id="flash-msg" class="alert alert-danger">
+                <%= message %>
+              </div>
+      
+              <%}%>
+            <form method="POST">
+              <div class="form-group">
+                <label for="email">Email address<span style="color: red;">*</span></label>
+                <input type="email" class="form-control" name="email" id="email" required />
+              </div>
+              <div class="form-group">
+                <label for="password">Password<span style="color: red;">*</span></label>
+                <input
+                  type="password"
+                  class="form-control"
+                  name="password"
+                  id="password"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary button-style">
+                Sign In
+              </button>
+            </form>
+            <p class="mt-3">
+              Sell Your NFTs & Earn Money 
+              <button type="button" class="btn btn-primary btn-sm button-style">
+                <a href="/author/register">Sign Up Now</a>
+              </button>
+            </p>
+            <p class="mt-3">
+              Forgot Password ? Don't Worry! 
+              <button type="button" class="btn btn-primary btn-sm button-style">
+                <a href="/author/forget">Reset Now</a>
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <footer>
+    
+      <section id="contact" class="mt-5">
+        <div class="row">
+          <div class="col-md-4 col-sm-12 col-xs-12 white-links">
+            <p class="footer-title">About Us</p>
+            <ul>
+              <li>
+                <a href="/pages/about-us">About Our Store</a>
+              </li>
+              <li>
+                <a href="/pages/contact-us">Contact Us</a>
+              </li>
+              <li>
+                <a href="/pages/shipping-policy">Shipping Policy</a>
+              </li>
+              <li>
+                <a href="/pages/careers">Careers</a>
+              </li>
+            </ul>
+          </div>
+    
+          <div class="col-md-6 col-sm-12 col-xs-12 white-links mb-2">
+            <p class="footer-title">Follow Us</p>
+            <a href="https://facebook.com/" target="_blank">
+              <i class="fa fa-facebook-square" aria-hidden="true"></i>
+              Facebook
+            </a>
+    
+            <a id="profile-link" target="_blank" href="https://instagram.com/">
+              <i class="fa fa-instagram" aria-hidden="true"></i>
+              Instagram
+            </a>
+    
+            <a href="https://twitter.com/" target="_blank">
+              <i class="fa fa-twitter" aria-hidden="true"></i>
+              Twitter
+            </a>
+    
+          </div>
+    
+        </div>
+      </section>
+    
+      <section class="bottom-footer">
+        <div class="row">
+          <div class="col-12 mr-auto" style="text-align: center;">
+            © NFT Arena 2023 **This is just a fake ecommerce website. All the products and contact details given are not
+            real.
+          </div>
+        </div>
+      </section>
+    
+    </footer>
+    </div>
+    
+    
+    <script src="/public/javascripts/main.js"></script>
+    </body>
+    
+    </html>
