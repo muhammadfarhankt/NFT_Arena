@@ -361,7 +361,8 @@ const removeFromCart = async (req, res) => {
   console.log('total price  before : ' + userData.cart.totalPrice)
   userData.cart.totalPrice -= userData.cart.item[productIndex].price
   console.log('total price  after : ' + userData.cart.totalPrice)
-  //res.redirect('/cart')
+  await userData.save()
+  res.redirect('/cart')
 }
 
 // wishlist load
@@ -388,6 +389,7 @@ const addToWishlist = async (req, res) => {
     console.log('wish list' + userData.wishList)
     const wishList = await userData.addWishlist(req.query.id)
     console.log(wishList)
+    res.redirect('/wishlist')
   } catch (error) {
     console.log('add to wish list catch error')
   }
