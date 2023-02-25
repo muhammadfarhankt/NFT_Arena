@@ -44,14 +44,16 @@ userRoute.get('/product', userController.productLoad)
 
 userRoute.get('/cart', auth.isLogin, userController.cartLoad)
 userRoute.get('/add-to-cart', auth.isLogin, userController.addToCart)
-userRoute.get('/reduce-from-cart', auth.isLogin, userController.removeFromCart)
-// /remove-from-cart
-// /move-to-wishlist
-// /checkout
-// /empty-cart
+userRoute.get('/reduce-from-cart', auth.isLogin, userController.reduceFromCart)
+userRoute.get('/remove-from-cart', auth.isLogin, userController.removeFromCart)
+userRoute.get('/empty-cart', auth.isLogin, userController.emptyCart)
+userRoute.get('/move-to-wishlist', auth.isLogin, userController.moveToWishlist)
 
 userRoute.get('/wishlist', auth.isLogin, userController.wishlistLoad)
-
 userRoute.get('/add-to-wishlist', auth.isLogin, userController.addToWishlist)
+userRoute.get('/remove-from-wishlist', auth.isLogin, userController.removeFromWishlist)
+userRoute.get('/empty-wishlist', auth.isLogin, userController.emptyWishlist)
+userRoute.get('/move-to-cart', auth.isLogin, userController.moveToCart)
+userRoute.get('/checkout', auth.isLogin, userController.checkout)
 
 module.exports = userRoute

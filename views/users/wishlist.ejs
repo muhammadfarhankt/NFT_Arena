@@ -54,27 +54,27 @@
 
 
                         </tbody>
-                    </table>
-                   
+                    </table> 
                 </div>
             </div>
             <hr>
             <div class="row mt-4 mr-auto">
                 <div class="col-md-11 col-sm-12 m-auto">
-                    <h3 style="text-align: right;">Total : $ 
+                    <h3 style="text-align: right;">Total : $
                         <% let total=0 %>
-                           <%  for(let i=1;i<=wishListData.item.length;i++) { %>
-                            <% total += wishListData.item[1].price %>
+                        <% wishListData.item.forEach(eachItem=>{%>
+                            <% total += eachItem.productId.price %>
+                        <%}) %> 
+                        <%= total %>
 
-                       <% } %>
-                        <% total %>
+
                     </h3>
                 </div>
             </div>
             <div class="row mt-2 mr-auto">
                 <div class="col-md-11 col-sm-12 m-auto">
                     <a href="/checkout" class="btn btn-dark button-style" style="float: right;">Checkout</a>
-                    <a href="/empty-cart" class="btn btn-dark button-style-danger" style="float: left;">Remove All</a>
+                    <a href="/empty-wishlist" class="btn btn-dark button-style-danger" style="float: left;">Remove All</a>
                 </div>
             </div>
 
