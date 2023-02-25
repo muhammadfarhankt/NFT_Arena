@@ -350,15 +350,18 @@ const addToCart = async (req, res) => {
 const removeFromCart = async (req, res) => {
   const productId = req.query.id
   const userData = await User.findById({ _id: req.session.user_id })
-  const productIndex = userData.cart.item.findIndex((p) => p.productId == productId)
+  const productIndex = await userData.cart.item.findIndex((p) => p.productId == productId)
   console.log('product Index : ' + productIndex)
   userData.cart.item[productIndex].quantity -= 1
   console.log('product quantity : ' + userData.cart.item[productIndex].quantity)
   const qty = { a: parseInt(userData.cart.item[productIndex].quantity) }
   console.log('qty a  :  ' + qty.a)
   userData.cart.item[productIndex].quantity = qty.a
+  console.log('product quantity : ' + userData.cart.item[productIndex].quantity)
+  console.log('total price  before : ' + userData.cart.totalPrice)
   userData.cart.totalPrice -= userData.cart.item[productIndex].price
-  res.redirect('/cart')
+  console.log('total price  after : ' + userData.cart.totalPrice)
+  //res.redirect('/cart')
 }
 
 // wishlist load
