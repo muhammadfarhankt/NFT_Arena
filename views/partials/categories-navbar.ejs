@@ -19,6 +19,28 @@
         </li>
       </button>
 
+      <div class="dropdown">
+        <button class="btn btn-info btn-sm dropdown-toggle"  style="margin-right: 10px; padding-top: 10px; height: 48px;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Categories
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <% for(let i=0;i<categoryData.length;i++){%>
+            <a class="dropdown-item" href="/category?id=<%= categoryData[i]._id%>"><%= categoryData[i].name%> </a>
+        <%} %>
+        </div>
+      </div>
+  
+      <div class="dropdown">
+        <button class="btn btn-info btn-sm dropdown-toggle"  style="margin-right: 10px; padding-top: 10px; height: 48px;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Authors
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <% for(let i=0;i<authorData.length;i++){%>
+            <a class="dropdown-item" href="/author?id=<%= authorData[i]._id%>"><%= authorData[i].name%> </a>
+        <%} %>
+        </div>
+      </div>
+
       <button type="button" class="btn btn-info btn-sm" style="margin-right: 10px;">
       <li class="nav-item">
         <a class="nav-link" href="/author">
@@ -26,6 +48,8 @@
         </a>
       </li>
     </button>
+
+    
 
     <button type="button" class="btn btn-info btn-sm" style="margin-right: 10px;">
       <li class="nav-item">

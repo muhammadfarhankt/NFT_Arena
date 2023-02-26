@@ -2,19 +2,30 @@
 <!-- navbar -->
 <%- include('../partials/categories-navbar') %>
 
+<style>
+#zoomC {
+  /* (A) DIMENSIONS */
+  width: auto;
+  height: auto;
+ 
+  /* (B) BACKGROUND IMAGE */
+  background: url("/imagess/<%= productDetails.image %>");
+  background-position: center;
+  background-size: contain;
+}
+</style>
+
 <div class="container">
 
   <!-- Product info -->
   <div class="row mt-4 mb-4">
-    <div class="col-md-5 mt-2 mr-2 ml-auto">
-      <div class="zoom">
+    <div class="col-md-5 mt-2 mr-2 ml-auto" id="zoomC">
+      <div>
         <img
-          id="zoomed-image"
           src="/imagess/<%= productDetails.image %>"
           class="img-fluid product-img"
           alt="product image"
         />
-        <div id="zoomed-area"></div>
       </div>
     </div>
     <div class="col-md-5 mt-2 mb-2 ml-2 mr-auto text-dark">
@@ -25,8 +36,12 @@
         <p> <%= productDetails.description %> </p>
       </p>
       
-      <p><strong>Category:</strong> <%= productDetails.category %></p>
-      <p><strong>Author: </strong><%= productDetails.author %></p>
+      <p><strong>Category:</strong><a href="/category?id=<%= productDetails.category._id %>"> <%= productDetails.category.name %> </a></p>
+      <p>
+        <strong>Author: </strong>
+        <a href="/author?id=<%= productDetails.author._id %>"><%= productDetails.author.name %> 
+          </a>
+      </p>
       <p><strong>Product code:</strong> <%= productDetails._id %></p>
       <p><strong>Date added to the store:</strong> <%= productDetails.createdAt %> </p>
       
@@ -47,28 +62,47 @@
 </div>
 
 <script>
-  const zoomedArea = document.getElementById("zoomed-area");
-  const zoomedImage = document.getElementById("zoomed-image");
-
-  zoomedImage.addEventListener("mousemove", function(e) {
-    const zoom = 3; // Change this value to adjust zoom level
-    const x = e.offsetX;
-    const y = e.offsetY;
-    const width = zoomedImage.offsetWidth;
-    const height = zoomedImage.offsetHeight;
-
-    zoomedArea.style.backgroundImage = `url('${zoomedImage.src}')`;
-    zoomedArea.style.backgroundSize = `${width * zoom}px ${height * zoom}px`;
-    zoomedArea.style.width = `${width / zoom}px`;
-    zoomedArea.style.height = `${height / zoom}px`;
-    zoomedArea.style.display = "block";
-    zoomedArea.style.top = `${y - height / (zoom * 2)}px`;
-    zoomedArea.style.left = `${x - width / (zoom * 2)}px`;
-  });
-
-  zoomedImage.addEventListener("mouseout", function() {
-    zoomedArea.style.display = "none";
-  });
+  // CREDITS : https://www.cssscript.com/image-zoom-pan-hover-detail-view/
+var addZoom = target => {
+  // (A) GET CONTAINER + IMAGE SOURCE
+  let container = document.getElementById(target),
+      imgsrc = container.currentStyle || window.getComputedStyle(container, false);
+      imgsrc = imgsrc.backgroundImage.slice(4, -1).replace(/"/g, "");
+ 
+  // (B) LOAD IMAGE + ATTACH ZOOM
+  let img = new Image();
+  img.src = imgsrc;
+  img.onload = () => {
+    // (B1) CALCULATE ZOOM RATIO
+    let ratio = img.naturalHeight / img.naturalWidth,
+        percentage = ratio * 100 + "%";
+ 
+    // (B2) ATTACH ZOOM ON MOUSE MOVE
+    container.onmousemove = e => {
+      let rect = e.target.getBoundingClientRect(),
+          xPos = e.clientX - rect.left,
+          yPos = e.clientY - rect.top,
+          xPercent = xPos / (container.clientWidth / 100) + "%",
+          yPercent = yPos / ((container.clientWidth * ratio) / 100) + "%";
+ 
+      Object.assign(container.style, {
+        backgroundPosition: xPercent + " " + yPercent,
+        backgroundSize: img.naturalWidth + "px"
+      });
+    };
+ 
+    // (B3) RESET ZOOM ON MOUSE LEAVE
+    container.onmouseleave = e => {
+      Object.assign(container.style, {
+        backgroundPosition: "center",
+        backgroundSize: "cover"
+      });
+    };
+  }
+};
+ 
+// (C) ATTACH FOLLOW ZOOM
+window.onload = () => addZoom("zoomC");
 </script>
 
 <%- include('../partials/footer') %>

@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
 const randomstring = require('randomstring')
 const Product = require('../models/productModel')
+const Category = require('../models/categoryModel')
+const Author = require('../models/authorModel')
 const { populate } = require('../models/userModel')
 
 const otpGenerator = require('otp-generator')
@@ -116,7 +118,9 @@ const sendOtpMail = async (name, email, otp) => {
 // loading loadpage
 const loadpage = async (req, res) => {
   try {
-    res.render('home')
+    categoryData = await Category.find({})
+    authorData = await Author.find({})
+    res.render('home', {categoryData, authorData})
   } catch (error) {
     console.log(error.message)
   }
@@ -283,7 +287,8 @@ const loadHome = async (req, res) => {
       const userData = await User.findById({ _id: req.session.user_id })
       // console.log('userData')
       console.log(userData)
-      res.render('home', { userData })
+      categoryData = await Category.find({})
+      res.render('home', { userData, categoryData })
     } else {
       res.redirect('/login')
     }
@@ -377,6 +382,28 @@ const shopLoad = async (req, res) => {
   }
 }
 
+const categoryLoad = async (req, res) => {
+  // res.render('category')
+  categoryData = await Category.find({})
+  authorData = await Author.find({})
+  singleCategory  = await Category.findById({ _id: req.query.id})
+  categoryProducts = await Product.find({category: req.query.id}).populate('author')
+  console.log('single category ' + singleCategory)
+  console.log(' category products ' + categoryProducts)
+  res.render('category', {singleCategory, categoryData, authorData})
+}
+
+const authorLoad = async (req, res) => {
+  // res.render('category')
+  categoryData = await Category.find({})
+  authorData = await Author.find({})
+  singleAuthor  = await Author.findById({ _id: req.query.id})
+  authorProducts = await Product.find({author: req.query.id}).populate('category')
+  console.log('single author ' + singleAuthor)
+  // console.log(' category products ' + categoryProducts)
+  res.render('author', {singleAuthor, authorProducts, categoryData, authorData})
+}
+
 // logout
 const logoutUser = async (req, res) => {
   try {
@@ -403,12 +430,15 @@ const profileLoad = async (req, res) => {
 const productLoad = async (req, res) => {
   try {
     const productId = req.query.id
-    const productDetails = await Product.findById({ _id: productId })
+    categoryData = await Category.find({})
+    authorData = await Author.find({})
+    const productDetails = await Product.findById({ _id: productId }).populate('category').populate('author')
+    console.log('product details ::::::::::::::  ' + productDetails )
     if (req.session.user_id) {
       const userData = await User.findById({ _id: req.session.user_id })
-      res.render('product', { productDetails, userData })
+      res.render('product', { productDetails, userData, authorData, categoryData })
     } else {
-      res.render('product', { productDetails })
+      res.render('product', { productDetails, authorData, categoryData })
     }
   } catch (error) {
     console.log(error.message)
@@ -587,6 +617,8 @@ module.exports = {
   forgetPasswordLoad,
   resetPassword,
   shopLoad,
+  categoryLoad,
+  authorLoad,
   logoutUser,
   profileLoad,
   productLoad,
