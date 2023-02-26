@@ -1,9 +1,12 @@
+require('dotenv').config()
 const User = require('../models/userModel')
 const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
 const randomstring = require('randomstring')
 const Product = require('../models/productModel')
 const { populate } = require('../models/userModel')
+
+const otpGenerator = require('otp-generator')
 
 //  function for making password secure
 const securePassword = async (password) => {
@@ -24,12 +27,12 @@ const sendVerifyMail = async (name, email, user_id) => {
       secure: false,
       requireTLS: true,
       auth: {
-        user: 'farhanlatheefkt@gmail.com',
-        pass: 'ajpufjrzcbapiuzw'
+        user: process.env.myemail,
+        pass: process.env.mypassword
       }
     })
     const mailOptions = {
-      from: 'farhanlatheefkt@gmail.com',
+      from: process.env.myemail,
       to: email,
       subject: 'Verify your NFT Arena Account',
       html: '<p> Hello Mr. ' + name + ' , Plesase Click  <a href="http://localhost:3000/verify?id=' + user_id + '"> here to verify </a> your NFT Arena account</p>'
@@ -55,15 +58,48 @@ const sendResetMail = async (name, email, token) => {
       secure: false,
       requireTLS: true,
       auth: {
-        user: 'farhanlatheefkt@gmail.com',
-        pass: 'ajpufjrzcbapiuzw'
+        user: process.env.myemail,
+        pass: process.env.mypassword
       }
     })
     const mailOptions = {
-      from: 'farhanlatheefkt@gmail.com',
+      from: process.env.myemail,
       to: email,
       subject: 'Reset your NFT Arena account password',
       html: '<p> Hello  Mr.  ' + name + ' , Please Click  <a href="http://localhost:3000/forget-password?token=' + token + '">  here to reset </a> your NFT Arena account password</p>'
+    }
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('email has been send', info.response)
+      }
+    })
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+// for otp login
+let otp = otpGenerator.generate(6, { digits: true, upperCaseAlphabets: false, lowerCaseAlphabets: false, specialChars: false })
+const sendOtpMail = async (name, email, otp) => {
+  try {
+    console.log('Name : ' + name + 'email : ' + email + 'otp : ' + otp)
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      requireTLS: true,
+      auth: {
+        user: process.env.myemail,
+        pass: process.env.mypassword
+      }
+    })
+    const mailOptions = {
+      from: process.env.myemail,
+      to: email,
+      subject: 'OTP for your NFT Arena account',
+      html: '<p> Hello  Mr.  ' + name + '. Your Login OTP is    ' + otp + '   . Pls donot share OTP with anyone else.'
     }
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
@@ -175,6 +211,68 @@ const verifyLogin = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message)
+  }
+}
+
+// otp login
+const otpLogin = async (req, res) => {
+  try {
+    console.log('otp          :     ' + otp)
+    res.render('otpLogin')
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+// otp login verification
+const otpLoginVerification = async (req, res) => {
+  try {
+    const email = req.body.email
+    const userData = await User.findOne({ email })
+    if (userData) {
+      if (userData.isVerified === false) {
+        res.render('otpLogin', { message: 'Not verified Email yet!. Pls Verify your email' })
+      } else {
+        // const randomString = randomstring.generate()
+        // const updatedData = await User.updateOne({ email }, { $set: { token: randomString } })
+        // sendResetMail(userData.name, userData.email, randomString)
+        // res.render('otpLogin', { message: 'Pls check your Mail to Reset Password' })
+        sendOtpMail(userData.name, userData.email, otp)
+        // res.render('otpLogin', { message: 'Pls check your Mail for OTP' })
+        req.session.otpUserId = userData._id
+        res.redirect('/otp-login-verify')
+      }
+    } else {
+      res.render('otpLogin', { message: 'There is no account linked with this email' })
+    }
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+const otpPasswordVerify = async (req, res) => {
+  try {
+    userId = req.session.otpUserId
+    userData = await User.findById({ _id: userId })
+    res.render('otpLoginVerify', { userData })
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+const otpPasswordVerifyPost = async (req, res) => {
+  console.log('otpPasswordVerifyPost')
+  userId = req.body.id
+  userOtp = req.body.otp
+  console.log('userId ' + userId)
+  console.log('user otp : ' + userOtp + '    otp   :  + ' + otp)
+  if ( userOtp == otp) {
+    console.log('otp is correct')
+    req.session.user_id = userId
+    res.redirect('/home')
+  } else {
+    console.log(' Incorrect OTP')
+    res.render('otpLoginVerify', { message: 'Incorrect OTP'})
   }
 }
 
@@ -479,6 +577,10 @@ module.exports = {
   verifyMail,
   loginLoad,
   verifyLogin,
+  otpLogin,
+  otpLoginVerification,
+  otpPasswordVerify,
+  otpPasswordVerifyPost,
   loadHome,
   forgetLoad,
   forgetLink,
