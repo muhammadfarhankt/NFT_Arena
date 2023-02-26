@@ -63,7 +63,8 @@ const loadDashboard = async (req, res) => {
 
 // product loading
 const productLoad = async (req, res) => {
-  const productData = await Product.find({})
+  const productData = await Product.find({}).populate('category').populate('author')
+  // console.log('product data ' + productData)
   try {
     res.render('products', { productData })
   } catch (error) {
@@ -89,7 +90,9 @@ const addProduct = async (req, res) => {
       price: req.body.price,
       image: req.file.filename,
       category: req.body.category,
-      author: req.body.author
+      author: req.body.author,
+      stock: req.body.stock,
+      isDeleted: false
     })
     const productData = await product.save()
     res.redirect('/admin/products')
@@ -97,12 +100,31 @@ const addProduct = async (req, res) => {
     console.log(error.message)
   }
 }
+
 // delete product
 const deleteProduct = async (req, res) => {
   try {
     const productId = req.query.id
-    const deleteData = await Product.findByIdAndDelete({ _id: productId })
-    res.redirect('/admin/products')
+    console.log('product id : ' + productId)
+    const productData = await Product.findOne({ _id: productId })
+    const value = productData.isDeleted
+    console.log(value)
+    if (value === false) {
+      console.log('false')
+      const productDelete = await Product.findByIdAndUpdate({ _id: productId }, { $set: { isDeleted: true } })
+      // productData.isDeleted = {$toBool: 1}
+      // productData.save()
+      res.redirect('/admin/products')
+      // console.log(productData)
+    } else {
+      console.log('true')
+      const productDelete = await Product.findByIdAndUpdate({ _id: productId }, { $set: { isDeleted: false } })
+      // productData.isDeleted = {$toBool: false}
+      // productData.save()
+      res.redirect('/admin/products')
+    }
+    // const deleteData = await Product.findByIdAndUpdate({ _id: productId },{$set:{isDeleted: true}})
+    // res.redirect('/admin/products')
   } catch (error) {
     console.log(error.message)
   }
@@ -116,6 +138,28 @@ const userLoad = async (req, res) => {
     console.log(error.message)
   }
 }
+
+// author blocking and unblocking
+const blockAuthor = async (req, res) => {
+  try {
+    const authorId = req.query.id
+    console.log('author id for blocking : ' + authorId)
+    const authorData = await Author.findOne({ _id: authorId })
+    const value = authorData.isBlocked
+    console.log(value)
+    if (value === true) {
+      const authorUpdate = await Author.findByIdAndUpdate({ _id: authorId }, { $set: { isBlocked: false } })
+      res.redirect('/admin/author')
+    } else if (value === false) {
+      const authorUpdate = await Author.findByIdAndUpdate({ _id: authorId }, { $set: { isBlocked: true } })
+      res.redirect('/admin/author')
+      console.log(authorData)
+    }
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
 // user blocking and unblocking
 const blockUser = async (req, res) => {
   try {
@@ -288,8 +332,10 @@ const updateProductLoad = async (req, res) => {
     const productId = req.query.id
 
     console.log('hii')
-    const productData = await Product.findOne({ _id: productId })
-    res.render('updateProduct', { productData })
+    const productData = await Product.findOne({ _id: productId }).populate('category').populate('author')
+    const authorData = await Author.find({})
+    const categoryData = await Category.find({})
+    res.render('updateProduct', { productData, authorData, categoryData })
   } catch (error) {
     console.log(error.message)
   }
@@ -301,7 +347,7 @@ const updateProduct = async (req, res) => {
     const productId = req.body.id
     console.log('try')
     console.log(productId)
-    const updateData = await Product.findByIdAndUpdate({ _id: productId }, { $set: { name: req.body.name, description: req.body.description, price: req.body.price } })
+    const updateData = await Product.findByIdAndUpdate({ _id: productId }, { $set: { name: req.body.name, description: req.body.description, author: req.body.author, category: req.body.category, price: req.body.price, stock: req.body.stock } })
     res.redirect('/admin/products')
   } catch (error) {
     console.log(error.mesage)
@@ -332,5 +378,6 @@ module.exports = {
   addAuthorPost,
   updateAuthorLoad,
   updateAuthor,
+  blockAuthor,
   deleteAuthor
 }

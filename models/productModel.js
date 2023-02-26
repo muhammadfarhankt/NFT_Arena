@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb')
 const mongoose = require('mongoose')
 const productSchema = new mongoose.Schema({
   name: {
@@ -13,22 +14,21 @@ const productSchema = new mongoose.Schema({
     required: true
   },
   stock: {
-    type: Number,
-    default: 0
+    type: Number
   },
   image: {
     type: String
   },
   category: {
-    type: String,
-    required: true
+    type: ObjectId,
+    ref: 'Category'
   },
   author: {
-    type: String,
-    required: true
+    type: ObjectId,
+    ref: 'Author'
   },
   isDeleted: {
-    Boolean,
+    type: Boolean,
     default: false
   }
 }, {

@@ -27,11 +27,13 @@ userRoute.post('/register', userController.insertUser)
 userRoute.get('/verify', auth.isLogout, userController.verifyMail)
 userRoute.get('/login', auth.isLogout, userController.loginLoad)
 userRoute.get('/', auth.isLogout, userController.loadpage)
+
 userRoute.post('/login', userController.verifyLogin)
 userRoute.get('/otp-login', auth.isLogout, userController.otpLogin)
 userRoute.post('/otp-login', auth.isLogout, userController.otpLoginVerification)
 userRoute.get('/otp-login-verify', auth.isLogout, userController.otpPasswordVerify)
 userRoute.post('/otp-login-verify', auth.isLogout, userController.otpPasswordVerifyPost)
+
 userRoute.get('/home', auth.isLogin, userController.loadHome)
 
 userRoute.get('/forget', auth.isLogout, userController.forgetLoad)
