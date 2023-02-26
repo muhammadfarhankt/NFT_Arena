@@ -48,6 +48,10 @@ userRoute.get('/profile', auth.isLogin, userController.profileLoad)
 
 userRoute.get('/product', userController.productLoad)
 
+userRoute.get('/category', userController.categoryLoad)
+
+userRoute.get('/author', userController.authorLoad)
+
 userRoute.get('/cart', auth.isLogin, userController.cartLoad)
 userRoute.get('/add-to-cart', auth.isLogin, userController.addToCart)
 userRoute.get('/reduce-from-cart', auth.isLogin, userController.reduceFromCart)

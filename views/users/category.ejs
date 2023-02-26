@@ -1,0 +1,86 @@
+<%- include('../partials/header') %>
+<!-- navbar -->
+<%- include('../partials/categories-navbar') %>
+
+
+<div class="container-fluid">
+    <!-- Flash messages -->
+    
+    <!-- Breadcrumbs -->
+    <div class="row mt-2">
+      <div class="col-md-12 m-auto">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            
+            <li class="breadcrumb-item" aria-current="page">
+              <a href="/">Home</a>
+            </li>
+            
+            <li class="breadcrumb-item" aria-current="page">
+              <a href="/shop">NFT Store</a>
+            </li>
+            
+            <li class="breadcrumb-item" aria-current="page">
+              <a href=""><%= singleCategory.name  %></a>
+            </li>
+            
+          </ol>
+        </nav>
+        
+      </div>
+    </div>
+    <!-- Page banner image -->
+  
+        
+    <div class="text-center hero-container">
+        
+        <h1>
+            Category : <%= singleCategory.name  %>
+        </h1>
+    
+    </div>
+
+
+    <hr class="gradient-style" />
+            <div class="row pl-4 pr-4">
+                
+                <% for(let content of categoryProducts) { %>
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 product-index-box">
+                  <div class="single-product d-flex flex-column h-100">
+                    <a
+                      class="title-link"
+                      href="/product?id=<%= content._id %>"
+                    >
+                      <img src="/imagess/<%= content.image %>" alt="Bag" class="img-fluid"
+                    /></a>
+                    <div class="product-info">
+                      <a
+                        class="title-link"
+                        href="/products/totes/63ee0633e8759841695c457e"
+                      >
+                        <h4 class="mt-2 mb-2"><%= content.name %></h6></a>
+                        <h6 class="mt-2 mb-2"><a href="/author?id=<%= content.author._id %>">Author : <%= content.author.name %></h6>
+
+                      <div class="price">$ <%= content.price %> </div>
+                    </div>
+                    
+                    <a href="/add-to-cart?id=<%= content._id %>" class="btn btn-block btn-secondary button-style mt-auto mb-2">
+                      Add to Cart
+                    </a>
+                    
+                 </div>
+                 </div>
+
+                  <% } %>
+
+            </div>
+            
+        </div>
+
+
+
+
+
+<!-- footer -->
+<%- include('../partials/footer') %>
