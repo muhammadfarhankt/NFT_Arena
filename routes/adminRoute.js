@@ -45,6 +45,7 @@ adminRoute.get('/addAuthor', adminAuth.isLogin, adminController.addAuthor)
 adminRoute.post('/addAuthor', adminAuth.isLogin, adminController.addAuthorPost)
 adminRoute.get('/updateAuthor', adminAuth.isLogin, adminController.updateAuthorLoad)
 adminRoute.post('/updateAuthor', adminAuth.isLogin, adminController.updateAuthor)
+adminRoute.get('/blockAuthor', adminAuth.isLogin, adminController.blockAuthor)
 adminRoute.get('/deleteAuthor', adminAuth.isLogin, adminController.deleteAuthor)
 
 adminRoute.get('/products', adminAuth.isLogin, adminController.productLoad)

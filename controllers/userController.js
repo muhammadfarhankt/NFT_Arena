@@ -228,18 +228,18 @@ const otpLogin = async (req, res) => {
 const otpLoginVerification = async (req, res) => {
   try {
     const email = req.body.email
-    const userData = await User.findOne({ email })
-    if (userData) {
-      if (userData.isVerified === false) {
+    const uData = await User.findOne({ email })
+    if (uData) {
+      if (uData.isVerified === false) {
         res.render('otpLogin', { message: 'Not verified Email yet!. Pls Verify your email' })
       } else {
         // const randomString = randomstring.generate()
         // const updatedData = await User.updateOne({ email }, { $set: { token: randomString } })
         // sendResetMail(userData.name, userData.email, randomString)
         // res.render('otpLogin', { message: 'Pls check your Mail to Reset Password' })
-        sendOtpMail(userData.name, userData.email, otp)
+        sendOtpMail(uData.name, uData.email, otp)
         // res.render('otpLogin', { message: 'Pls check your Mail for OTP' })
-        req.session.otpUserId = userData._id
+        req.session.otpUserId = uData._id
         res.redirect('/otp-login-verify')
       }
     } else {
@@ -253,8 +253,8 @@ const otpLoginVerification = async (req, res) => {
 const otpPasswordVerify = async (req, res) => {
   try {
     userId = req.session.otpUserId
-    userData = await User.findById({ _id: userId })
-    res.render('otpLoginVerify', { userData })
+    uData = await User.findById({ _id: userId })
+    res.render('otpLoginVerify', { uData })
   } catch (error) {
     console.log(error.message)
   }
@@ -365,7 +365,7 @@ const resetPassword = async (req, res) => {
 // shopLoad
 const shopLoad = async (req, res) => {
   try {
-    const productList = await Product.find({})
+    const productList = await Product.find({isDeleted: false}).populate('category').populate('author')
     if (req.session.user_id) {
       const userData = await User.findById({ _id: req.session.user_id })
       res.render('shop', { productList, userData })

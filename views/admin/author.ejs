@@ -145,8 +145,8 @@
 							<tr>
 								<th>Name</th>
 								<th>Description</th>
-
 								<th>Edit</th>
+								<th>Block / Unblock</th>
 								<th>Delete</th>
 							</tr>
 						</thead>
@@ -167,6 +167,32 @@
 										<td> <a href="/admin/updateAuthor?id=<%= authorData[i]._id %>"><span
 													class="status" style="background: rgb(8, 38, 15);">Edit</span></a>
 										</td>
+
+						<td>
+                      <p>
+
+                        <% if(authorData[i].isBlocked==false){%>
+                          <a href="/admin/blockAuthor?id=<%= authorData[i]._id%>" onclick="return block_alert(this)">
+                            <script type="text/javascript">
+                              function block_alert(node) {
+                                return confirm("Do you want to block author ? ")
+                              }
+                            </script>
+                            <span class="status" style="background-color: green; align-items: center;">Active</span>
+                          </a>
+
+                          <%}else{%>
+                            <a href="/admin/blockAuthor?id=<%= authorData[i]._id%>" onclick="return unblock_alert(this)">
+                              <script type="text/javascript">
+                                function unblock_alert(node) {
+                                  return confirm("Do you want to un-block author ? ")
+                                }
+                              </script>
+                              <span class="status" style="background: red; align-items: center;">Blocked</span>
+                            </a>
+                            <%}%>
+                      </p>
+                      </td>
 
 										<td> 
 											<a href="/admin/deleteAuthor?id=<%= authorData[i]._id %>" onclick="return confirm_alert(this)">

@@ -153,45 +153,57 @@
 								<th>Author</th>
 								<th>Price</th>
 								<th>Description</th>  
+								<th>Stock</th>
 							<th>Edit</th>
                             <th>Delete</th>
                         </tr>
 						</thead>
 						<tbody>
-              <% if(productData.length >0){
-                for(let i=0;i<productData.length;i++){
-                  %>
+              <% for(let i=0;i<productData.length;i++){ %>
                   <tr>
 								<td>
 									<p><%= productData[i].name %> </p>
 								</td>
 								<td><img src="/imagess/<%= productData[i].image %>" alt=""></td>
-								<td> <p><%= productData[i].category %></p> </td>
-								<td> <p><%= productData[i].author %></p> </td>
+								<td> <p><%= productData[i].category.name %></p> </td>
+								<td> <p><%= productData[i].author.name %></p> </td>
 								<td> <p> <%= productData[i].price %></p></td>
                                 <td> <%= productData[i].description %></td>
+								<td> <%= productData[i].stock %></td>
                                  
 
 								<td> <a href="/admin/updateProduct?id=<%= productData[i]._id %>"><span class="status" style="background: rgb(8, 38, 15);">Edit</span></a></td>
                                  
 								 
 
-								<td> <a href="/admin/deleteProduct?id=<%= productData[i]._id %>" onclick="return confirm_alert(this)">
-									<span class="status" style="background: rgb(215, 9, 33);">
-										Delete
-									</span>
-									<script type="text/javascript">
-										function confirm_alert(node) {
-											return confirm("Do you want to delete product ? ")
-										}
-									</script>
-									</a>
-								</td>
+								<td>
+                      			<p>
+                        		<% if(productData[i].isDeleted == false){%>
+                       		   <a href="/admin/deleteProduct?id=<%= productData[i]._id%>" onclick="return delete_alert(this)">
+                            		<script type="text/javascript">
+                              			function delete_alert(node) {
+	                               		return confirm("Do you want to delete product ? ")
+   		                            }
+        		                    </script>
+                	            <span class="status" style="background-color: green; align-items: center;">Active</span>
+                    		      </a>
+
+	                          <%} else if (productData[i].isDeleted == true){%>
+    		                        <a href="/admin/deleteProduct?id=<%= productData[i]._id%>" onclick="return undelete_alert(this)">
+            		                  <script type="text/javascript">
+                		                function undelete_alert(node) {
+                        		          return confirm("Do you want to undo-delete ? ")
+                            		    }
+                              			</script>
+                              			<span class="status" style="background: red; align-items: center;">Deleted</span>
+		                            </a>
+        	                    <% } %>
+            		          </p>
+                    		  </td>
+
 								
 							</tr>
-							<%
-                }
-              } %>
+						<% } %>
 						
 							
 						</tbody>
