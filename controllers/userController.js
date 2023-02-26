@@ -5,6 +5,8 @@ const randomstring = require('randomstring')
 const Product = require('../models/productModel')
 const { populate } = require('../models/userModel')
 
+const otpGenerator = require('otp-generator')
+
 //  function for making password secure
 const securePassword = async (password) => {
   try {
@@ -55,15 +57,49 @@ const sendResetMail = async (name, email, token) => {
       secure: false,
       requireTLS: true,
       auth: {
-        user: 'farhanlatheefkt@gmail.com',
-        pass: 'ajpufjrzcbapiuzw'
+        user: 'farhankt3@gmail.com',
+        pass: 'zptddordpkqaknhk'
       }
     })
     const mailOptions = {
-      from: 'farhanlatheefkt@gmail.com',
+      from: 'farhankt3@gmail.com',
       to: email,
       subject: 'Reset your NFT Arena account password',
       html: '<p> Hello  Mr.  ' + name + ' , Please Click  <a href="http://localhost:3000/forget-password?token=' + token + '">  here to reset </a> your NFT Arena account password</p>'
+    }
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('email has been send', info.response)
+      }
+    })
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+// for otp login
+var otp
+const sendOtpMail = async (name, email, otp) => {
+  otp = otpGenerator.generate(6, { digits: true, upperCaseAlphabets: false, lowerCaseAlphabets: false, specialChars: false })
+  try {
+    console.log('Name : ' + name + 'email : ' + email + 'otp : ' + otp)
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      requireTLS: true,
+      auth: {
+        user: 'farhankt3@gmail.com',
+        pass: 'zptddordpkqaknhk'
+      }
+    })
+    const mailOptions = {
+      from: 'farhankt3@gmail.com',
+      to: email,
+      subject: 'OTP for your NFT Arena account',
+      html: '<p> Hello  Mr.  ' + name + '. Your Login OTP is    ' + otp + '   . Pls donot share OTP with anyone else.'
     }
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
@@ -178,6 +214,38 @@ const verifyLogin = async (req, res) => {
   }
 }
 
+// otp login
+const otpLogin = async (req, res) => {
+  try {
+    res.render('otpLogin')
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+// otp login verification
+const otpLoginVerification = async (req, res) => {
+  try {
+    const email = req.body.email
+    const userData = await User.findOne({ email })
+    if (userData) {
+      if (userData.isVerified === false) {
+        res.render('otpLogin', { message: 'Not verified Email yet!. Pls Verify your email' })
+      } else {
+        // const randomString = randomstring.generate()
+        // const updatedData = await User.updateOne({ email }, { $set: { token: randomString } })
+        // sendResetMail(userData.name, userData.email, randomString)
+        // res.render('otpLogin', { message: 'Pls check your Mail to Reset Password' })
+        sendOtpMail(userData.name, userData.email, otp)
+        res.render('otpLogin', { message: 'Pls check your Mail for OTP' })
+      }
+    } else {
+      res.render('otpLogin', { message: 'There is no account linked with this email' })
+    }
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 // get home
 const loadHome = async (req, res) => {
   try {
@@ -479,6 +547,8 @@ module.exports = {
   verifyMail,
   loginLoad,
   verifyLogin,
+  otpLogin,
+  otpLoginVerification,
   loadHome,
   forgetLoad,
   forgetLink,

@@ -5,7 +5,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-5 m-auto">
-      <h1 class="mt-4 mb-4">Sign In Page</h1>
+      <h1 class="mt-4 mb-4">Login with OTP</h1>
       <!-- Flash message -->
 
       <% if(typeof message !=='undefined' ) {%>
@@ -14,23 +14,22 @@
         </div>
 
         <%}%>
-      <form action="/login" method="POST">
+        <p>Now you can easily login with OTP</p>
+        <p>Simple 2 Steps</p>
+        <p>
+          <ol>
+            <li>Enter E-mail Address</li>
+            <li>Enter OTP recieved on your E-mail</li>
+          </ol>
+        </p>
+      <form action="" method="POST">
         <div class="form-group">
           <label for="email">Email address<span style="color: red;">*</span></label>
           <input type="email" class="form-control" name="email" id="email" required />
         </div>
-        <div class="form-group">
-          <label for="password">Password<span style="color: red;">*</span></label>
-          <input
-            type="password"
-            class="form-control"
-            name="password"
-            id="password"
-            required
-          />
-        </div>
+        
         <button type="submit" class="btn btn-primary button-style">
-          Sign In
+          Request OTP
         </button>
       </form>
       <p class="mt-3">

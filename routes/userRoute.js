@@ -28,6 +28,8 @@ userRoute.get('/verify', auth.isLogout, userController.verifyMail)
 userRoute.get('/login', auth.isLogout, userController.loginLoad)
 userRoute.get('/', auth.isLogout, userController.loadpage)
 userRoute.post('/login', userController.verifyLogin)
+userRoute.get('/otp-login', userController.otpLogin)
+userRoute.post('/otp-login', userController.otpLoginVerification)
 userRoute.get('/home', auth.isLogin, userController.loadHome)
 
 userRoute.get('/forget', auth.isLogout, userController.forgetLoad)
