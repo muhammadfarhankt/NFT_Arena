@@ -1,0 +1,56 @@
+<%- include('../partials/header') %>
+<!-- navbar -->
+<%- include('../partials/categories-navbar') %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-5 m-auto">
+      <h1 class="mt-4 mb-4">Sign In Page</h1>
+      <!-- Flash message -->
+
+      <% if(typeof message !=='undefined' ) {%>
+        <div id="flash-msg" class="alert alert-danger">
+          <%= message %>
+        </div>
+
+        <%}%>
+      <form action="/login" method="POST">
+        <div class="form-group">
+          <label for="email">Email address<span style="color: red;">*</span></label>
+          <input type="email" class="form-control" name="email" id="email" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Password<span style="color: red;">*</span></label>
+          <input
+            type="password"
+            class="form-control"
+            name="password"
+            id="password"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary button-style">
+          Sign In
+        </button>
+      </form>
+      <p class="mt-3">
+        Don't have an account ?
+        <a href="/register">
+          <button type="button" class="btn btn-primary btn-sm button-style">
+            Sign Up Now
+          </button>
+        </a>
+      </p>
+      <p class="mt-3">
+        Forgot Password ? Don't Worry! 
+        <a href="/forget">
+          <button type="button" class="btn btn-primary btn-sm button-style">
+            Reset Now
+          </button>
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
