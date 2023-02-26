@@ -317,6 +317,7 @@ const productLoad = async (req, res) => {
   }
 }
 
+// -------------------------------------------------Start Cart----------------------------------//
 // load cart
 const cartLoad = async (req, res) => {
   try {
@@ -346,24 +347,60 @@ const addToCart = async (req, res) => {
   }
 }
 
-// removing item from cart
-const removeFromCart = async (req, res) => {
+// reduce  item from cart
+const reduceFromCart = async (req, res) => {
   const productId = req.query.id
   const userData = await User.findById({ _id: req.session.user_id })
   const productIndex = await userData.cart.item.findIndex((p) => p.productId == productId)
   console.log('product Index : ' + productIndex)
   userData.cart.item[productIndex].quantity -= 1
-  console.log('product quantity : ' + userData.cart.item[productIndex].quantity)
-  const qty = { a: parseInt(userData.cart.item[productIndex].quantity) }
-  console.log('qty a  :  ' + qty.a)
-  userData.cart.item[productIndex].quantity = qty.a
-  console.log('product quantity : ' + userData.cart.item[productIndex].quantity)
-  console.log('total price  before : ' + userData.cart.totalPrice)
   userData.cart.totalPrice -= userData.cart.item[productIndex].price
+  if (userData.cart.item[productIndex].quantity === 0) {
+    userData.cart.item.splice(productIndex, 1)
+  } else {
+    const qty = { a: parseInt(userData.cart.item[productIndex].quantity) }
+    userData.cart.item[productIndex].quantity = qty.a
+  }
   console.log('total price  after : ' + userData.cart.totalPrice)
-  //res.redirect('/cart')
+  await userData.save()
+  res.redirect('/cart')
 }
 
+// removing an item from cart
+const removeFromCart = async (req, res) => {
+  console.log('product Index : ' + productIndex)
+  console.log('total price : ' + userData.cart.totalPrice)
+  userData.cart.totalPrice -= parseInt(userData.cart.item[productIndex].price * userData.cart.item[productIndex].quantity)
+  console.log('new total price : ' + userData.cart.totalPrice)
+  console.log('product price : ' + userData.cart.item[productIndex].price)
+  userData.cart.item.splice(productIndex, 1)
+  await userData.save()
+  res.redirect('/cart')
+}
+
+const emptyCart = async (req, res) => {
+  const userData = await User.findById({ _id: req.session.user_id })
+  userData.cart.item.splice(0, userData.cart.item.length)
+  userData.cart.totalPrice = 0
+  await userData.save()
+  res.redirect('/cart')
+}
+
+// move an item from cart to wishlist
+const moveToWishlist = async (req, res) => {
+  console.log('move to wishlist')
+  const productId = req.query.id
+  const userData = await User.findById({ _id: req.session.user_id })
+  const productIndex = await userData.cart.item.findIndex((p) => p.productId == productId)
+  const wishList = await userData.addWishlist(req.query.id)
+  userData.cart.totalPrice -= parseInt(userData.cart.item[productIndex].price * userData.cart.item[productIndex].quantity)
+  userData.cart.item.splice(productIndex, 1)
+  await userData.save()
+  res.redirect('/cart')
+}
+// ----------------------------- End Cart---------------------------------------------//
+
+// -----------------------------Start Wish List----------------------------------------//
 // wishlist load
 const wishlistLoad = async (req, res) => {
   try {
@@ -388,9 +425,50 @@ const addToWishlist = async (req, res) => {
     console.log('wish list' + userData.wishList)
     const wishList = await userData.addWishlist(req.query.id)
     console.log(wishList)
+    res.redirect('/wishlist')
   } catch (error) {
     console.log('add to wish list catch error')
   }
+}
+
+// remove an item from wishlist
+const removeFromWishlist = async (req, res) => {
+  const productId = req.query.id
+  userData = await User.findById({ _id: req.session.user_id })
+
+  // console.log(userData)
+  const wishListIndex = await userData.wishlist.item.findIndex((x) => x.productId == productId)
+  console.log('wish list index  :  ' + wishListIndex)
+  userData.wishlist.item.splice(wishListIndex, 1)
+
+  userData.save()
+  res.redirect('/wishlist')
+}
+
+// empty wishlist
+const emptyWishlist = async (req, res) => {
+  userData = await User.findById({ _id: req.session.user_id })
+  userData.wishlist.item.splice(0, userData.wishlist.item.length)
+  userData.save()
+  res.redirect('/wishlist')
+}
+
+// move an item from wishlist to cart
+const moveToCart = async (req, res) => {
+  console.log('move to cart')
+  const productId = req.query.id
+  productData = await Product.findById({ _id: productId })
+  userData = await User.findById({ _id: req.session.user_id })
+  const wishListIndex = await userData.wishlist.item.findIndex((x) => x.productId == productId)
+  userData.wishlist.item.splice(wishListIndex, 1)
+  userData.addToCart(productData)
+  res.redirect('/wishlist')
+}
+
+// ---------------------------------------------End Wish List ------------------------------------------------//
+
+const checkout = async (req, res) => {
+  console.log('checkout')
 }
 
 // exporting modules
@@ -412,7 +490,14 @@ module.exports = {
   productLoad,
   cartLoad,
   addToCart,
+  reduceFromCart,
   removeFromCart,
+  emptyCart,
+  moveToWishlist,
   wishlistLoad,
-  addToWishlist
+  addToWishlist,
+  removeFromWishlist,
+  emptyWishlist,
+  moveToCart,
+  checkout
 }

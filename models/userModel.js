@@ -106,7 +106,7 @@ userSchema.methods.addToCart = function (product) {
   return this.save()
 }
 
-// add cart
+// add wishlist
 userSchema.methods.addWishlist = function (productId) {
   const wishlist = this.wishlist
   const indexNumber = wishlist.item.findIndex(objInItems => new String(objInItems.productId).trim() === new String(productId).trim())
