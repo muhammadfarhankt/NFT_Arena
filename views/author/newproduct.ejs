@@ -143,7 +143,13 @@
               <br>
               <br>
               <label for="" class="mt-4">Price</label>
-              <input type="text" name="price" class="form-control" placeholder="Price" required>
+              <input type="number" name="price" class="form-control" placeholder="Price" required>
+
+              <br>
+              <br>
+              <label for="" class="mt-4">Stock</label>
+              <input type="number" name="stock" class="form-control" placeholder="Stock" required>
+
 
               <br>
               <br>
@@ -151,7 +157,7 @@
               <select name="category" id="" class="form-control" required>
                 <option value="">Category</option>
                 <% for(let res of productData){ %>
-                  <option value="<%= res.name %>">
+                  <option value="<%= res._id %>">
                     <%= res.name %>
                   </option>
                   <% } %>
@@ -159,7 +165,7 @@
 
               <br>
               <br>
-              <input type="hidden" name="author" value="<%= authorData.name %>">
+              <input type="hidden" name="author" value="<%= authorData._id %>">
 
 
               <label for="" class="mt-4">Image</label>

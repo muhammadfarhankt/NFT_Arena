@@ -4,7 +4,30 @@
 <head>
   <title> NFT Arena
   </title>
-  <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  
+
+  
+  <!-- style sheets and others new -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" />
+  <link rel="stylesheet" href="/new/css/open-iconic-bootstrap.min.css" />
+        <link rel="stylesheet" href="/new/css/animate.css" />
+        <link rel="stylesheet" href="/new/css/owl.carousel.min.css" />
+        <link rel="stylesheet" href="/new/css/owl.theme.default.min.css" />
+        <link rel="stylesheet" href="/new/css/magnific-popup.css" />
+        <link rel="stylesheet" href="/new/css/aos.css" />
+        <link rel="stylesheet" href="/new/css/ionicons.min.css" />
+        <link rel="stylesheet" href="/new/css/bootstrap-datepicker.css" />
+        <link rel="stylesheet" href="/new/css/jquery.timepicker.css" />
+        <link rel="stylesheet" href="/new/css/flaticon.css" />
+        <link rel="stylesheet" href="/new/css/icomoon.css" />
+        <link rel="stylesheet" href="/new/css/style.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link type="text/css" rel="stylesheet" href="/new/zoom/magiczoom.css"/>
+        <script type="text/javascript" src="/new/zoom/magiczoom.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+        <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
     crossorigin="anonymous"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
@@ -23,7 +46,7 @@
   <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        
   <!-- Mapbox -->
   <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css" rel="stylesheet" />
@@ -57,10 +80,10 @@
                 <a href="/wishlist">
                   <i class="fas fa-heart" style="font-size: 20px;"></i>
                   <span class="badge badge-pill badge-info">
-                    <% if(typeof userData==='undefined' ) { %>
-                      0
+                    <% if(typeof userData!=='undefined' ) { %>
+                      <%= userData.wishlist.item.length %>
                       <% } else {%>
-                    <%= userData.wishlist.item.length %>
+                    0
                   <% }%>
                   </span>
                 </a>
@@ -99,15 +122,14 @@
                 <% } else {%>
 
                   <li>
-                    <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
-                      aria-expanded="false">
-                      <i class="fas fa-user"></i> Hi, <%=userData.name%>
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="/profile"> My Account </a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="/logout">Logout</a>
-                    </div>
+                    
+                    <button type="button" class="btn btn-outline-secondary">
+                      <a href="/profile"> 
+                        My Account
+                      </button></a>
+                      
+                      <button type="button" class="btn btn-outline-secondary">
+                      <a href="/logout">Logout</a></button>
                   </li>
 
 

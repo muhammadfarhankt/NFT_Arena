@@ -320,7 +320,7 @@ const updateCategory = async (req, res) => {
 // logout
 const logout = async (req, res) => {
   try {
-    req.session.destroy()
+    req.session.admin_id = ''
     res.redirect('/admin')
   } catch (error) {
     console.log(error.mesage)

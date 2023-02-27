@@ -45,12 +45,18 @@ userRoute.get('/shop', userController.shopLoad)
 userRoute.get('/logout', userController.logoutUser)
 
 userRoute.get('/profile', auth.isLogin, userController.profileLoad)
+userRoute.post('/updateProfile', auth.isLogin, userController.saveUserDetails)
+
+userRoute.get('/checkout', auth.isLogin, userController.checkoutLoad)
+userRoute.post('/placeOrder', userController.createOrder)
+userRoute.get('/orders', auth.isLogin, userController.orderLoad)
+userRoute.get('/orderSuccess', auth.isLogin, userController.orderSuccess)
 
 userRoute.get('/product', userController.productLoad)
 
 userRoute.get('/category', userController.categoryLoad)
 
-userRoute.get('/author', userController.authorLoad)
+userRoute.get('/author-products', userController.authorLoad)
 
 userRoute.get('/cart', auth.isLogin, userController.cartLoad)
 userRoute.get('/add-to-cart', auth.isLogin, userController.addToCart)

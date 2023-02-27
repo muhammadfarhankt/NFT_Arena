@@ -6,6 +6,7 @@ const randomstring = require('randomstring')
 const Product = require('../models/productModel')
 const Category = require('../models/categoryModel')
 const Author = require('../models/authorModel')
+const Orders = require('../models/orderModel')
 const { populate } = require('../models/userModel')
 
 const otpGenerator = require('otp-generator')
@@ -120,7 +121,7 @@ const loadpage = async (req, res) => {
   try {
     categoryData = await Category.find({})
     authorData = await Author.find({})
-    res.render('home', {categoryData, authorData})
+    res.render('home', { categoryData, authorData })
   } catch (error) {
     console.log(error.message)
   }
@@ -184,7 +185,9 @@ const verifyMail = async (req, res) => {
 // loading login page
 const loginLoad = async (req, res) => {
   try {
-    res.render('login')
+    categoryData = await Category.find({})
+    authorData = await Author.find({})
+    res.render('login', { authorData, categoryData })
   } catch (error) {
     console.log(error.message)
   }
@@ -270,13 +273,13 @@ const otpPasswordVerifyPost = async (req, res) => {
   userOtp = req.body.otp
   console.log('userId ' + userId)
   console.log('user otp : ' + userOtp + '    otp   :  + ' + otp)
-  if ( userOtp == otp) {
+  if (userOtp == otp) {
     console.log('otp is correct')
     req.session.user_id = userId
     res.redirect('/home')
   } else {
     console.log(' Incorrect OTP')
-    res.render('otpLoginVerify', { message: 'Incorrect OTP'})
+    res.render('otpLoginVerify', { message: 'Incorrect OTP' })
   }
 }
 
@@ -297,15 +300,15 @@ const loadHome = async (req, res) => {
   }
 }
 
-// logout
-const userLogout = async (req, res) => {
-  try {
-    req.session.destroy()
-    res.redirect('/')
-  } catch (error) {
-    console.log(error.message)
-  }
-}
+// // logout
+// const userLogout = async (req, res) => {
+//   try {
+//     req.session.user_id = ''
+//     res.redirect('/')
+//   } catch (error) {
+//     console.log(error.message)
+//   }
+// }
 
 // forget password
 const forgetLoad = async (req, res) => {
@@ -370,7 +373,7 @@ const resetPassword = async (req, res) => {
 // shopLoad
 const shopLoad = async (req, res) => {
   try {
-    const productList = await Product.find({isDeleted: false}).populate('category').populate('author')
+    const productList = await Product.find({ isDeleted: false }).populate('category').populate('author')
     if (req.session.user_id) {
       const userData = await User.findById({ _id: req.session.user_id })
       res.render('shop', { productList, userData })
@@ -383,31 +386,42 @@ const shopLoad = async (req, res) => {
 }
 
 const categoryLoad = async (req, res) => {
-  // res.render('category')
-  categoryData = await Category.find({})
-  authorData = await Author.find({})
-  singleCategory  = await Category.findById({ _id: req.query.id})
-  categoryProducts = await Product.find({category: req.query.id}).populate('author')
-  console.log('single category ' + singleCategory)
-  console.log(' category products ' + categoryProducts)
-  res.render('category', {singleCategory, categoryData, authorData})
+  // res.render('category') 
+  const categoryData = await Category.find({})
+  const authorData = await Author.find({})
+  const singleCategory = await Category.findById({ _id: req.query.id })
+  const categoryProducts = await Product.find({ category: req.query.id }).populate('author')
+  // console.log('single category ' + singleCategory)
+  // console.log(' category products ' + categoryProducts)
+  if (req.session.user_id) {
+    // console.log('user data true')
+    const userData = await User.findById({ _id: req.session.user_id })
+    res.render('category', { singleCategory, categoryData, authorData, userData, categoryProducts })
+  } else {
+    // console.log('user data false')
+    res.render('category', { singleCategory, categoryData, authorData, categoryProducts })
+  }
 }
 
 const authorLoad = async (req, res) => {
-  // res.render('category')
   categoryData = await Category.find({})
   authorData = await Author.find({})
-  singleAuthor  = await Author.findById({ _id: req.query.id})
-  authorProducts = await Product.find({author: req.query.id}).populate('category')
+  singleAuthor = await Author.findById({ _id: req.query.id })
+  authorProducts = await Product.find({ author: req.query.id }).populate('category')
   console.log('single author ' + singleAuthor)
   // console.log(' category products ' + categoryProducts)
-  res.render('author', {singleAuthor, authorProducts, categoryData, authorData})
+  if (req.session.user_id){
+    const userData = await User.findById({ _id: req.session.user_id })
+    res.render('author', { singleAuthor, authorProducts, categoryData, authorData, userData })
+  } else {
+    res.render('author', { singleAuthor, authorProducts, categoryData, authorData })
+  }
 }
 
 // logout
 const logoutUser = async (req, res) => {
   try {
-    req.session.destroy()
+    req.session.user_id = ''
     res.redirect('/')
   } catch (error) {
     console.log(error.message)
@@ -426,6 +440,122 @@ const profileLoad = async (req, res) => {
   }
 }
 
+// update user profile /updateProfile
+const saveUserDetails = async (req, res) => {
+  try {
+    const { name, mobile, address, city, state, zip } = req.body
+
+    await User.findByIdAndUpdate({ _id: req.session.user_id }, { $set: { name, mobile, address, city, state, zip } })
+
+    res.redirect('/profile')
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+// list orders orderLoad
+const orderLoad = async (req, res) => {
+  try {
+    const userData = await User.findById({ _id: req.session.user_id })
+    res.render('orders', { userData })
+  } catch (error) {
+    console.log('orders load error')
+  }
+}
+
+let totalCartPrice = 0
+// load checkout page
+const checkoutLoad = async (req, res) => {
+  try {
+    const userData = await User.findById({ _id: req.session.user_id })
+    totalCartPrice = userData.cart.totalPrice
+    console.log('total cart price frommmmmmmm chekout ' + totalCartPrice)
+    res.render('checkout', { userData })
+  } catch (error) {
+    console.log('erroooorrr checkouuuuutttttttttt page')
+  }
+}
+
+const createOrder = async (req, res) => {
+  try {
+    const userData = await User.findById({ _id: req.session.user_id })
+    // await Coupons.updateOne({ value: req.body.value }, { $push: { coustomer: req.session.userid } });
+    const populatedData = await userData.populate('cart.item.productId')
+    let order
+    if (req.body.currentAddress) {
+      const { _id, country, address, city, state, zip, phonenumber, email } = userData
+      order = new Orders({
+        userId: req.session.user_id,
+        name: userData.name,
+        country,
+        address,
+        city,
+        state,
+        zip,
+        phone: phonenumber,
+        email,
+        products: populatedData.cart,
+        payment: req.body.payment,
+        sellingPrice: totalCartPrice
+      })
+    } else if (req.body.address) {
+      const { name, country, address, city, state, zip, phone, email, payment } = req.body;
+      order = new Orders({
+        userId: req.session.user_id,
+        name,
+        country,
+        address,
+        city,
+        state,
+        zip,
+        phone,
+        email,
+        products: populatedData.cart,
+        payment,
+        sellingPrice: totalCartPrice
+      })
+    } else {
+      // req.flash('message', 'Please Fill The Form')
+      console.log('please fil form')
+      return res.render('checkout', { userData, message: 'Please Select Address or Fill Address Form'})
+    }
+    if (!req.body.payment) {
+      // req.flash('message', 'Please Select either one of the payment modes')
+      console.log('pls select payemeeentttt methooooddd')
+      return res.render('checkout', { userData, message: 'Please Select either one of the payment modes'})
+    }
+    const orderData = await order.save()
+
+    if (orderData) {
+      await User.updateOne({ _id: req.session.user }, { cart: {} })
+      let afterPrice = 0
+      let isApplied = 0
+      console.log(req.body.payment);
+      if (req.body.payment == 'Cash on delivery') {
+        userData.cart.item = []
+        userData.cart.totalPrice = 0
+        userData.save()
+        res.redirect('/orderSuccess')
+      } else if (req.body.payment == 'Razorpay') {
+        res.redirect('/razorpay')
+      } else {
+        res.redirect('/checkout')
+      }
+    } else {
+      res.redirect('/checkout')
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+// ordered successfully
+const orderSuccess = async (req, res) => {
+  const categoryData = await Category.find({})
+  const authorData = await Author.find({})
+  const userData = await User.findById({ _id: req.session.user_id })
+  res.render('orderSuccess', { userData, categoryData, authorData })
+}
 // product Load
 const productLoad = async (req, res) => {
   try {
@@ -433,7 +563,7 @@ const productLoad = async (req, res) => {
     categoryData = await Category.find({})
     authorData = await Author.find({})
     const productDetails = await Product.findById({ _id: productId }).populate('category').populate('author')
-    console.log('product details ::::::::::::::  ' + productDetails )
+    console.log('product details ::::::::::::::  ' + productDetails)
     if (req.session.user_id) {
       const userData = await User.findById({ _id: req.session.user_id })
       res.render('product', { productDetails, userData, authorData, categoryData })
@@ -496,11 +626,23 @@ const reduceFromCart = async (req, res) => {
 
 // removing an item from cart
 const removeFromCart = async (req, res) => {
+  // console.log('product Index : ' + productIndex)
+  // console.log('total price : ' + userData.cart.totalPrice)
+  // userData.cart.totalPrice -= parseInt(userData.cart.item[productIndex].price * userData.cart.item[productIndex].quantity)
+  // console.log('new total price : ' + userData.cart.totalPrice)
+  // console.log('product price : ' + userData.cart.item[productIndex].price)
+  // userData.cart.item.splice(productIndex, 1)
+  // await userData.save()
+  // res.redirect('/cart')
+  const productId = req.query.id
+  const userData = await User.findById({ _id: req.session.user_id })
+  const productIndex = await userData.cart.item.findIndex((p) => p.productId == productId)
   console.log('product Index : ' + productIndex)
-  console.log('total price : ' + userData.cart.totalPrice)
-  userData.cart.totalPrice -= parseInt(userData.cart.item[productIndex].price * userData.cart.item[productIndex].quantity)
-  console.log('new total price : ' + userData.cart.totalPrice)
-  console.log('product price : ' + userData.cart.item[productIndex].price)
+  console.log('product quantity : ' + userData.cart.item[productIndex].quantity)
+  const qty = { a: parseInt(userData.cart.item[productIndex].quantity) }
+  console.log('qty a  :  ' + qty.a)
+  userData.cart.item[productIndex].quantity = qty.a
+  userData.cart.totalPrice -= userData.cart.item[productIndex].price
   userData.cart.item.splice(productIndex, 1)
   await userData.save()
   res.redirect('/cart')
@@ -621,6 +763,11 @@ module.exports = {
   authorLoad,
   logoutUser,
   profileLoad,
+  saveUserDetails,
+  orderLoad,
+  checkoutLoad,
+  createOrder,
+  orderSuccess,
   productLoad,
   cartLoad,
   addToCart,
