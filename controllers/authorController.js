@@ -72,7 +72,7 @@ const productLoad = async (req, res) => {
   console.log('authorId :  ' + authorId)
   const authorName = await Author.findOne({ _id: authorId })
   console.log('Author Name :  ' + authorName)
-  const productData = await Product.find({ author: authorName.name })
+  const productData = await Product.find({ author: authorName._id }).populate('category')
   console.log('product data ' + productData)
   try {
     res.render('products', { productData })
@@ -104,7 +104,8 @@ const addProduct = async (req, res) => {
       price: req.body.price,
       image: req.file.filename,
       category: req.body.category,
-      author: req.body.author
+      author: req.body.author,
+      stock: req.body.stock
     })
     const productData = await product.save()
     res.redirect('/author/products')
@@ -127,7 +128,7 @@ const deleteProduct = async (req, res) => {
 // logout
 const logout = async (req, res) => {
   try {
-    req.session.destroy()
+    req.session.author_id=''
     res.redirect('/author')
   } catch (error) {
     console.log(error.mesage)
@@ -138,8 +139,9 @@ const updateProductLoad = async (req, res) => {
   try {
     const productId = req.query.id
     console.log('hii')
-    const productData = await Product.findOne({ _id: productId })
-    res.render('updateProduct', { productData })
+    const categoryData = await Category.find({})
+    const productData = await Product.findOne({ _id: productId }).populate('category')
+    res.render('updateProduct', { productData, categoryData })
   } catch (error) {
     console.log(error.message)
   }
@@ -151,7 +153,7 @@ const updateProduct = async (req, res) => {
     const productId = req.body.id
     console.log('try')
     console.log(productId)
-    const updateData = await Product.findByIdAndUpdate({ _id: productId }, { $set: { name: req.body.name, description: req.body.description, price: req.body.price } })
+    const updateData = await Product.findByIdAndUpdate({ _id: productId }, { $set: { name: req.body.name, description: req.body.description, price: req.body.price, stock: req.body.stock, category: req.body.category} })
     res.redirect('/author/products')
   } catch (error) {
     console.log(error.mesage)

@@ -38,6 +38,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  address: {
+    type: String
+  },
+  city: {
+    type: String
+  },
+  state: {
+    type: String
+  },
+  zip: {
+    type: String
+  },
   cart: {
     item: [
       {

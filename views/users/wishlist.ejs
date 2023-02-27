@@ -3,6 +3,9 @@
     <%- include('../partials/categories-navbar') %>
 
         <div class="container cart">
+
+            <% if ( wishListData.item.length >0 ) { %>
+
             <h2 style="text-align: center; padding-top: 5px; padding-bottom: 5px;">Wishlist</h2>
             <div class="row">
                 <div class="col-md-11 col-sm-12 m-auto table-responsive">
@@ -73,11 +76,20 @@
             </div>
             <div class="row mt-2 mr-auto">
                 <div class="col-md-11 col-sm-12 m-auto">
-                    <a href="/checkout" class="btn btn-dark button-style" style="float: right;">Checkout</a>
-                    <a href="/empty-wishlist" class="btn btn-dark button-style-danger" style="float: left;">Remove All</a>
+                    <!-- <a href="/checkout" class="btn btn-dark button-style" style="float: right;">Checkout</a> -->
+                    <a href="/empty-wishlist" class="btn btn-dark button-style-danger" style="float: right;">Remove All</a>
                 </div>
             </div>
 
+            <% } else { %>
+                <br><br>
+                <h2 style="text-align: center; padding-top: 5px; padding-bottom: 5px;">Your Wishlist is empty</h2>
+                <br><br><h3 style="text-align: center;">
+                <a href="/shop">
+                    Please click here Continue to shop
+                </a>
+                </h3>
+            <% } %>
         </div>
 
         <%- include('../partials/footer') %>

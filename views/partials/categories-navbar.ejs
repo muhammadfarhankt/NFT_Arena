@@ -24,9 +24,16 @@
           Categories
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <% for(let i=0;i<categoryData.length;i++){%>
-            <a class="dropdown-item" href="/category?id=<%= categoryData[i]._id%>"><%= categoryData[i].name%> </a>
-        <%} %>
+          <% if(typeof categoryData!=='undefined' ) { %>
+            <% for(let i=0;i<categoryData.length;i++){%>
+              <a class="dropdown-item" href="/category?id=<%= categoryData[i]._id%>"><%= categoryData[i].name%> </a>
+            
+              <%} %>
+            
+            <% } else {%>
+              No categories
+          <% }%>
+          
         </div>
       </div>
   
@@ -35,9 +42,13 @@
           Authors
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <% if(typeof authorData!=='undefined' ) { %>
           <% for(let i=0;i<authorData.length;i++){%>
-            <a class="dropdown-item" href="/author?id=<%= authorData[i]._id%>"><%= authorData[i].name%> </a>
+            <a class="dropdown-item" href="/author-products?id=<%= authorData[i]._id%>"><%= authorData[i].name%> </a>
         <%} %>
+        <% } else {%>
+          No Authors
+      <% }%>
         </div>
       </div>
 

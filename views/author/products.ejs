@@ -138,6 +138,7 @@
                                 <th>Image</th>
 								<th>Category</th>
 								<th>Price</th>
+								<th>Stock</th>
 								<th>Description</th>  
 							<th>Edit</th>
                             <th>Delete</th>
@@ -152,8 +153,9 @@
 									<p><%= productData[i].name %> </p>
 								</td>
 								<td><img src="/imagess/<%= productData[i].image %>" alt=""></td>
-								<td> <p><%= productData[i].category %></p> </td>
+								<td> <p><%= productData[i].category.name %></p> </td>
 								<td> <p> <%= productData[i].price %></p></td>
+								<td> <p> <%= productData[i].stock %></p></td>
                                 <td> <%= productData[i].description %></td>
                                  
 
