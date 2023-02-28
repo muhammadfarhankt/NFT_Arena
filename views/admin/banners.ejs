@@ -41,7 +41,7 @@
 					<span class="text">Categories</span>
 				</a>
 			</li>
-			<li class="active">
+			<li>
 				<a href="author">
 					<i class='bx bxs-message-dots'></i>
 					<span class="text">Authors</span>
@@ -53,7 +53,7 @@
 					<span class="text">Users</span>
 				</a>
 			</li>
-			<li>
+			<li class="active">
 				<a href="banners">
 					<i class='bx bxs-carousel'></i>
 					<span class="text">Banners</span>
@@ -120,19 +120,19 @@
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Author</h1>
+					<h1>Banner</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a href="#">Dashboard</a>
 						</li>
 						<li><i class='bx bx-chevron-right'></i></li>
 						<li class="active">
-							<a class="active" href="#">Author</a>
+							<a class="active" href="#">Banners</a>
 						</li>
 					</ul>
 				</div>
-				<a href="addAuthor" class="btn-download">
-					<span class="text">Add new Author</span>
+				<a href="addBanner" class="btn-download">
+					<span class="text">Add new Banner</span>
 				</a>
 			</div>
 			<div class="table-data">
@@ -143,49 +143,58 @@
 					<table>
 						<thead>
 							<tr>
+								<th>Sl No.</th>
 								<th>Name</th>
-								<th>Description</th>
+								<th>Image</th>
+								<th>Link</th>
 								<th>Edit</th>
 								<th>Block / Unblock</th>
 								<th>Delete</th>
 							</tr>
 						</thead>
-						<tbody>
-							<% if(authorData.length>0){
-								for(let i=0;i<authorData.length;i++){ %>
-									<tr>
+						
+							<% if(bannerData.length>0){
+								for(let i=0;i<bannerData.length;i++){ %>
+                                    <tbody>
+                                    <tr>
+										<td>
+											<%= i+1 %>
+											</td>
 										<td>
 											<p>
-												<%= authorData[i].name %>
+												<%= bannerData[i].name %>
 											</p>
 										</td>
 										<td>
 											<p>
-												<%= authorData[i].description %>
+												<img src="/imagess/<%= bannerData[i].image %>">
 											</p>
 										</td>
-										<td> <a href="/admin/updateAuthor?id=<%= authorData[i]._id %>"><span
+										<td><p>
+											<%= bannerData[i].link %>
+											</p></td>
+										<td> <a href="/admin/updateBanner?id=<%= bannerData[i]._id %>"><span
 													class="status" style="background: rgb(8, 38, 15);">Edit</span></a>
 										</td>
 
 						<td>
                       <p>
 
-                        <% if(authorData[i].isBlocked==false){%>
-                          <a href="/admin/blockAuthor?id=<%= authorData[i]._id%>" onclick="return block_alert(this)">
+                        <% if(bannerData[i].isBlocked==false){%>
+                          <a href="/admin/blockBanner?id=<%= bannerData[i]._id%>" onclick="return block_alert(this)">
                             <script type="text/javascript">
                               function block_alert(node) {
-                                return confirm("Do you want to block author ? ")
+                                return confirm("Do you want to block Banner ? ")
                               }
                             </script>
                             <span class="status" style="background-color: green; align-items: center;">Active</span>
                           </a>
 
                           <%}else{%>
-                            <a href="/admin/blockAuthor?id=<%= authorData[i]._id%>" onclick="return unblock_alert(this)">
+                            <a href="/admin/blockBanner?id=<%= bannerData[i]._id%>" onclick="return unblock_alert(this)">
                               <script type="text/javascript">
                                 function unblock_alert(node) {
-                                  return confirm("Do you want to un-block author ? ")
+                                  return confirm("Do you want to un-block Banner ? ")
                                 }
                               </script>
                               <span class="status" style="background: red; align-items: center;">Blocked</span>
@@ -195,23 +204,29 @@
                       </td>
 
 										<td> 
-											<a href="/admin/deleteAuthor?id=<%= authorData[i]._id %>" onclick="return confirm_alert(this)">
+											<a href="/admin/deleteBanner?id=<%= bannerData[i]._id %>" onclick="return confirm_alert(this)">
 												<span
 													class="status"
 													style="background: rgb(215, 9, 33);">Delete</span>
 													<script type="text/javascript">
 														function confirm_alert(node) {
-															return confirm("Do you want to delete author ? ")
+															return confirm("Do you want to delete Banner ? ")
 														}
 													</script>
 												</a></td>
 
 
 									</tr>
-									<% } } %>
+									
 
 
 						</tbody>
+                        <% } } else { %>
+                                        <tbody> 
+                                            <tr>No Banners found
+                                                </tr>
+                                        </tbody>
+                                        <% } %>
 					</table>
 
 

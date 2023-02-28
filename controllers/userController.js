@@ -7,6 +7,7 @@ const Product = require('../models/productModel')
 const Category = require('../models/categoryModel')
 const Author = require('../models/authorModel')
 const Orders = require('../models/orderModel')
+const Banner = require('../models/bannerModel')
 const { populate } = require('../models/userModel')
 
 const otpGenerator = require('otp-generator')
@@ -119,9 +120,11 @@ const sendOtpMail = async (name, email, otp) => {
 // loading loadpage
 const loadpage = async (req, res) => {
   try {
-    categoryData = await Category.find({})
-    authorData = await Author.find({})
-    res.render('home', { categoryData, authorData })
+    const categoryData = await Category.find({})
+    const authorData = await Author.find({})
+    const bannerData = await Banner.find({})
+    console.log('banner dataaaaaaaaaa ' + bannerData[0].image)
+    res.render('home', { categoryData, authorData, bannerData })
   } catch (error) {
     console.log(error.message)
   }
@@ -290,8 +293,9 @@ const loadHome = async (req, res) => {
       const userData = await User.findById({ _id: req.session.user_id })
       // console.log('userData')
       console.log(userData)
+      const bannerData = await Banner.find({})
       categoryData = await Category.find({})
-      res.render('home', { userData, categoryData })
+      res.render('home', { userData, categoryData, bannerData })
     } else {
       res.redirect('/login')
     }
@@ -374,11 +378,13 @@ const resetPassword = async (req, res) => {
 const shopLoad = async (req, res) => {
   try {
     const productList = await Product.find({ isDeleted: false }).populate('category').populate('author')
+    const categoryData = await Category.find({})
+  const authorData = await Author.find({})
     if (req.session.user_id) {
       const userData = await User.findById({ _id: req.session.user_id })
-      res.render('shop', { productList, userData })
+      res.render('shop', { productList, userData, categoryData, authorData })
     } else {
-      res.render('shop', { productList })
+      res.render('shop', { productList, categoryData, authorData })
     }
   } catch (error) {
     console.log(error.message)
@@ -390,7 +396,7 @@ const categoryLoad = async (req, res) => {
   const categoryData = await Category.find({})
   const authorData = await Author.find({})
   const singleCategory = await Category.findById({ _id: req.query.id })
-  const categoryProducts = await Product.find({ category: req.query.id }).populate('author')
+  const categoryProducts = await Product.find({ category: req.query.id, isDeleted: false }).populate('author')
   // console.log('single category ' + singleCategory)
   // console.log(' category products ' + categoryProducts)
   if (req.session.user_id) {
@@ -407,10 +413,10 @@ const authorLoad = async (req, res) => {
   categoryData = await Category.find({})
   authorData = await Author.find({})
   singleAuthor = await Author.findById({ _id: req.query.id })
-  authorProducts = await Product.find({ author: req.query.id }).populate('category')
+  authorProducts = await Product.find({ author: req.query.id, isDeleted: false }).populate('category')
   console.log('single author ' + singleAuthor)
   // console.log(' category products ' + categoryProducts)
-  if (req.session.user_id){
+  if (req.session.user_id) {
     const userData = await User.findById({ _id: req.session.user_id })
     res.render('author', { singleAuthor, authorProducts, categoryData, authorData, userData })
   } else {
@@ -457,9 +463,36 @@ const saveUserDetails = async (req, res) => {
 const orderLoad = async (req, res) => {
   try {
     const userData = await User.findById({ _id: req.session.user_id })
-    res.render('orders', { userData })
+    const orderData = await Orders.find({ userId: req.session.user_id })
+    res.render('orders', { userData, orderData })
   } catch (error) {
     console.log('orders load error')
+  }
+}
+
+// cancel order
+const cancelOrder = async (req, res) => {
+  try {
+    const orderId = req.query.id
+    await Orders.findOneAndUpdate({ _id: orderId }, { $set: { status: 'Cancelled' } })
+    await Orders.findOneAndUpdate({ _id: orderId }, { $set: { isorder: false } })
+    res.redirect('/orders')
+  } catch (error) {
+    console.log('order cancel error')
+  }
+}
+
+const getSingleOrderView = async (req, res) => {
+  try {
+    const orderId = req.query.id
+    const userData = await User.findById({ _id: req.session.user_id })
+    const categoryData = await Category.find()
+    const authorData = await Author.find({})
+    const orderData = await Orders.findOne({ _id: orderId })
+    const populatedData = await orderData.populate('products.item.productId')
+    res.render('singleOrderView', { userData, categoryData, authorData, orderData, populatedData });
+  } catch (error) {
+    console.log(error.message);
   }
 }
 
@@ -481,6 +514,7 @@ const createOrder = async (req, res) => {
     const userData = await User.findById({ _id: req.session.user_id })
     // await Coupons.updateOne({ value: req.body.value }, { $push: { coustomer: req.session.userid } });
     const populatedData = await userData.populate('cart.item.productId')
+    const productData = await Product.find({}) 
     let order
     if (req.body.currentAddress) {
       const { _id, country, address, city, state, zip, phonenumber, email } = userData
@@ -517,21 +551,32 @@ const createOrder = async (req, res) => {
     } else {
       // req.flash('message', 'Please Fill The Form')
       console.log('please fil form')
-      return res.render('checkout', { userData, message: 'Please Select Address or Fill Address Form'})
+      return res.render('checkout', { userData, message: 'Please Select Address or Fill Address Form' })
     }
     if (!req.body.payment) {
       // req.flash('message', 'Please Select either one of the payment modes')
       console.log('pls select payemeeentttt methooooddd')
-      return res.render('checkout', { userData, message: 'Please Select either one of the payment modes'})
+      return res.render('checkout', { userData, message: 'Please Select either one of the payment modes' })
     }
     const orderData = await order.save()
 
     if (orderData) {
-      await User.updateOne({ _id: req.session.user }, { cart: {} })
+      // await User.updateOne({ _id: req.session.user_id }, { cart: {} })
       let afterPrice = 0
       let isApplied = 0
       console.log(req.body.payment);
       if (req.body.payment == 'Cash on delivery') {
+        // console.log(' cart length ' + userData.cart.item.length)
+
+        for(let j=0;j<userData.cart.item.length;j++) {
+          var singleId = userData.cart.item[j].productId
+          var singleProduct = await Product.findOne({ _id: singleId})
+          // await Product.findByIdAndUpdate({_id: singleId}, {$set: { quantity: cart.item[i].quantity}})
+          console.log('single product detailssssss' + singleProduct)
+          singleProduct.stock -= userData.cart.item[j].quantity
+          singleProduct.save()
+          console.log('single product detailssssss' + singleProduct)
+        }
         userData.cart.item = []
         userData.cart.totalPrice = 0
         userData.save()
@@ -768,6 +813,8 @@ module.exports = {
   checkoutLoad,
   createOrder,
   orderSuccess,
+  cancelOrder,
+  getSingleOrderView,
   productLoad,
   cartLoad,
   addToCart,

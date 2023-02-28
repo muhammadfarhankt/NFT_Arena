@@ -51,6 +51,8 @@ userRoute.get('/checkout', auth.isLogin, userController.checkoutLoad)
 userRoute.post('/placeOrder', userController.createOrder)
 userRoute.get('/orders', auth.isLogin, userController.orderLoad)
 userRoute.get('/orderSuccess', auth.isLogin, userController.orderSuccess)
+userRoute.get('/cancelOrder', userController.cancelOrder)
+userRoute.get('/singleOrderView', auth.isLogin, userController.getSingleOrderView)
 
 userRoute.get('/product', userController.productLoad)
 

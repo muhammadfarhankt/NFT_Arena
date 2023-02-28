@@ -1,0 +1,71 @@
+<%- include('../partials/header') %>
+    <!-- navbar -->
+    <%- include('../partials/categories-navbar') %>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="osahan-account-page-right shadow-sm bg-white p-4 h-100">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade active show" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                            <h5 class="font-weight-bold mt-0 mb-4"></h5>
+                            <div class="bg-white card mb-4 order-list shadow-sm">
+                                <div class="gold-members p-4">
+                                    <a href="#"> </a>
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <span class="float-right text-info"
+                                                >Ordered on :  <%= orderData.createdAt %> 
+                                                <p class="text-danger">Order Status : <%= orderData.status %> </p>
+                                                <i class="icofont-check-circled text-success"></i>
+                                            </span>
+                                            <p class="mb-2 ">
+                                                Order ID <span class="text-primary"><%= orderData._id %> </span>
+                                            </p>
+                                            
+                                            <p class="text-gray mb-1">
+                                                
+                                                <i class="icofont-location-arrow"></i> <span class="text-info">Address :</span> <%= orderData.address %> 
+                                                
+                                            </p>
+                                            <p class="text-gray mb-3">
+                                                <i class="icofont-list"></i> <%= orderData.city %> <%= orderData.zip %> 
+                                                <i class="icofont-clock-time ml-2"></i> <%= orderData.state %> 
+                                            </p>
+                                            <p><strong>Products Ordered</strong></p>
+                                            <% orderData.products.item.forEach( x=>{%>  
+                                            <p class="text-success">
+                                                <%= x.productId.name %>  X <%= x.quantity %> 
+                                            </p>
+                                            <P>
+                                                <span class="text-black font-weight-bold">Amount : </span><%= x.price %> X <%= x.quantity %> = <%= x.quantity*x.price %>
+                                            </P>
+                                            <%}) %>
+                                            <hr />
+                                            <p class="mb-2 ">
+                                                Payment Method :<span class="text-info"><%= orderData.payment %> </span>
+                                            </p>
+                                            <div class="float-right">
+                                                <a class="btn btn-sm btn-primary" href="/orders"
+                                                    ><i class="icofont-refresh"></i> All Orders</a
+                                                >
+                                               
+                                            </div>
+                                            <p class="mb-0 text-black text-primary pt-2">
+                                                <span class="text-black font-weight-bold"> Total Amount : $</span> <%= orderData.products.totalPrice %> 
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+    <%- include('../partials/footer') %>

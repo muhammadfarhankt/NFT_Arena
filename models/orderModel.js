@@ -40,7 +40,7 @@ const orderSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    default: 'Attempted'
+    default: 'Pending'
   },
   isOrder: {
     type: Boolean,
