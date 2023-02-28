@@ -3,6 +3,7 @@ const Category = require('../models/categoryModel')
 const Author = require('../models/authorModel')
 const bcrypt = require('bcrypt')
 const Product = require('../models/productModel')
+const Banner = require('../models/bannerModel')
 const multer = require('multer')
 // const bodyParser = require('body-parser');
 const randomstring = require('randomstring')
@@ -71,6 +72,99 @@ const productLoad = async (req, res) => {
     console.log(error.mesage)
   }
 }
+
+// -------------------------------------------- Banner Start ------------------------------------------------------------------//
+
+// banner loading
+const bannerLoad = async (req, res) => {
+  const productData = await Product.find({}).populate('category').populate('author')
+  // console.log('product data ' + productData)
+  const bannerData = await Banner.find({})
+  console.log('Banner Dataaaaaa' + bannerData)
+  try {
+    res.render('banners', { bannerData })
+  } catch (error) {
+    console.log(error.mesage)
+  }
+}
+
+// add new banner load
+const addBannerLoad = async (req, res) => {
+  try {
+    const bannerData = await Banner.find({})
+    res.render('addBanner', { bannerData })
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+// banner post
+const addBannerPost = async (req, res) => {
+  console.log('banner post')
+  // res.redirect('/admin/banners')
+  try {
+    const banner = new Banner({
+      name: req.body.name,
+      link: req.body.link,
+      image: req.file.filename
+    })
+    const bannerData = await banner.save()
+    console.log('Banner dataaaaaaaaaa ' + bannerData)
+    res.redirect('/admin/banners')
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+// update banner load
+const updateBannerLoad = async (req, res) => {
+  // console.log('update banner load')
+  const bannerData = await Banner.findById({ _id: req.query.id })
+  // console.log('baner dataaaaaaaaaaa ' + bannerData)
+  res.render('updateBanner', { bannerData })
+}
+
+const updateBannerPost = async (req, res) => {
+  const bannerData = await Banner.findById({ _id: req.query.id })
+  console.log('baner dataaaaaaaaaaa ' + bannerData)
+  res.redirect('/admin/banners')
+}
+
+// banner blocking and unblocking
+const blockBanner = async (req, res) => {
+  try {
+    const bannerId = req.query.id
+    const bannerData = await Banner.findById({ _id: bannerId })
+    console.log('banner data for blocking : ' + bannerData)
+    // console.log('blocked dddddddddddd   ' + bannerData.isBlocked)
+    const value = bannerData.isBlocked
+    console.log(value)
+    if (value === true) {
+      const bannerUpdate = await Banner.findByIdAndUpdate({ _id: bannerId }, { $set: { isBlocked: false } })
+      res.redirect('/admin/banners')
+    } else if (value === false) {
+      const bannerUpdate = await Banner.findByIdAndUpdate({ _id: bannerId }, { $set: { isBlocked: true } })
+      res.redirect('/admin/banners')
+      console.log(bannerData)
+    }
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+// banner delete
+const deleteBanner = async (req, res) => {
+  try {
+    await Banner.findByIdAndDelete({ _id: req.query.id })
+    res.redirect('/admin/banners')
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+
+// ---------------------------------------------------------------Banner End -----------------------------------------------------------//
+
 // add new product load
 const addProductLoad = async (req, res) => {
   try {
@@ -81,6 +175,7 @@ const addProductLoad = async (req, res) => {
     console.log(error.message)
   }
 }
+
 // add new product
 const addProduct = async (req, res) => {
   try {
@@ -379,5 +474,12 @@ module.exports = {
   updateAuthorLoad,
   updateAuthor,
   blockAuthor,
-  deleteAuthor
+  deleteAuthor,
+  bannerLoad,
+  addBannerLoad,
+  addBannerPost,
+  updateBannerLoad,
+  updateBannerPost,
+  blockBanner,
+  deleteBanner
 }
