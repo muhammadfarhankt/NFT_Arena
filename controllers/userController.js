@@ -295,6 +295,7 @@ const loadHome = async (req, res) => {
       console.log(userData)
       const bannerData = await Banner.find({})
       categoryData = await Category.find({})
+      console.log(categoryData)
       res.render('home', { userData, categoryData, bannerData })
     } else {
       res.redirect('/login')
