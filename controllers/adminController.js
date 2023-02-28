@@ -460,6 +460,32 @@ const orderLoad = async (req, res) => {
   }
 }
 
+const cancelOrder = async (req, res) => {
+  try {
+    const singleOrder = await Order.findByIdAndUpdate({ _id: req.query.id }, { $set: { status: 'Cancelled' } })
+    console.log('cancelled order detailsssssssssss' + singleOrder)
+    // const orderData = await Order.find({})
+    res.redirect('/admin/orders')
+  } catch (error) {
+
+  }
+}
+
+const editOrderLoad = async (req, res) => {
+  try {
+    const orderData = await Order.findById({ _id: req.query.id })
+    res.render('updateOrder', { orderData })
+  } catch (error) {
+  }
+}
+
+const postOrderLoad = (req, res) => {
+  try {
+    res.redirect('/admin/orders')
+  } catch (error) {
+  }
+}
+
 // --------------------------------------------------orders end --------------------------------------------------------//
 module.exports = {
   loadLogin,
@@ -494,5 +520,9 @@ module.exports = {
   updateBannerPost,
   blockBanner,
   deleteBanner,
-  orderLoad
+  orderLoad,
+  editOrderLoad,
+  cancelOrder,
+  editOrderLoad,
+  postOrderLoad
 }

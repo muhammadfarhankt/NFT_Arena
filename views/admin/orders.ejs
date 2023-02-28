@@ -49,18 +49,18 @@
           <span class="text">Authors</span>
         </a>
       </li>
-      <li >
+      <li>
         <a href="user">
           <i class='bx bxs-group'></i>
           <span class="text">Users</span>
         </a>
       </li>
       <li>
-				<a href="banners">
-					<i class='bx bxs-carousel'></i>
-					<span class="text">Banners</span>
-				</a>
-			</li>
+        <a href="banners">
+          <i class='bx bxs-carousel'></i>
+          <span class="text">Banners</span>
+        </a>
+      </li>
       <li class="active">
         <a href="/orders">
           <i class='bx bxs-shopping-bag-alt'></i>
@@ -73,7 +73,7 @@
           <span class="text" style="text-decoration: line-through;">Coupons</span>
         </a>
       </li>
-      
+
     </ul>
     <ul class="side-menu">
       <li>
@@ -134,13 +134,13 @@
             </li>
           </ul>
         </div>
-        
+
       </div>
 
 
       <div class="table-data">
         <div class="order">
-        
+
 
 
 
@@ -152,8 +152,8 @@
                 <th>Payement Method</th>
                 <th>Amount</th>
                 <th>Status</th>
-				<th>Edit Order</th>
-				<th>Actions</th>
+                <th>Edit Order</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -178,65 +178,44 @@
                     <td>
                       <%= orderData[i].sellingPrice %>
                     </td>
-					<td>
-                      <%= orderData[i].status %>
+                    <td>
+                      <% if( orderData[i].status == 'Cancelled') { %>
+                        <P style="color: red;">Cancelled</P>
+                        <%} else { %>
+                          <%= orderData[i].status %>
+                        <%  } %>
                     </td>
                     <td>
                       <p>
                         <center>
-                        <% if(orderData[i].isBlocked==false){%>
-                          <a href="/admin/blockUser?id=<%= orderData[i]._id%>" onclick="return confirm_alert(this)">
-                            <script type="text/javascript">
-                              function confirm_alert(node) {
-                                return confirm("Do you want to block user ? ")
-                              }
-                            </script>
-                            <span class="status" style="background-color: green;">Active</span>
+
+                          <a href="/admin/editOrder?id=<%= orderData[i]._id%>">
+                            <span class="status" style="background-color: green;">Edit</span>
                           </a>
 
-                          <%}else{%>
-                            <a href="/admin/blockUser?id=<%= orderData[i]._id%>" onclick="return unblock_alert(this)">
-                              <script type="text/javascript">
-                                function unblock_alert(node) {
-                                  return confirm("Do you want to un-block user ? ")
-                                }
-                              </script>
-                              <span class="status" style="background: red;">Blocked</span>
-                            </a>
-                            <%}%>
+
                       </p>
                       </center>
-                      </td>
+                    </td>
 
-					  <td>
+                    <td>
                       <p>
                         <center>
-                        <% if(orderData[i].isBlocked==false){%>
-                          <a href="/admin/blockUser?id=<%= orderData[i]._id%>" onclick="return confirm_alert(this)">
+                          <a href="/admin/cancelOrder?id=<%= orderData[i]._id%>" onclick="return unblock_alert(this)">
                             <script type="text/javascript">
-                              function confirm_alert(node) {
-                                return confirm("Do you want to block user ? ")
+                              function unblock_alert(node) {
+                                return confirm("Do you want to cancel Order ? ")
                               }
                             </script>
-                            <span class="status" style="background-color: green;">Active</span>
+                            <span class="status" style="background: red;">Cancel Order</span>
                           </a>
-
-                          <%}else{%>
-                            <a href="/admin/blockUser?id=<%= orderData[i]._id%>" onclick="return unblock_alert(this)">
-                              <script type="text/javascript">
-                                function unblock_alert(node) {
-                                  return confirm("Do you want to un-block user ? ")
-                                }
-                              </script>
-                              <span class="status" style="background: red;">Blocked</span>
-                            </a>
-                            <%}%>
+                          <%}%>
                       </p>
                       </center>
-                      </td>
+                    </td>
 
                   </tr>
-                  <% } } %>
+                  <% }  %>
 
 
             </tbody>

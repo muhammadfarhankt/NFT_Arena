@@ -68,6 +68,9 @@ adminRoute.get('/user', adminAuth.isLogin, adminController.userLoad)
 adminRoute.get('/blockUser', adminAuth.isLogin, adminController.blockUser)
 
 adminRoute.get('/orders', adminAuth.isLogin, adminController.orderLoad)
+adminRoute.get('/editOrder', adminAuth.isLogin, adminController.editOrderLoad)
+adminRoute.post('/editOrder', adminAuth.isLogin, adminController.postOrderLoad)
+adminRoute.get('/cancelOrder', adminAuth.isLogin, adminController.cancelOrder)
 
 adminRoute.get('/adminlogout', adminController.logout)
 
