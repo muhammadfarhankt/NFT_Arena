@@ -39,6 +39,7 @@ adminRoute.get('/addcategory', adminAuth.isLogin, adminController.addCategoryLoa
 adminRoute.post('/addcategory', adminController.addCategory)
 adminRoute.get('/updateCategory', adminAuth.isLogin, adminController.updateCategoryLoad)
 adminRoute.post('/updateCategory', adminController.updateCategory)
+adminRoute.get('/deleteCategory', adminAuth.isLogin, adminController.deleteCategory)
 
 adminRoute.get('/author', adminAuth.isLogin, adminController.authorLoad)
 adminRoute.get('/addAuthor', adminAuth.isLogin, adminController.addAuthor)
@@ -53,6 +54,7 @@ adminRoute.get('/addproduct', adminAuth.isLogin, adminController.addProductLoad)
 adminRoute.post('/addproduct', upload.single('image'), adminController.addProduct)
 adminRoute.get('/updateProduct', adminAuth.isLogin, adminController.updateProductLoad)
 adminRoute.post('/updateProduct', adminController.updateProduct)
+adminRoute.get('/deleteProduct', adminAuth.isLogin, adminController.deleteProduct)
 
 adminRoute.get('/banners', adminAuth.isLogin, adminController.bannerLoad)
 adminRoute.get('/addBanner', adminAuth.isLogin, adminController.addBannerLoad)
@@ -62,11 +64,11 @@ adminRoute.post('/updateBanner', adminController.updateBannerPost)
 adminRoute.get('/blockBanner', adminAuth.isLogin, adminController.blockBanner)
 adminRoute.get('/deleteBanner', adminAuth.isLogin, adminController.deleteBanner)
 
-adminRoute.get('/deleteProduct', adminAuth.isLogin, adminController.deleteProduct)
-
 adminRoute.get('/user', adminAuth.isLogin, adminController.userLoad)
 adminRoute.get('/blockUser', adminAuth.isLogin, adminController.blockUser)
-adminRoute.get('/deleteCategory', adminAuth.isLogin, adminController.deleteCategory)
+
+adminRoute.get('/orders', adminAuth.isLogin, adminController.orderLoad)
+
 adminRoute.get('/adminlogout', adminController.logout)
 
 adminRoute.get('*', function (req, res) {

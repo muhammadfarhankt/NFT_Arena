@@ -4,6 +4,7 @@ const Author = require('../models/authorModel')
 const bcrypt = require('bcrypt')
 const Product = require('../models/productModel')
 const Banner = require('../models/bannerModel')
+const Order = require('../models/orderModel')
 const multer = require('multer')
 // const bodyParser = require('body-parser');
 const randomstring = require('randomstring')
@@ -161,7 +162,6 @@ const deleteBanner = async (req, res) => {
     console.log(error.message)
   }
 }
-
 
 // ---------------------------------------------------------------Banner End -----------------------------------------------------------//
 
@@ -449,6 +449,18 @@ const updateProduct = async (req, res) => {
   }
 }
 
+// ------------------------------------------------- orders management --------------------------------------------------//
+
+const orderLoad = async (req, res) => {
+  try {
+    const orderData = await Order.find({})
+    res.render('orders', { orderData })
+  } catch (error) {
+
+  }
+}
+
+// --------------------------------------------------orders end --------------------------------------------------------//
 module.exports = {
   loadLogin,
   verifyLogin,
@@ -481,5 +493,6 @@ module.exports = {
   updateBannerLoad,
   updateBannerPost,
   blockBanner,
-  deleteBanner
+  deleteBanner,
+  orderLoad
 }
