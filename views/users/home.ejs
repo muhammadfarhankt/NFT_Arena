@@ -49,21 +49,21 @@
   <div class="row text-center m-auto">
     
     <div class="col-lg-3 col-md-3 col-sm-12 text-center ml-2">
-      <a class="title-link" href="">
+      <a class="title-link" href="category?id=63fb9bf49f0986dd75178ca4">
         <img src="http://cdn.shopify.com/s/files/1/0002/9091/4356/articles/MUSIC_NFT_1_1024x1024.jpg" alt="category" class="circle-img" />
         <h4 class="mb-3 mt-3">Music NFTs</h4>
       </a>
     </div>
     
     <div class="col-lg-3 col-md-3 col-sm-12 text-center ml-2">
-      <a class="title-link" href="">
+      <a class="title-link" href="/category?id=63fb9be99f0986dd75178ca1">
         <img src="https://www.creativityculturecapital.org/wp-content/uploads/2021/09/22_Diego_Balan_Web.png" alt="category" class="circle-img" />
         <h4 class="mb-3 mt-3">Art NFTs</h4>
       </a>
     </div>
     
     <div class="col-lg-3 col-md-3 col-sm-12 text-center ml-2">
-      <a class="title-link" href="">
+      <a class="title-link" href="category?id=63fb9bfd9f0986dd75178ca7">
         <img src="https://meta-legends.com/img/celestial.ee45254d.png" alt="category" class="circle-img" />
         <h4 class="mb-3 mt-3">Meta Legends</h4>
       </a>
@@ -118,29 +118,31 @@
       <div class="carousel-item active">
         <div class="row">
           
+          <% for(let i=0;i<3;i++) { %>
+
           <div class="col-md-4 product-index-box">
             <div class="single-product d-flex flex-column h-100">
               <a
                 class="title-link"
-                href=""
+                href="/product?id=<%= productData[i]._id %>"
               >
                 <img
-                  src="https://thumbor.forbes.com/thumbor/fit-in/x/https://www.forbes.com/advisor/in/wp-content/uploads/2022/03/monkey-g412399084_1280.jpg"
-                  alt="Bag"
+                  src="/imagess/<%=productData[i].image%>"
+                  alt="NFT"
                   class="img-fluid"
               /></a>
               <div class="product-info">
                 <a
                   class="title-link"
-                  href="/products/totes/63ee0633e8759841695c457e"
+                  href="/product?id=<%= productData[i]._id %>"
                 >
-                  <h6 class="mt-2 mb-2">Monkey Art NFT</h6></a
+                  <h6 class="mt-2 mb-2"><%= productData[i].name %></h6></a
                 >
-                <div class="price">$39</div>
+                <div class="price">$ <%= productData[i].price %></div>
               </div>
               
               <a
-                href=""
+                href="/add-to-cart?id=<%= productData[i]._id %>"
                 class="btn btn-block btn-secondary button-style mt-auto mb-2"
               >
                 Add to Shopping Cart
@@ -148,68 +150,8 @@
               
             </div>
           </div>
-          
-          <div class="col-md-4 product-index-box">
-            <div class="single-product d-flex flex-column h-100">
-              <a
-                class="title-link"
-                href=""
-              >
-                <img
-                  src="https://helios-i.mashable.com/imagery/articles/057QsT3AznuwF6chiCFSXVE/hero-image.fill.size_1248x702.v1646150914.jpg"
-                  alt="Bag"
-                  class="img-fluid"
-              /></a>
-              <div class="product-info">
-                <a
-                  class="title-link"
-                  href=""
-                >
-                  <h6 class="mt-2 mb-2">Crypto Art NFT</h6></a
-                >
-                <div class="price">$18</div>
-              </div>
-              
-              <a
-                href="/"
-                class="btn btn-block btn-secondary button-style mt-auto mb-2"
-              >
-                Add to Shopping Cart
-              </a>
-              
-            </div>
-          </div>
-          
-          <div class="col-md-4 product-index-box">
-            <div class="single-product d-flex flex-column h-100">
-              <a
-                class="title-link"
-                href="/"
-              >
-                <img
-                  src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/8555bc116147295.605c07d985be1.gif"
-                  alt="Bag"
-                  class="img-fluid"
-              /></a>
-              <div class="product-info">
-                <a
-                  class="title-link"
-                  href="/"
-                >
-                  <h6 class="mt-2 mb-2">Behance NFT</h6></a
-                >
-                <div class="price">$45</div>
-              </div>
-              
-              <a
-                href="/"
-                class="btn btn-block btn-secondary button-style mt-auto mb-2"
-              >
-                Add to Shopping Cart
-              </a>
-              
-            </div>
-          </div>
+
+          <% } %>
           
         </div>
       </div>
@@ -219,98 +161,41 @@
       <div class="carousel-item">
         <div class="row">
           
-          <div class="col-md-4 product-index-box">
-            <div class="single-product d-flex flex-column h-100">
-              <a
-                class="title-link"
-                href="/"
-              >
-                <img
-                  src="https://images.livemint.com/img/2021/09/12/1600x900/CryptoPunk_8857_1631420857854_1631420863948.PNG"
-                  alt="Bag"
-                  class="img-fluid"
-              /></a>
-              <div class="product-info">
+          <% for(let j=3;j<6;j++) { %>
+
+            <div class="col-md-4 product-index-box">
+              <div class="single-product d-flex flex-column h-100">
                 <a
                   class="title-link"
-                  href="/products/totes/63ee0633e8759841695c4578"
+                  href="/product?id=<%= productData[j]._id %>"
                 >
-                  <h6 class="mt-2 mb-2">Crypto Punk NFT</h6></a
+                  <img
+                    src="/imagess/<%=productData[j].image%>"
+                    alt="NFT"
+                    class="img-fluid"
+                /></a>
+                <div class="product-info">
+                  <a
+                    class="title-link"
+                    href="/product?id=<%= productData[j]._id %>"
+                  >
+                    <h6 class="mt-2 mb-2"><%= productData[j].name %></h6></a
+                  >
+                  <div class="price">$ <%= productData[j].price %></div>
+                </div>
+                
+                <a
+                  href="/add-to-cart?id=<%= productData[j]._id %>"
+                  class="btn btn-block btn-secondary button-style mt-auto mb-2"
                 >
-                <div class="price">$47</div>
+                  Add to Shopping Cart
+                </a>
+                
               </div>
-              
-              <a
-                href="/"
-                class="btn btn-block btn-secondary button-style mt-auto mb-2"
-              >
-                Add to Shopping Cart
-              </a>
-              
             </div>
-          </div>
+  
+            <% } %>
           
-          <div class="col-md-4 product-index-box">
-            <div class="single-product d-flex flex-column h-100">
-              <a
-                class="title-link"
-                href="/"
-              >
-                <img
-                  src="https://content.fortune.com/wp-content/uploads/2022/09/Coins-NFT-46.jpg"
-                  alt="Bag"
-                  class="img-fluid"
-              /></a>
-              <div class="product-info">
-                <a
-                  class="title-link"
-                  href="https://content.fortune.com/wp-content/uploads/2022/09/Coins-NFT-46.jpg"
-                >
-                  <h6 class="mt-2 mb-2">Bitcoin NFT</h6></a
-                >
-                <div class="price">$22</div>
-              </div>
-              
-              <a
-                href="/"
-                class="btn btn-block btn-secondary button-style mt-auto mb-2"
-              >
-                Add to Shopping Cart
-              </a>
-              
-            </div>
-          </div>
-          
-          <div class="col-md-4 product-index-box">
-            <div class="single-product d-flex flex-column h-100">
-              <a
-                class="title-link"
-                href="/products/totes/63ee0633e8759841695c4574"
-              >
-                <img
-                  src="https://res.cloudinary.com/coin-nft/image/upload/c_limit,q_auto,w_329/f_auto/v1/cache/1/fc/0c/fc0c42e46d151fb906fc3ae206e40fd3a75b013926540c9ca04dc4518507fa2c-YjAxOWMxZTQtZDI3NS00NjlhLWExMWYtNDIyODNkZGUyNzUw?_a=ATCkFAA0"
-                  alt="Bag"
-                  class="img-fluid"
-              /></a>
-              <div class="product-info">
-                <a
-                  class="title-link"
-                  href="/products/totes/63ee0633e8759841695c4574"
-                >
-                  <h6 class="mt-2 mb-2">Mecka Legends</h6></a
-                >
-                <div class="price">$30</div>
-              </div>
-              
-              <a
-                href="/"
-                class="btn btn-block btn-secondary button-style mt-auto mb-2"
-              >
-                Add to Shopping Cart
-              </a>
-              
-            </div>
-          </div>
           
         </div>
       </div>

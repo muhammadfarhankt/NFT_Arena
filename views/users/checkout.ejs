@@ -147,44 +147,7 @@
     })
     
     const apply = document.querySelector("#btn")
-    const applyCoupen = async ()=>{
-        const coupen = document.querySelector("#input").value
-        data = {coupen:coupen}
-        console.log(data);
-        try {
-            const response = await fetch(`/coupenApply?coupen=${coupen}`,{
-             method:'post',
-             headers:{'Content-Type':'application/json'},
-              body:JSON.stringify(data)
-            })
-            const value = await response.json()
-            console.log(value); 
-            
-            if (value.coupenAmount) {
-                document.querySelector('#message').innerHTML= ""
-                document.querySelector('#coupenAmt').innerText = value.coupenAmount
-                document.querySelector('#sellingPrice').innerText = value.cartTotal-value.coupenAmount
-            }else if (value.a) {
-                document.querySelector('#message').innerHTML = "<p>Expired Coupen</p>"
-                document.querySelector('#coupenAmt').innerText = ""
-                document.querySelector('#sellingPrice').innerText = ""
-            }else if(value.b){
-                document.querySelector('#coupenAmt').innerText = ""
-                document.querySelector('#sellingPrice').innerText = ""
-                document.querySelector('#message').innerHTML += `<p>Need ${value.cartTotal-value.minAmt} ₹ more to Apply Coupen</p>`
-            }
-            else{
-                document.querySelector('#message').innerHTML = "<p>Invalid Coupen</p>"
-                document.querySelector('#coupenAmt').innerText = ""
-                document.querySelector('#sellingPrice').innerText = ""
-            }
-            
-        } catch (error) {
-            console.log(error.message);
-        }
 
-    }
-    apply.addEventListener('click',applyCoupen)
    
 </script>
 

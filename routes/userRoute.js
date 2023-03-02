@@ -54,6 +54,9 @@ userRoute.get('/orderSuccess', auth.isLogin, userController.orderSuccess)
 userRoute.get('/cancelOrder', userController.cancelOrder)
 userRoute.get('/singleOrderView', auth.isLogin, userController.getSingleOrderView)
 
+userRoute.get('/payment', auth.isLogin, userController.loadPayment)
+userRoute.post('/payment', auth.isLogin, userController.razorpayCheckout)
+
 userRoute.get('/product', userController.productLoad)
 
 userRoute.get('/category', userController.categoryLoad)

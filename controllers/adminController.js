@@ -57,7 +57,33 @@ const verifyLogin = async (req, res) => {
 const loadDashboard = async (req, res) => {
   try {
     const userData = await User.findById({ _id: req.session.admin_id })
-    res.render('home', { admin: userData })
+    // const orderNumber = await Order.find({})
+    const orderCount = await Order.countDocuments()
+    const userCount = await User.countDocuments()
+    const authorCount = await Author.countDocuments()
+    const productCount = await Product.countDocuments()
+    const total = await Order.aggregate([
+      {
+        $group: {
+          _id: null,
+          total: { $sum: '$sellingPrice' }
+        }
+      }
+    ], (err, result) => {
+      if (err) {
+        console.error(err)
+      } else {
+        const total = result[0].total
+        console.log('Sum of all orderamount:', total)
+        return total
+      }
+    })
+    const totalAmount = total[0].total
+    // console.log('Sum of all orders', total[0].total)
+    // let orderNumber = await User.count({}, function(count){ return count})
+    // const orders = orderNumber.count()
+    // console.log('order count : ' + orderNumber)
+    res.render('home', { admin: userData, orderCount, userCount, totalAmount, authorCount, productCount })
   } catch (error) {
     console.log(error.message)
   }
@@ -479,9 +505,12 @@ const editOrderLoad = async (req, res) => {
   }
 }
 
-const postOrderLoad = (req, res) => {
+const postOrderLoad = async (req, res) => {
   try {
-    res.redirect('/admin/orders')
+    console.log('order edit post')
+    const orderData = await Order.findByIdAndUpdate({ _id: req.body.id }, { $set: { status: req.body.status } })
+    console.log('order data psot ' + orderData)
+    res.redirect('/admin/orders') 
   } catch (error) {
   }
 }

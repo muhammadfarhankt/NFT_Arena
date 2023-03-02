@@ -9,6 +9,7 @@ const Author = require('../models/authorModel')
 const Orders = require('../models/orderModel')
 const Banner = require('../models/bannerModel')
 const { populate } = require('../models/userModel')
+const Razorpay = require('razorpay')
 
 const otpGenerator = require('otp-generator')
 
@@ -120,11 +121,12 @@ const sendOtpMail = async (name, email, otp) => {
 // loading loadpage
 const loadpage = async (req, res) => {
   try {
+    const productData = await Product.find({})
     const categoryData = await Category.find({})
     const authorData = await Author.find({})
     const bannerData = await Banner.find({})
     console.log('banner dataaaaaaaaaa ' + bannerData[0].image)
-    res.render('home', { categoryData, authorData, bannerData })
+    res.render('home', { categoryData, authorData, bannerData, productData })
   } catch (error) {
     console.log(error.message)
   }
@@ -294,9 +296,10 @@ const loadHome = async (req, res) => {
       // console.log('userData')
       console.log(userData)
       const bannerData = await Banner.find({})
-      categoryData = await Category.find({})
+      const categoryData = await Category.find({})
+      const productData = await Product.find({})
       console.log(categoryData)
-      res.render('home', { userData, categoryData, bannerData })
+      res.render('home', { userData, categoryData, bannerData, productData })
     } else {
       res.redirect('/login')
     }
@@ -380,7 +383,7 @@ const shopLoad = async (req, res) => {
   try {
     const productList = await Product.find({ isDeleted: false }).populate('category').populate('author')
     const categoryData = await Category.find({})
-  const authorData = await Author.find({})
+    const authorData = await Author.find({})
     if (req.session.user_id) {
       const userData = await User.findById({ _id: req.session.user_id })
       res.render('shop', { productList, userData, categoryData, authorData })
@@ -515,7 +518,7 @@ const createOrder = async (req, res) => {
     const userData = await User.findById({ _id: req.session.user_id })
     // await Coupons.updateOne({ value: req.body.value }, { $push: { coustomer: req.session.userid } });
     const populatedData = await userData.populate('cart.item.productId')
-    const productData = await Product.find({}) 
+    const productData = await Product.find({})
     let order
     if (req.body.currentAddress) {
       const { _id, country, address, city, state, zip, phonenumber, email } = userData
@@ -563,15 +566,15 @@ const createOrder = async (req, res) => {
 
     if (orderData) {
       // await User.updateOne({ _id: req.session.user_id }, { cart: {} })
-      let afterPrice = 0
+      let afterPrice = 0 
       let isApplied = 0
       console.log(req.body.payment);
       if (req.body.payment == 'Cash on delivery') {
         // console.log(' cart length ' + userData.cart.item.length)
 
-        for(let j=0;j<userData.cart.item.length;j++) {
+        for (let j = 0; j < userData.cart.item.length; j++) {
           var singleId = userData.cart.item[j].productId
-          var singleProduct = await Product.findOne({ _id: singleId})
+          var singleProduct = await Product.findOne({ _id: singleId })
           // await Product.findByIdAndUpdate({_id: singleId}, {$set: { quantity: cart.item[i].quantity}})
           console.log('single product detailssssss' + singleProduct)
           singleProduct.stock -= userData.cart.item[j].quantity
@@ -583,7 +586,7 @@ const createOrder = async (req, res) => {
         userData.save()
         res.redirect('/orderSuccess')
       } else if (req.body.payment == 'Razorpay') {
-        res.redirect('/razorpay')
+        res.redirect('/payment')
       } else {
         res.redirect('/checkout')
       }
@@ -620,6 +623,45 @@ const productLoad = async (req, res) => {
     console.log(error.message)
   }
 }
+
+// ----------------------------- Razor Pay  ----------------------------------------------------//
+
+const loadPayment = async (req, res) => {
+  try {
+    const userId = req.session.user_id
+    const userData = await User.findById({ _id: userId })
+    const categoryData = await Category.find()
+    const authorData = await Author.find({})
+    res.render('payment', { userData, categoryData, authorData })
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+const razorpayCheckout = async (req, res) => {
+  try {
+    console.log('razor pay post')
+    const userData = await User.findById({ _id: req.session.user_id })
+    const completeUser = await userData.populate('cart.item.productId')
+    let instance = new Razorpay({ key_id: 'rzp_test_VVIOYqS30Y2ZdA', key_secret: 'escyUMJRz3vlJO8aW8iJlNJf' })
+    console.log(' instanceeeeeeeeeeeeeeeee  ' + instance)
+    let order = await instance.orders.create({
+      amount: totalCartPrice * 100,
+      currency: "INR",
+      receipt: 'receipt#1'
+    })
+    console.log(' rzor pay order ' + order)
+    res.status(201).json({
+      success: true,
+      order
+    })
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+// ---------------------------------End Razor Pay -----------------------------------------------//
 
 // -------------------------------------------------Start Cart----------------------------------//
 // load cart
@@ -828,5 +870,7 @@ module.exports = {
   removeFromWishlist,
   emptyWishlist,
   moveToCart,
-  checkout
+  checkout,
+  loadPayment,
+  razorpayCheckout
 }
