@@ -10,12 +10,13 @@ const authorSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    unique: true
   },
   mobile: {
-    type: Number,
+    type: Number
   },
   password: {
-    type: String,
+    type: String
   },
   isVerified: {
     type: Boolean,

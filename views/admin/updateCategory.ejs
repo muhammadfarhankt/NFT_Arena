@@ -7,12 +7,10 @@
 
   <!-- Boxicons -->
   <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-
   <!-- My CSS -->
   <link rel="stylesheet" href="/adminhome/style.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
 
-  <title>Users | NFT Arena</title>
+  <title>Edit Category | NFT Arena</title>
 </head>
 
 <body>
@@ -37,7 +35,7 @@
           <span class="text">Products</span>
         </a>
       </li>
-      <li>
+      <li class="active">
         <a href="category">
           <i class='bx bxs-category-alt'></i>
           <span class="text">Categories</span>
@@ -49,18 +47,18 @@
           <span class="text">Authors</span>
         </a>
       </li>
-      <li class="active">
+      <li>
         <a href="user">
           <i class='bx bxs-group'></i>
           <span class="text">Users</span>
         </a>
       </li>
       <li>
-				<a href="banners">
-					<i class='bx bxs-carousel'></i>
-					<span class="text">Banners</span>
-				</a>
-			</li>
+        <a href="/banners">
+          <i class='bx bxs-carousel'></i>
+          <span class="text">Banners</span>
+        </a>
+      </li>
       <li>
         <a href="orders">
           <i class='bx bxs-shopping-bag-alt'></i>
@@ -73,7 +71,7 @@
           <span class="text" style="text-decoration: line-through;">Coupons</span>
         </a>
       </li>
-      
+
     </ul>
     <ul class="side-menu">
       <li>
@@ -123,97 +121,103 @@
     <main>
       <div class="head-title">
         <div class="left">
-          <h1>Users</h1>
+          <h1>Category</h1>
           <ul class="breadcrumb">
             <li>
               <a href="#">Dashboard</a>
             </li>
             <li><i class='bx bx-chevron-right'></i></li>
-            <li>
-              <a class="active" href="#">Users</a>
+            <li class="active">
+              <a class="active" href="#">Category</a>
             </li>
           </ul>
         </div>
-        
+        <a href="addcategory" class="btn-download">
+          <i class='bx bxs-file-plus'></i>
+          <span class="text">Add new category</span>
+        </a>
       </div>
-
-
       <div class="table-data">
         <div class="order">
-        
-
-          <% if(userData.length>0){ %>
-
-          <table id="tablePagination" class="display">
-            <thead>
-              <tr>
-                <th>Sl.No.</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Mobile</th>
-                <th>Block / Unblock</th>
-              </tr>
-            </thead>
-            <tbody>
-              
-                <% for(let i=0;i<userData.length;i++){ %>
-                  <tr>
-                    <td>
-                        <%=i+1%>
-                    </td>
-                    <td>
-                      <p>
-                        <%= userData[i].name %>
-                      </p>
-                    </td>
-                    <td>
-                      <p>
-                        <%= userData[i].email %>
-                      </p>
-                    </td>
-                    <td>
-                      <%= userData[i].mobile %>
-                    </td>
-                    <td>
-                      <p>
-                        <center>
-                        <% if(userData[i].isBlocked==false){%>
-                          <a href="/admin/blockUser?id=<%= userData[i]._id%>" onclick="return confirm_alert(this)">
-                            <script type="text/javascript">
-                              function confirm_alert(node) {
-                                return confirm("Do you want to block user ? ")
-                              }
-                            </script>
-                            <span class="status" style="background-color: green;">Active</span>
-                          </a>
-
-                          <%}else{%>
-                            <a href="/admin/blockUser?id=<%= userData[i]._id%>" onclick="return unblock_alert(this)">
-                              <script type="text/javascript">
-                                function unblock_alert(node) {
-                                  return confirm("Do you want to un-block user ? ")
-                                }
-                              </script>
-                              <span class="status" style="background: red;">Blocked</span>
-                            </a>
-                            <%}%>
-                      </p>
-                      </center>
-                      </td>
 
 
-                  </tr>
+          <div class="row">
+
+            <div class="col-md-6">
+
+
+              <h2 class="text-center">Update Category</h2>
+
+
+              <form action="/admin/updateCategory" method="post" id="myForm">
+                <br>
+                <% if(typeof message !=='undefined' ) { %>
+                  <div id="flash-msg" class="alert alert-danger" style="color: red;">
+                    <%= message %>
+                  </div>
+
                   <% } %>
 
-                  
 
 
-            </tbody>
-          </table>
+                    <br>
+                    <label for="">Name</label>
+                    <input type="text" name="name" class="form-control" value="<%= category.name %>">
+                    <br><br>
+                    <label for="">Description</label>
+                    <input type="text" name="description" class="form-control" value="<%= category.description %>">
+                    <input type="hidden" name="id" value="<%= category._id %>">
+                    <br><br>
+                    <div class="head-title">
+                      <button type="button" class="btn-download" id="submitButton">
+                        Submit
+                      </button>
+                    </div>
+              </form>
 
-          <% } else { %>
-            No Users found in database.
-          <% } %>
+              <br>
+              <div class="head-title">
+              <a href="/admin/category">
+              <button type="button" class="btn-download">
+                Cancel
+              </button>
+              </a>
+
+              <!-- Include SweetAlert2 script -->
+              <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+              <script>
+                const myForm = document.querySelector('#myForm');
+                const submitButton = document.querySelector('#submitButton');
+
+                submitButton.addEventListener('click', (event) => {
+                  event.preventDefault(); // prevent the default form submission behavior
+
+                  Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Do you want to Update Category ?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      // submit the form
+                      myForm.submit();
+                    }
+                  });
+                });
+              </script>
+
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
 
 
 
@@ -221,19 +225,10 @@
     </main>
     <!-- MAIN -->
   </section>
-
+  <!-- CONTENT -->
 
 
   <script src="/adminhome/script.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-  <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-  <script type="text/javascript" charset="utf8"
-    src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
-  <script>
-    $(document).ready(function () {
-      $('#tablePagination').DataTable();
-    });
-  </script>
 </body>
 
 </html>

@@ -7,8 +7,12 @@
 
 	<!-- Boxicons -->
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+
 	<!-- My CSS -->
 	<link rel="stylesheet" href="/adminhome/style.css">
+
+	<!-- Table Pagination -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
 
 	<title>Authors | NFT Arena</title>
 </head>
@@ -132,6 +136,7 @@
 					</ul>
 				</div>
 				<a href="addAuthor" class="btn-download">
+					<i class='bx bxs-file-plus'></i>
 					<span class="text">Add new Author</span>
 				</a>
 			</div>
@@ -140,9 +145,10 @@
 					
 
 
-					<table>
+					<table id="tablePagination" class="display">
 						<thead>
 							<tr>
+								<th>Sl No.</th>
 								<th>Name</th>
 								<th>Description</th>
 								<th>Edit</th>
@@ -154,6 +160,9 @@
 							<% if(authorData.length>0){
 								for(let i=0;i<authorData.length;i++){ %>
 									<tr>
+										<td>
+											<%=i+1%>	
+										</td>
 										<td>
 											<p>
 												<%= authorData[i].name %>
@@ -223,6 +232,17 @@
 	</section>
 	<!-- CONTENT -->
 
+
+	<!-- Pagination Script  -->
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" charset="utf8"
+		src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+	<script>
+		$(document).ready(function () {
+			$('#tablePagination').DataTable();
+		});
+	</script>
 
 	<script src="/adminhome/script.js"></script>
 </body>

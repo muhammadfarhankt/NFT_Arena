@@ -7,14 +7,10 @@
 
 	<!-- Boxicons -->
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-
 	<!-- My CSS -->
 	<link rel="stylesheet" href="/adminhome/style.css">
 
-	<!-- Table Pagination -->
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
-
-	<title>Category | NFT Arena</title>
+	<title>Add Category | NFT Arena</title>
 </head>
 
 <body>
@@ -58,7 +54,7 @@
 				</a>
 			</li>
 			<li>
-				<a href="banners">
+				<a href="/banners">
 					<i class='bx bxs-carousel'></i>
 					<span class="text">Banners</span>
 				</a>
@@ -145,63 +141,58 @@
 				<div class="order">
 
 
-					<% if(categoryData.length!=0) { %>
+					<div class="row">
 
-						<table id="tablePagination" class="display">
-							<thead>
-								<tr>
-									<th>SlNo</th>
-									<th>Name</th>
-									<th>Description</th>
+						<div class="col-md-6">
+							<h2 class="text-center">Add Category</h2>
 
-									<th>Edit</th>
-									<th>Delete</th>
-								</tr>
-							</thead>
-							<tbody>
-							
-								<% for(let i=0;i<categoryData.length;i++){ %>
-										<tr>
+							<form action="addCategory" method="post">
+								<!-- enctype="multipart/form-data"  -->
 
-											<td>
-													<%= i+1 %>
-											</td>
-											<td>
-												<p>
-													<%= categoryData[i].name %>
-												</p>
-											</td>
-											<td>
-												<p>
-													<%= categoryData[i].description %>
-												</p>
-											</td>
-											<td> <a href="/admin/updateCategory?id=<%= categoryData[i]._id %>"><span
-														class="status"
-														style="background: rgb(8, 38, 15);">Edit</span></a>
-											</td>
+								<br>
+								<!-- Flash message -->
 
-											<td>
-												<button class="status delete-button" style="background-color: red;"
-													data-id="<%= categoryData[i]._id %>">
-													Delete
-												</button>
-											</td>
+								<% if(typeof message !=='undefined' ) {%>
+									<div id="flash-msg" class="alert alert-danger" style="color: red;">
+										<%= message %>
+									</div>
 
+									<% } %>
+										<br>
+										<label for="">Name</label>
+										<input type="text" name="name" id="name" class="form-control" required>
 
+										<br><br>
+										<label for="">Description</label>
+										<input type="text" name="description" id="description" class="form-control"
+											required>
 
+										<br><br>
 
+										<div class="head-title">
+											<button type="submit" class="btn-download">
+												Submit
+											</button>
+										</div>
 
-										</tr>
+							</form>
 
-										<% } %>
+							<br>
+              
+              <div class="head-title">
+							<a href="/admin/category">
+								<button type="button" class="btn-download">
+									Cancel
+								</button>
+							</a>
+              </div>
 
+						</div>
+					</div>
 
-							</tbody>
-						</table>
-						<% } else { %>
-							No Categories found. Pls add a new Category!
-							<% } %>
+				</div>
+
+			</div>
 
 
 
@@ -212,46 +203,30 @@
 	</section>
 	<!-- CONTENT -->
 
-	<!--  SweetAlert2 script -->
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 	<script>
-		const deleteButtons = document.querySelectorAll('.delete-button');
 
-		deleteButtons.forEach((deleteButton) => {
-			deleteButton.addEventListener('click', (event) => {
-				event.preventDefault(); // prevent the default link behavior
+		document.getElementById("name").addEventListener("input", function () {
+			var categoryName = document.getElementById("name").value;
+			console.log(name)
 
-				const categoryId = deleteButton.getAttribute('data-id');
-
-				Swal.fire({
-					title: 'Are you sure?',
-					text: 'Do you want to delete this category?',
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#d33',
-					cancelButtonColor: '#3085d6',
-					confirmButtonText: 'Yes, delete!'
-				}).then((result) => {
-					if (result.isConfirmed) {
-						// redirect to the delete route
-						window.location.href = `/admin/deleteCategory?id=${categoryId}`;
-					}
-				});
-			});
+			if (categoryName.trim() == "") {
+				document.getElementById("name").setCustomValidity("Category name cannot be null");
+				console.log("Name null")
+			} else {
+				document.getElementById("name").setCustomValidity("");
+			}
 		});
-	</script>
 
-	<!-- Pagination Script  -->
-	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-	<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-	<script type="text/javascript" charset="utf8"
-		src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
-	<script>
-		$(document).ready(function () {
-			$('#tablePagination').DataTable();
+		document.getElementById("description").addEventListener("input", function () {
+			var description = document.getElementById("description").value;
+			if (description.trim() == "") {
+				document.getElementById("description").setCustomValidity("Description cannot be null");
+			} else {
+				document.getElementById("description").setCustomValidity("");
+			}
 		});
-	</script>
 
+	</script>
 
 	<script src="/adminhome/script.js"></script>
 </body>

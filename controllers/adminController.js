@@ -302,6 +302,8 @@ const blockUser = async (req, res) => {
   }
 }
 
+// -------------------------------------------------Author Start --------------------------------------------------//
+
 // author show
 const authorLoad = async (req, res) => {
   try {
@@ -348,7 +350,7 @@ const updateAuthorLoad = async (req, res) => {
   }
 }
 
-// update author
+// update author POST
 const updateAuthor = async (req, res) => {
   try {
     const authorId = req.body.id
@@ -359,7 +361,7 @@ const updateAuthor = async (req, res) => {
   }
 }
 
-// delete category
+// delete Author
 const deleteAuthor = async (req, res) => {
   try {
     const user_id = req.query.id
@@ -370,6 +372,9 @@ const deleteAuthor = async (req, res) => {
   }
 }
 
+// -------------------------------------------------Author End --------------------------------------------------//
+
+// -------------------------------------------------Category Start ----------------------------------------------------//
 // category show
 const categoryLoad = async (req, res) => {
   try {
@@ -383,22 +388,27 @@ const categoryLoad = async (req, res) => {
 // add new category load
 const addCategoryLoad = async (req, res) => {
   try {
-    res.render('newcategory')
+    res.render('newCategory')
   } catch (error) {
 
   }
 }
 
-// add new category
+// add new category POST
 const addCategory = async (req, res) => {
   try {
-    const category = new Category({
-      name: req.body.name,
-      description: req.body.description
-
-    })
-    const categoryData = await category.save()
-    res.redirect('category')
+    const categoryName = req.body.name.trim().toLowerCase()
+    const isExists = await Category.findOne({ name: categoryName })
+    if (isExists === null) {
+      const category = new Category({
+        name: req.body.name,
+        description: req.body.description
+      })
+      await category.save()
+      res.redirect('category')
+    } else {
+      res.render('newCategory', { message: 'Category Name already exists' })
+    }
   } catch (error) {
     console.log(error.message)
   }
@@ -415,28 +425,38 @@ const deleteCategory = async (req, res) => {
   }
 }
 
-// update Category page
+// update Category page load
 const updateCategoryLoad = async (req, res) => {
   try {
-    const user_id = req.query.id
-    const categoryData = await Category.findOne({ _id: user_id })
-    console.log(categoryData)
-    res.render('updatecategory', { category: categoryData })
+    const categoryId = req.query.id
+    const categoryData = await Category.findOne({ _id: categoryId })
+    res.render('updateCategory', { category: categoryData })
   } catch (error) {
     console.log(error.mesage)
   }
 }
 
-// update category
+// update category POST
 const updateCategory = async (req, res) => {
   try {
-    const productId = req.body.id
-    const categoryupdatedData = await Category.findByIdAndUpdate({ _id: productId }, { $set: { name: req.body.name, description: req.body.description } })
-    res.redirect('/admin/category')
+    const categoryId = req.body.id
+    const categoryData = await Category.findOne({ _id: categoryId })
+    const categoryName = req.body.name.trim().toLowerCase()
+    const isExists = await Category.findOne({ name: categoryName })
+    console.log('is exists : ' + isExists)
+
+    if (isExists === null) {
+      await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { name: req.body.name, description: req.body.description } })
+      res.redirect('/admin/category')
+    } else {
+      res.render('updateCategory', { category: categoryData, message: 'Category Name already exists' })
+    }
   } catch (error) {
     console.log(error.mesage)
   }
 }
+
+// -------------------------------------------------------------Category End ---------------------------------------------------//
 
 // logout
 const logout = async (req, res) => {
@@ -510,12 +530,13 @@ const postOrderLoad = async (req, res) => {
     console.log('order edit post')
     const orderData = await Order.findByIdAndUpdate({ _id: req.body.id }, { $set: { status: req.body.status } })
     console.log('order data psot ' + orderData)
-    res.redirect('/admin/orders') 
+    res.redirect('/admin/orders')
   } catch (error) {
   }
 }
 
 // --------------------------------------------------orders end --------------------------------------------------------//
+
 module.exports = {
   loadLogin,
   verifyLogin,

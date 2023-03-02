@@ -27,6 +27,7 @@
     "otp-generator": "^4.0.1",
     "randomstring": "^1.2.3",
     "razorpay": "^2.8.6",
+    "sweetalert2": "^11.7.3",
     "twilio": "^4.7.1"
   },
   "devDependencies": {
