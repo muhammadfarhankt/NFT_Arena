@@ -158,21 +158,18 @@
 
                   <% } %>
 
-
-
                     <br>
                     <label for="">Name</label>
-                    <input type="text" name="name" class="form-control" value="<%= category.name %>">
+                    <input type="text" name="name" id="name" class="form-control" value="<%= category.name %>">
                     <br><br>
                     <label for="">Description</label>
-                    <input type="text" name="description" class="form-control" value="<%= category.description %>">
+                    <input type="text" name="description" id="description" class="form-control" value="<%= category.description %>">
                     <input type="hidden" name="id" value="<%= category._id %>">
                     <br><br>
                     <div class="head-title">
-                      <button type="button" class="btn-download" id="submitButton">
-                        Submit
-                      </button>
-                    </div>
+                      <input type="submit" class="btn-download" id="submitButton">
+                    </input>
+                    </div> 
               </form>
 
               <br>
@@ -183,33 +180,30 @@
               </button>
               </a>
 
-              <!-- Include SweetAlert2 script -->
-              <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
               <script>
-                const myForm = document.querySelector('#myForm');
-                const submitButton = document.querySelector('#submitButton');
 
-                submitButton.addEventListener('click', (event) => {
-                  event.preventDefault(); // prevent the default form submission behavior
-
-                  Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Do you want to Update Category ?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes'
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      // submit the form
-                      myForm.submit();
-                    }
-                  });
+                document.getElementById("name").addEventListener("input", function () {
+                  var categoryName = document.getElementById("name").value;
+                  console.log(name)
+            
+                  if (categoryName.trim() == "") {
+                    document.getElementById("name").setCustomValidity("Category name cannot be null");
+                    console.log("Name null")
+                  } else {
+                    document.getElementById("name").setCustomValidity("");
+                  }
                 });
+            
+                document.getElementById("description").addEventListener("input", function () {
+                  var description = document.getElementById("description").value;
+                  if (description.trim() == "") {
+                    document.getElementById("description").setCustomValidity("Description cannot be null");
+                  } else {
+                    document.getElementById("description").setCustomValidity("");
+                  }
+                });
+            
               </script>
-
 
             </div>
           </div>
@@ -227,6 +221,7 @@
   </section>
   <!-- CONTENT -->
 
+  <script type="text/javascript" src="/javascripts/main.js"></script>
 
   <script src="/adminhome/script.js"></script>
 </body>

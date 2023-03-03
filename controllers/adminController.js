@@ -326,13 +326,18 @@ const addAuthor = async (req, res) => {
 // add new author post
 const addAuthorPost = async (req, res) => {
   try {
-    const author = new Author({
-      name: req.body.name,
-      description: req.body.description
-
-    })
-    const authorData = await author.save()
-    res.redirect('author')
+    const authorName = req.body.name.trim().toLowerCase()
+    const isExists = await Author.findOne({ name: authorName })
+    if (isExists === null) {
+      const author = new Author({
+        name: req.body.name,
+        description: req.body.description
+      })
+      const authorData = await author.save()
+      res.redirect('author')
+    } else {
+      res.render('addAuthor', { message: 'Author Name already exists' })
+    }
   } catch (error) {
     console.log(error.message)
   }
@@ -354,8 +359,15 @@ const updateAuthorLoad = async (req, res) => {
 const updateAuthor = async (req, res) => {
   try {
     const authorId = req.body.id
-    const authorupdatedData = await Author.findByIdAndUpdate({ _id: authorId }, { $set: { name: req.body.name, description: req.body.description } })
-    res.redirect('/admin/author')
+    const authorName = req.body.name.trim().toLowerCase()
+    const authorData = await Author.findOne({ _id: authorId })
+    const isExists = await Author.findOne({ name: authorName })
+    if (isExists === null) {
+      const authorupdatedData = await Author.findByIdAndUpdate({ _id: authorId }, { $set: { name: req.body.name, description: req.body.description } })
+      res.redirect('/admin/author')
+    } else {
+      res.render('updateAuthor', { author: authorData, message: 'Author Name already exists' })
+    }
   } catch (error) {
     console.log(error.mesage)
   }
@@ -401,8 +413,8 @@ const addCategory = async (req, res) => {
     const isExists = await Category.findOne({ name: categoryName })
     if (isExists === null) {
       const category = new Category({
-        name: req.body.name,
-        description: req.body.description
+        name: req.body.name.trim(),
+        description: req.body.description.trim()
       })
       await category.save()
       res.redirect('category')
@@ -411,6 +423,7 @@ const addCategory = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message)
+    res.render('newCategory', { message: error })
   }
 }
 
@@ -446,7 +459,7 @@ const updateCategory = async (req, res) => {
     console.log('is exists : ' + isExists)
 
     if (isExists === null) {
-      await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { name: req.body.name, description: req.body.description } })
+      await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { name: req.body.name.trim(), description: req.body.description.trim() } })
       res.redirect('/admin/category')
     } else {
       res.render('updateCategory', { category: categoryData, message: 'Category Name already exists' })

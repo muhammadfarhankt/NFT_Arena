@@ -10,7 +10,7 @@
   <!-- My CSS -->
   <link rel="stylesheet" href="/adminhome/style.css">
 
-  
+
 
   <title>Edit Author | NFT Arena</title>
 </head>
@@ -64,7 +64,7 @@
       <li>
         <a href="orders">
           <i class='bx bxs-shopping-bag-alt'></i>
-          <span class="text" >Orders</span>
+          <span class="text">Orders</span>
         </a>
       </li>
       <li>
@@ -73,7 +73,7 @@
           <span class="text" style="text-decoration: line-through;">Coupons</span>
         </a>
       </li>
-      
+
     </ul>
     <ul class="side-menu">
       <li>
@@ -149,40 +149,57 @@
 
           <section>
             <div class="container mt-4">
-               <div class="row">
-                 
-                <div class="col-md-6">
-                    <h2 class="text-center">Edit Author</h2>
-                      <form action="/admin/updateAuthor" method="post" > 
-                        <!-- enctype="multipart/form-data"  -->
-                         
-                        <br>
-                        <label for="">Name</label>
-                        <input type="text"name="name"class="form-control" value="<%= author.name %>">
-            
-                        <br><br>
-                        <label for="">Description</label>
-                        <input type="text"name="description"class="form-control" value="<%= author.description %>">
-            
-                        <br><br>
-                        <input type="hidden" name="id" value="<%= author._id %>">
+              <div class="row">
 
-                        <div class="head-title">
-                          <button type="submit" class="btn-download">
-                            Submit
-                          </button>
-                        </div>
-                        
-                    </form> 
-                   
+                <div class="col-md-6">
+                  <h2 class="text-center">Edit Author</h2>
+                  <form action="/admin/updateAuthor" method="post">
+                    <!-- enctype="multipart/form-data"  -->
+                    <!-- Flash message -->
+								<% if(typeof message !=='undefined' ) {%>
+									<div id="flash-msg" class="alert alert-danger" style="color: red;">
+                    <br>
+										<%= message %>
+									</div>
+
+									<% } %>
+                  
+                    <br>
+                    <label for="">Name</label>
+                    <input type="text" name="name" id="name" class="form-control" value="<%= author.name %>" required>
+
+                    <br><br>
+                    <label for="">Description</label>
+                    <input type="text" name="description" id="description"  class="form-control" value="<%= author.description %>" required>
+
+                    <br><br>
+                    <input type="hidden" name="id" value="<%= author._id %>">
+
+                    <div class="head-title">
+                      <button type="submit" class="btn-download">
+                        Submit
+                      </button>
+                    </div>
+
+                  </form>
+
+                  <br>
+                  <div class="head-title">
+                    <a href="/admin/author">
+                      <button type="button" class="btn-download">
+                        Cancel
+                      </button>
+                    </a>
+                  </div>
+
                 </div>
-               </div>   
+              </div>
             </div>
-            </section>
+          </section>
 
 
         </div>
-       </div>
+      </div>
 
 
 
@@ -192,7 +209,31 @@
   </section>
   <!-- CONTENT -->
 
-  
+  <script>
+
+    document.getElementById("name").addEventListener("input", function () {
+      var authorName = document.getElementById("name").value;
+      console.log(name)
+
+      if (authorName.trim() == "") {
+        document.getElementById("name").setCustomValidity("Author Name cannot be null");
+        console.log("Name null")
+      } else {
+        document.getElementById("name").setCustomValidity("");
+      }
+    });
+
+    document.getElementById("description").addEventListener("input", function () {
+      var description = document.getElementById("description").value;
+      if (description.trim() == "") {
+        document.getElementById("description").setCustomValidity("Description cannot be null");
+      } else {
+        document.getElementById("description").setCustomValidity("");
+      }
+    });
+
+  </script>
+
   <script src="/adminhome/script.js"></script>
 </body>
 

@@ -49,6 +49,7 @@
           <span class="text">Authors</span>
         </a>
       </li>
+
       <li>
         <a href="user">
           <i class='bx bxs-group'></i>
@@ -151,13 +152,23 @@
                   <h2 class="text-left">Add Author</h2>
                   <form action="addAuthor" method="post">
                     
-                    <br><br>
+                    <br>
+								<!-- Flash message -->
+
+								<% if(typeof message !=='undefined' ) {%>
+									<div id="flash-msg" class="alert alert-danger" style="color: red;">
+										<%= message %>
+									</div>
+
+									<% } %>
+                  
+                  <br>
                     <label for="">Name</label>
-                    <input type="text" name="name" class="form-control" required>
+                    <input type="text" name="name" id="name" class="form-control" required>
                     
                     <br><br>
                     <label for="">Description</label>
-                    <input type="text" name="description" class="form-control" required>
+                    <input type="text" name="description" id="description" class="form-control" required>
                     
                     <br><br>
                     <div class="head-title">
@@ -166,13 +177,46 @@
                       </button>
                     </div>
                   </form>
+
+                  <br>
+              				<div class="head-title">
+							<a href="/admin/author">
+								<button type="button" class="btn-download">
+									Cancel
+								</button>
+							</a>
+              				</div>
           </section>
 
 
         </div>
        </div>
 
+       <script>
 
+        document.getElementById("name").addEventListener("input", function () {
+          var authorName = document.getElementById("name").value;
+          console.log(name)
+    
+          if (authorName.trim() == "") {
+            document.getElementById("name").setCustomValidity("Author Name cannot be null");
+            console.log("Name null")
+          } else {
+            document.getElementById("name").setCustomValidity("");
+          }
+        });
+    
+        document.getElementById("description").addEventListener("input", function () {
+          var description = document.getElementById("description").value;
+          if (description.trim() == "") {
+            document.getElementById("description").setCustomValidity("Description cannot be null");
+          } else {
+            document.getElementById("description").setCustomValidity("");
+          }
+        });
+    
+      </script>
+    
 
 
     </main>
