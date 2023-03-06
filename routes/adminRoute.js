@@ -41,6 +41,8 @@ adminRoute.get('/updateCategory', adminAuth.isLogin, adminController.updateCateg
 adminRoute.post('/updateCategory', adminController.updateCategory)
 adminRoute.get('/deleteCategory', adminAuth.isLogin, adminController.deleteCategory)
 
+adminRoute.get('/blockCategory', adminAuth.isLogin, adminController.blockCategory)
+
 adminRoute.get('/author', adminAuth.isLogin, adminController.authorLoad)
 adminRoute.get('/addAuthor', adminAuth.isLogin, adminController.addAuthor)
 adminRoute.post('/addAuthor', adminAuth.isLogin, adminController.addAuthorPost)

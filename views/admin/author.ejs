@@ -124,7 +124,7 @@
     <main>
       <div class="head-title">
         <div class="left">
-          <h1>Author</h1>
+          <h1>Authors</h1>
           <ul class="breadcrumb">
             <li>
               <a href="#">Dashboard</a>
@@ -145,75 +145,70 @@
 
           <% if(authorData.length>0) { %>
 
-          <table id="tablePagination" class="display">
-            <thead>
-              <tr>
-                <th>Sl No.</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th><center>Edit</center></th>
-                <th><center>Block / Unblock</center></th>
-                <th><center>Delete</center></th>
-              </tr>
-            </thead>
-            <tbody>
-             
+            <table id="tablePagination" class="display">
+              <thead>
+                <tr>
+                  <th>
+                    <center>Sl No.</center>
+                  </th>
+                  <th>
+                    <center>Name</center>
+                  </th>
+                  <th>
+                    <center>Description</center>
+                  </th>
+                  <th>
+                    <center> Edit</center>
+                  </th>
+                  <th>
+                    <center>Block / Unblock</center>
+                  </th>
+                  <th>
+                    <center>Delete</center>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+
                 <% for(let i=0;i<authorData.length;i++){ %>
                   <tr>
-                    <td>
+                    <td align="center">
                       <%=i+1%>
                     </td>
-                    <td>
+                    <td align="center">
                       <p>
                         <%= authorData[i].name %>
                       </p>
                     </td>
-                    <td>
+                    <td align="center">
                       <p>
                         <%= authorData[i].description %>
                       </p>
                     </td>
                     <td align="center">
-                      <a href="/admin/updateAuthor?id=<%= authorData[i]._id %>"><span class="status"
-                          style="background: rgb(8, 38, 15);">Edit</span></a>
+                      <a href="/admin/updateAuthor?id=<%= authorData[i]._id %>"><span class="status completed">
+                        Edit</span></a>
                     </td>
 
                     <td align="center">
                       <p>
 
                         <% if(authorData[i].isBlocked==false){%>
-                          <a href="/admin/blockAuthor?id=<%= authorData[i]._id%>" onclick="return block_alert(this)">
-                            <script type="text/javascript">
-                              function block_alert(node) {
-                                return confirm("Do you want to block author ? ")
-                              }
-                            </script>
-                            <span class="status" style="background-color: green; align-items: center;">Active</span>
-                          </a>
-
-                          <%}else{%>
-                            <a href="/admin/blockAuthor?id=<%= authorData[i]._id%>"
-                              onclick="return unblock_alert(this)">
-                              <script type="text/javascript">
-                                function unblock_alert(node) {
-                                  return confirm("Do you want to un-block author ? ")
-                                }
-                              </script>
-                              <span class="status" style="background: red; align-items: center;">Blocked</span>
-                            </a>
-                            <%}%>
+                            <span class="status block-button" style="background-color: green; align-items: center;" 
+                            data-id="<%= authorData[i]._id %>">
+                            Active
+                          </span>
+                        <%}else{%>
+                              <span class="status pending unBlock-button" style="align-items: center;"
+                              data-id="<%= authorData[i]._id %>">
+                              Blocked</span>
+                        <%}%>
                       </p>
                     </td>
 
                     <td align="center">
-                      <a href="/admin/deleteAuthor?id=<%= authorData[i]._id %>" onclick="return confirm_alert(this)">
-                        <span class="status" style="background: rgb(215, 9, 33);">Delete</span>
-                        <script type="text/javascript">
-                          function confirm_alert(node) {
-                            return confirm("Do you want to delete author ? ")
-                          }
-                        </script>
-                      </a>
+                      <span class="status delete-button" data-id="<%= authorData[i]._id %>"
+                        style="background: rgb(215, 9, 33);">Delete</span>
                     </td>
 
 
@@ -221,12 +216,12 @@
                   <% } %>
 
 
-            </tbody>
-          </table>
+              </tbody>
+            </table>
 
-          <% } else { %>
-            No Authors found in database.
-            <% } %>
+            <% } else { %>
+              No Authors found in database.
+              <% } %>
 
 
 
@@ -235,6 +230,80 @@
     <!-- MAIN -->
   </section>
   <!-- CONTENT -->
+
+  <!--  SweetAlert2 script -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script>
+    const deleteButtons = document.querySelectorAll('.delete-button');
+    deleteButtons.forEach((deleteButton) => {
+      deleteButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        const authorId = deleteButton.getAttribute('data-id');
+        Swal.fire({
+          title: 'Are you sure to delete Author ?',
+          text: 'All product of Author will be deleted',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Yes, delete'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `/admin/deleteAuthor?id=${authorId}`;
+          }
+        });
+      });
+    });
+  </script>
+
+<script>
+  const blockButtons = document.querySelectorAll('.block-button');
+  blockButtons.forEach((blockButton) => {
+    blockButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      const authorId = blockButton.getAttribute('data-id');
+      Swal.fire({
+        title: 'Are you sure to block Author ?',
+        text: 'All product of Author will be blocked and not display in Shop',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, Block'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = `/admin/blockAuthor?id=${authorId}`;
+        }
+      });
+    });
+  });
+</script>
+
+unBlock-button
+
+<script>
+  const unBlockButtons = document.querySelectorAll('.unBlock-button');
+  unBlockButtons.forEach((unBlockButton) => {
+    unBlockButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      const authorId = unBlockButton.getAttribute('data-id');
+      Swal.fire({
+        title: 'Are you sure to un-block Author ?',
+        text: 'All product with same Author will be unblocked and display in Shop',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, un-block'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = `/admin/blockAuthor?id=${authorId}`;
+        }
+      });
+    });
+  });
+</script>
+
 
 
   <!-- Pagination Script  -->

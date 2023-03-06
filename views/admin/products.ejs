@@ -7,8 +7,12 @@
 
 	<!-- Boxicons -->
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	
 	<!-- My CSS -->
 	<link rel="stylesheet" href="/adminhome/style.css">
+
+	<!-- Table Pagination -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
 
 	<title>Products | NFT ARena</title>
 </head>
@@ -117,7 +121,7 @@
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Product</h1>
+					<h1>Products</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a href="#">Dashboard</a>
@@ -137,47 +141,116 @@
 
             <div class="table-data">
 				<div class="order">
-					<div class="head">
-						<h3>Products</h3>
-						<i class='bx bx-search' ></i>
-						<i class='bx bx-filter' ></i>
-					</div>
-				
+					
+
+				<% if (productData.length>0) { %>
         
-        
-          <table>
+          <table id="tablePagination" class="display">
 						<thead>
 							<tr>
-								<th>Name</th>
-                                <th>Image</th>
-								<th>Category</th>
-								<th>Author</th>
-								<th>Price</th>
-								<th>Description</th>  
-								<th>Stock</th>
-							<th>Edit</th>
-                            <th>Delete</th>
+								<th>
+									<center>Sl No.</center>
+								</th>
+								<th>
+									<center>Name</center>
+								</th>
+                                <th>
+									<center>Image</center>
+								</th>
+								<th>
+									<center>Category</center>
+								</th>
+								<th>
+									<center>Author</center>
+								</th>
+								<th>
+									<center>Price</center>
+								</th>
+								
+								<th>
+									<center>Stock</center>
+								</th>
+							<th>
+								<center>Edit</center>
+							</th>
+							<th>
+								<center>Block/Unblock</center>
+							</th>
+                            <th>
+								<center>Delete</center>
+							</th>
                         </tr>
 						</thead>
 						<tbody>
               <% for(let i=0;i<productData.length;i++){ %>
-                  <tr>
-								<td>
+              <tr>
+
+                <td align="center">
+                  <%= i+1 %>
+                </td>
+
+								<td align="center">
 									<p><%= productData[i].name %> </p>
 								</td>
-								<td><img src="/imagess/<%= productData[i].image %>" alt=""></td>
-								<td> <p><%= productData[i].category.name %></p> </td>
-								<td> <p><%= productData[i].author.name %></p> </td>
-								<td> <p> <%= productData[i].price %></p></td>
-                                <td> <%= productData[i].description %></td>
-								<td> <%= productData[i].stock %></td>
+								<td align="center">
+									<img src="/imagess/<%= productData[i].image %>" alt="">
+								</td>
+								<td align="center">
+									<p>
+										<% if (productData[i].category && productData[i].category.name) { %>
+											<%= productData[i].category.name %>
+										<% } else { %>
+											<font style="color: red;">Category Deleted </font>
+										<% } %>
+									</p>
+								</td>
+								<td align="center">
+									 <p>
+									<% if (productData[i].author && productData[i].author.name) { %>
+										<%= productData[i].author.name %>
+									<% } else { %>
+										<font style="color: red;">Author Deleted </font>
+									<% } %>
+									</p>
+								</td>
+								<td align="center">
+									<p> <%= productData[i].price %></p>
+								</td>
+                                
+								<td align="center">
+								 <%= productData[i].stock %></td>
                                  
 
-								<td> <a href="/admin/updateProduct?id=<%= productData[i]._id %>"><span class="status" style="background: rgb(8, 38, 15);">Edit</span></a></td>
-                                 
-								 
+								<td align="center"> 
+									<a href="/admin/updateProduct?id=<%= productData[i]._id %>"><span class="status completed">Edit</span></a>
+								</td>
 
-								<td>
+			
+								  <td align="center">
+									<% if(productData[i].isBlocked==false){%>
+									  <a href="/admin/blockProduct?id=<%= productData[i]._id%>" onclick="return block_alert(this)">
+										<script type="text/javascript">
+										  function block_alert(node) {
+											return confirm("Do you want to block category ? ")
+										  }
+										</script>
+										<span class="status" style="background-color: green; align-items: center;">Active</span>
+									  </a>
+			  
+									  <%}else{%>
+										<a href="/admin/blockProduct?id=<%= productData[i]._id%>"
+										  onclick="return unblock_alert(this)">
+										  <script type="text/javascript">
+											function unblock_alert(node) {
+											  return confirm("Do you want to un-block category ? ")
+											}
+										  </script>
+										  <span class="status pending">Blocked</span>
+										</a>
+										<%}%>
+								  </td>
+
+                                <td align="center">
                       			<p>
                         		<% if(productData[i].isDeleted == false){%>
                        		   <a href="/admin/deleteProduct?id=<%= productData[i]._id%>" onclick="return delete_alert(this)">
@@ -209,7 +282,10 @@
 							
 						</tbody>
 					</table>
-      
+					
+					<% } else { %>
+						No Products Found
+					<% } %>
 
 
 				
@@ -219,7 +295,16 @@
 		<!-- MAIN -->
 	</section>
 	
-	
+	<!-- Pagination Script  -->
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" charset="utf8"
+	  src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+	<script>
+	  $(document).ready(function () {
+		$('#tablePagination').DataTable();
+	  });
+	</script>
 
 	<script src="/adminhome/script.js"></script>
 </body>

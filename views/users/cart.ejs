@@ -103,10 +103,14 @@
 
                                             </a>
                                         </td>
+                                        <% if (userData.cart.item[i].quantity != 1) { %>
                                         <td class="text-center">
                                             <a href="/reduce-from-cart?id=<%= userData.cart.item[i].productId %>"><i
                                                     class="fa fa-minus-square" aria-hidden="true"></i></a>
                                         </td>
+                                        <% } else { %>
+                                            <td></td>
+                                        <% } %>
                                         <td class="text-center">
                                             <p class="qty-display pt-1">
                                                 <%= userData.cart.item[i].quantity %>

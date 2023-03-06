@@ -10,6 +10,7 @@
 
   <!-- My CSS -->
   <link rel="stylesheet" href="/adminhome/style.css">
+  
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
 
   <title>Users | NFT Arena</title>
@@ -56,11 +57,11 @@
         </a>
       </li>
       <li>
-				<a href="banners">
-					<i class='bx bxs-carousel'></i>
-					<span class="text">Banners</span>
-				</a>
-			</li>
+        <a href="banners">
+          <i class='bx bxs-carousel'></i>
+          <span class="text">Banners</span>
+        </a>
+      </li>
       <li>
         <a href="orders">
           <i class='bx bxs-shopping-bag-alt'></i>
@@ -73,7 +74,7 @@
           <span class="text" style="text-decoration: line-through;">Coupons</span>
         </a>
       </li>
-      
+
     </ul>
     <ul class="side-menu">
       <li>
@@ -134,49 +135,58 @@
             </li>
           </ul>
         </div>
-        
+
       </div>
 
 
       <div class="table-data">
         <div class="order">
-        
+
 
           <% if(userData.length>0){ %>
 
-          <table id="tablePagination" class="display">
-            <thead>
-              <tr>
-                <th>Sl.No.</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Mobile</th>
-                <th>Block / Unblock</th>
-              </tr>
-            </thead>
-            <tbody>
-              
+            <table id="tablePagination" class="display">
+              <thead>
+                <tr>
+                  <th>
+                    <center> Sl.No.</center>
+                  </th>
+                  <th>
+                    <center>Name</center>
+                  </th>
+                  <th>
+                    <center>Email</center>
+                  </th>
+                  <th>
+                    <center>Mobile</center>
+                  </th>
+                  <th>
+                    <center>Block / Unblock</center>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+
                 <% for(let i=0;i<userData.length;i++){ %>
                   <tr>
-                    <td>
-                        <%=i+1%>
+                    <td align="center">
+                      <%=i+1%>
                     </td>
-                    <td>
+                    <td align="center">
                       <p>
                         <%= userData[i].name %>
                       </p>
                     </td>
-                    <td>
+                    <td align="center">
                       <p>
                         <%= userData[i].email %>
                       </p>
                     </td>
-                    <td>
+                    <td align="center">
                       <%= userData[i].mobile %>
                     </td>
-                    <td>
+                    <td align="center">
                       <p>
-                        <center>
                         <% if(userData[i].isBlocked==false){%>
                           <a href="/admin/blockUser?id=<%= userData[i]._id%>" onclick="return confirm_alert(this)">
                             <script type="text/javascript">
@@ -198,22 +208,21 @@
                             </a>
                             <%}%>
                       </p>
-                      </center>
-                      </td>
+                    </td>
 
 
                   </tr>
                   <% } %>
 
-                  
 
 
-            </tbody>
-          </table>
 
-          <% } else { %>
-            No Users found in database.
-          <% } %>
+              </tbody>
+            </table>
+
+            <% } else { %>
+              No Users found in database.
+              <% } %>
 
 
 

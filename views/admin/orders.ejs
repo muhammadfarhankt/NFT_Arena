@@ -141,66 +141,59 @@
       <div class="table-data">
         <div class="order">
 
-
-
-
+          <% if(orderData.length>0){ %>
+          
           <table id="tablePagination" class="display">
             <thead>
               <tr>
-                <th>Sl.No.</th>
-                <th>Order ID</th>
-                <th>Payement Method</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Edit Order</th>
-                <th>Actions</th>
+                <th> <center> Sl No.</center></th>
+                <th><center>Order ID</center></th>
+                <th><center>Payement Method</center></th>
+                <th><center>Amount</center></th>
+                <th><center>Status</center></th>
+                <th><center>Edit</center></th>
+                <th><center>Actions</center></th>
               </tr>
             </thead>
             <tbody>
-              <% if(orderData.length>0){
-                for(let i=0;i<orderData.length;i++){ %>
+              
+                <% for(let i=0;i<orderData.length;i++){ %>
                   <tr>
-                    <td>
+                    <td align="center">
                       <p>
                         <%=i+1%>
                       </p>
                     </td>
-                    <td>
+                    <td align="center">
                       <p>
                         <%= orderData[i]._id %>
                       </p>
                     </td>
-                    <td>
+                    <td align="center">
                       <p>
                         <%= orderData[i].payment %>
                       </p>
                     </td>
-                    <td>
+                    <td align="center">
                       <%= orderData[i].sellingPrice %>
                     </td>
-                    <td>
+                    <td align="center">
                       <% if( orderData[i].status == 'Cancelled') { %>
                         <P style="color: red;">Cancelled</P>
                         <%} else { %>
                           <%= orderData[i].status %>
                         <%  } %>
                     </td>
-                    <td>
+                    <td align="center">
                       <p>
-                        <center>
-
                           <a href="/admin/editOrder?id=<%= orderData[i]._id%>">
                             <span class="status" style="background-color: green;">Edit</span>
                           </a>
-
-
                       </p>
-                      </center>
                     </td>
 
-                    <td>
+                    <td align="center">
                       <p>
-                        <center>
                           <a href="/admin/cancelOrder?id=<%= orderData[i]._id%>" onclick="return unblock_alert(this)">
                             <script type="text/javascript">
                               function unblock_alert(node) {
@@ -209,19 +202,19 @@
                             </script>
                             <span class="status" style="background: red;">Cancel Order</span>
                           </a>
-                          <%}%>
                       </p>
-                      </center>
                     </td>
 
                   </tr>
-                  <% }  %>
+                  <% } %>
 
 
             </tbody>
           </table>
 
-
+          <% } else { %>
+            No Orders Found
+            <% } %>
 
 
 

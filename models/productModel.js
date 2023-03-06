@@ -27,6 +27,10 @@ const productSchema = new mongoose.Schema({
     type: ObjectId,
     ref: 'Author'
   },
+  isBlocked: {
+    type: Boolean,
+    default: false
+  },
   isDeleted: {
     type: Boolean,
     default: false
