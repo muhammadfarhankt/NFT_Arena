@@ -62,14 +62,14 @@
     <script>
       document.getElementById("password2").addEventListener("input", function () {
         console.log("password2")
-        var password = document.getElementById("password").value.trim();
-        var password2 = document.getElementById("password2").value.trim();
+        var password = document.getElementById("password").value.trim()
+        var password2 = document.getElementById("password2").value.trim()
         if(password2 == ""){
-          document.getElementById("password2").setCustomValidity("Password Cannot be null");
+          document.getElementById("password2").setCustomValidity("Password Cannot be null")
         } else if (password === password2) {
-          document.getElementById("password2").setCustomValidity("");
+          document.getElementById("password2").setCustomValidity("")
         } else {
-          document.getElementById("password2").setCustomValidity("Passwords do not match.");
+          document.getElementById("password2").setCustomValidity("Passwords do not match.")
         }
       });
 

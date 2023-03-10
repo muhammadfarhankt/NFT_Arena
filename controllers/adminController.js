@@ -5,10 +5,14 @@ const bcrypt = require('bcrypt')
 const Product = require('../models/productModel')
 const Banner = require('../models/bannerModel')
 const Order = require('../models/orderModel')
+const Offer = require("../models/offerModel")
 const multer = require('multer')
 // const bodyParser = require('body-parser');
 const randomstring = require('randomstring')
 const { find } = require('../models/userModel')
+const excelJs = require('exceljs')
+const objectId = require('mongodb').ObjectId
+const { ObjectId } = require("mongodb")
 
 const securePassword = async (password) => {
   try {
@@ -62,7 +66,11 @@ const loadDashboard = async (req, res) => {
     const userCount = await User.countDocuments()
     const authorCount = await Author.countDocuments()
     const productCount = await Product.countDocuments()
+    const categoryCount = await Category.countDocuments()
+    const bannerCount = await Banner.countDocuments()
+    // const couponCount = await Coupon.countDocuments()
     const total = await Order.aggregate([
+      { $match: { status: 'Success' } },
       {
         $group: {
           _id: null,
@@ -74,16 +82,28 @@ const loadDashboard = async (req, res) => {
         console.error(err)
       } else {
         const total = result[0].total
-        console.log('Sum of all orderamount:', total)
+        console.log('Sum of all order amount:', total)
         return total
       }
     })
     const totalAmount = total[0].total
+    const orderDataDaily = await Order.aggregate([
+      {
+        $group: {
+          _id: { $dayOfWeek: { date: "$createdAt" } },
+          amount: { $sum: "$sellingPrice" },
+        },
+      },
+    ])
+
+    const a = orderDataDaily.map((x) => x._id)
+    const amount = orderDataDaily.map((x) => x.amount)
     // console.log('Sum of all orders', total[0].total)
     // let orderNumber = await User.count({}, function(count){ return count})
     // const orders = orderNumber.count()
     // console.log('order count : ' + orderNumber)
-    res.render('home', { admin: userData, orderCount, userCount, totalAmount, authorCount, productCount })
+
+    res.render('home', { admin: userData, orderCount, userCount, totalAmount: 0, authorCount, productCount, total, categoryCount, bannerCount, couponCount: 40, amount })
   } catch (error) {
     console.log(error.message)
   }
@@ -99,6 +119,75 @@ const productLoad = async (req, res) => {
     console.log(error.mesage)
   }
 }
+
+// -----------------------------------------------Reports and charts  start --------------------------------------------------------------//
+
+const downloadSalesReport = async function (req, res) {
+  try {
+    const workBook = new excelJs.Workbook()
+    const workSheet = workBook.addWorksheet('My Order')
+    workSheet.columns = [
+      { header: 'Order Id', key: '_id' },
+      { header: 'User Name', key: 'name' },
+      { header: 'Amount', key: 'sellingPrice' },
+      { header: 'Payment Type', key: 'payment' },
+      { header: 'Status', key: 'status' },
+      { header: 'Date', key: 'createdAt' },
+      { header: 'Address', key: 'address' },
+      { header: 'City', key: 'city' },
+      { header: 'State', key: 'state' },
+      { header: 'ZIP', key: 'zip' }
+    ]
+
+    let counter = 1
+
+    const orderData = await Order.find({})
+
+    orderData.forEach(function (order) {
+      order.s_no = counter
+      workSheet.addRow(order)
+      counter++
+    })
+
+    workSheet.getRow(1).eachCell(function (cell) {
+      cell.font = { bold: true };
+    })
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+
+    res.setHeader("Content-Disposition", `attachment;filename=order.xlsx`);
+
+    return workBook.xlsx.write(res).then(function () {
+      res.status(200);
+    })
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+const salesReport = async (req, res) => {
+  try {
+    const orderData = await Order.aggregate([
+      {
+        $group: {
+          _id: { $dayOfWeek: { date: "$createdAt" } },
+          amount: { $sum: "$sellingPrice" },
+        },
+      },
+    ])
+
+    const a = orderData.map((x) => x._id)
+    const amount = orderData.map((x) => x.amount)
+    res.render('salesGraph', { amount })
+  } catch (error) {
+    console.log(error.messaage);
+  }
+}
+
+// -----------------------------------------------Reports and charts End --------------------------------------------------------------//
 
 // -------------------------------------------- Banner Start ------------------------------------------------------------------//
 
@@ -263,18 +352,21 @@ const userLoad = async (req, res) => {
 // user blocking and unblocking
 const blockUser = async (req, res) => {
   try {
-    const user_id = req.query.id
-    console.log(user_id)
-    const userData = await User.findOne({ _id: user_id })
+    const userId = req.query.id
+    // console.log(userId)
+    const userData = await User.findOne({ _id: userId })
     const value = userData.isBlocked
     console.log(value)
     if (value === true) {
-      const UserUpdate = await User.findByIdAndUpdate({ _id: user_id }, { $set: { isBlocked: false } })
+      await User.findByIdAndUpdate({ _id: userId }, { $set: { isBlocked: false } })
       res.redirect('/admin/user')
     } else if (value === false) {
-      const UserUpdate = await User.findByIdAndUpdate({ _id: user_id }, { $set: { isBlocked: true } })
+      await User.findByIdAndUpdate({ _id: userId }, { $set: { isBlocked: true } })
+      if (req.session.user_id === userId) {
+        req.session.user_id = ''
+      }
       res.redirect('user')
-      console.log(userData)
+      // console.log(userData)
     }
   } catch (error) {
     console.log(error.message)
@@ -286,7 +378,7 @@ const blockUser = async (req, res) => {
 // author show
 const authorLoad = async (req, res) => {
   try {
-    const authorData = await Author.find({ isDeleted: false })
+    const authorData = await Author.find({ })
     res.render('author', { authorData })
   } catch (error) {
     console.log(error.message)
@@ -362,7 +454,7 @@ const blockAuthor = async (req, res) => {
     const value = authorData.isBlocked
     if (value === true) {
       await Author.findByIdAndUpdate({ _id: authorId }, { $set: { isBlocked: false } })
-      const authorProducts = await Product.find({author: authorId})
+      const authorProducts = await Product.find({ author: authorId })
       console.log("author productsssssssssssssssss : " + authorProducts)
       for (const eachProduct of authorProducts) {
         eachProduct.isBlocked = false
@@ -372,7 +464,7 @@ const blockAuthor = async (req, res) => {
       res.redirect('/admin/author')
     } else if (value === false) {
       await Author.findByIdAndUpdate({ _id: authorId }, { $set: { isBlocked: true } })
-      const authorProducts = await Product.find({author: authorId})
+      const authorProducts = await Product.find({ author: authorId })
       console.log("author productsssssssssssssssss : " + authorProducts)
       for (const eachProduct of authorProducts) {
         eachProduct.isBlocked = true
@@ -392,6 +484,12 @@ const deleteAuthor = async (req, res) => {
     const authorId = req.query.id
     const authorData = await Author.findByIdAndUpdate({ _id: authorId }, { $set: { isDeleted: true } })
     await authorData.save()
+    const authorProducts = await Product.find({ author: authorId })
+    console.log("author products before deleting : " + authorProducts)
+    for (const eachProduct of authorProducts) {
+      eachProduct.isDeleted = true
+      await eachProduct.save()
+    }
     console.log('author delted data : ' + authorData)
     res.redirect('/admin/author')
   } catch (error) {
@@ -445,8 +543,14 @@ const addCategory = async (req, res) => {
 // delete category
 const deleteCategory = async (req, res) => {
   try {
-    const user_id = req.query.id
-    const userData = await Category.findByIdAndDelete({ _id: user_id })
+    const categoryId = req.query.id
+    const categoryData = await Category.findByIdAndDelete({ _id: categoryId })
+    const categoryProducts = await Product.find({ category: categoryId })
+    console.log("category products before deleting : " + categoryProducts)
+    for (const eachProduct of categoryProducts) {
+      eachProduct.isDeleted = true
+      await eachProduct.save()
+    }
     res.redirect('/admin/category')
   } catch (error) {
     console.log(error.message)
@@ -561,7 +665,7 @@ const updateProduct = async (req, res) => {
 
 const orderLoad = async (req, res) => {
   try {
-    const orderData = await Order.find({})
+    const orderData = await Order.find({}).sort({ createdAt: -1 })
     res.render('orders', { orderData })
   } catch (error) {
 
@@ -636,5 +740,7 @@ module.exports = {
   orderLoad,
   editOrderLoad,
   cancelOrder,
-  postOrderLoad
+  postOrderLoad,
+  downloadSalesReport,
+  salesReport
 }

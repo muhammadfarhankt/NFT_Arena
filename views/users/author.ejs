@@ -43,6 +43,8 @@
 
 
     <hr class="gradient-style" />
+    <% if(authorProducts.length>0) { %>
+
             <div class="row pl-4 pr-4">
                 
                 <% for(let content of authorProducts) { %>
@@ -78,6 +80,10 @@
                   <% } %>
 
             </div>
+
+            <% } else { %>
+              <center> <h1 >No Products in Database</h1> </center>
+            <% } %>
             
         </div>
 

@@ -8,6 +8,8 @@ const Category = require('../models/categoryModel')
 const Author = require('../models/authorModel')
 const Orders = require('../models/orderModel')
 const Banner = require('../models/bannerModel')
+// const Offer = require("../models/offerModel")
+
 const { populate } = require('../models/userModel')
 const Razorpay = require('razorpay')
 
@@ -403,7 +405,7 @@ const shopLoad = async (req, res) => {
 }
 
 const categoryLoad = async (req, res) => {
-  // res.render('category') 
+  // res.render('category')
   const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
   const authorData = await Author.find({ isBlocked: false, isDeleted: false })
   const singleCategory = await Category.findById({ _id: req.query.id })
@@ -421,11 +423,11 @@ const categoryLoad = async (req, res) => {
 }
 
 const authorLoad = async (req, res) => {
-  categoryData = await Category.find({ isBlocked: false, isDeleted: false })
-  authorData = await Author.find({ isBlocked: false, isDeleted: false })
-  singleAuthor = await Author.findById({ _id: req.query.id })
-  authorProducts = await Product.find({ author: req.query.id, isDeleted: false }).populate('category')
-  console.log('single author ' + singleAuthor)
+  const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
+  const authorData = await Author.find({ isBlocked: false, isDeleted: false })
+  const singleAuthor = await Author.findById({ _id: req.query.id })
+  const authorProducts = await Product.find({ author: req.query.id, isDeleted: false, isBlocked: false }).populate('category')
+  // console.log('single author ' + singleAuthor)
   // console.log(' category products ' + categoryProducts)
   if (req.session.user_id) {
     const userData = await User.findById({ _id: req.session.user_id })
@@ -501,7 +503,7 @@ const getSingleOrderView = async (req, res) => {
     const authorData = await Author.find({ isBlocked: false, isDeleted: false })
     const orderData = await Orders.findOne({ _id: orderId })
     const populatedData = await orderData.populate('products.item.productId')
-    res.render('singleOrderView', { userData, categoryData, authorData, orderData, populatedData });
+    res.render('singleOrderView', { userData, categoryData, authorData, orderData, populatedData })
   } catch (error) {
     console.log(error.message);
   }
@@ -570,7 +572,10 @@ const createOrder = async (req, res) => {
       return res.render('checkout', { userData, message: 'Please Select either one of the payment modes' })
     }
     const orderData = await order.save()
+    req.session.currentOrderId = orderData._id
+    console.log('current order id ' + req.session.currentOrderId)
 
+    console.log('order data after save ' + orderData)
     if (orderData) {
       // await User.updateOne({ _id: req.session.user_id }, { cart: {} })
       let afterPrice = 0 
@@ -578,19 +583,6 @@ const createOrder = async (req, res) => {
       console.log(req.body.payment);
       if (req.body.payment == 'Cash on delivery') {
         // console.log(' cart length ' + userData.cart.item.length)
-
-        for (let j = 0; j < userData.cart.item.length; j++) {
-          var singleId = userData.cart.item[j].productId
-          var singleProduct = await Product.findOne({ _id: singleId })
-          // await Product.findByIdAndUpdate({_id: singleId}, {$set: { quantity: cart.item[i].quantity}})
-          console.log('single product detailssssss' + singleProduct)
-          singleProduct.stock -= userData.cart.item[j].quantity
-          singleProduct.save()
-          console.log('single product detailssssss' + singleProduct)
-        }
-        userData.cart.item = []
-        userData.cart.totalPrice = 0
-        userData.save()
         res.redirect('/orderSuccess')
       } else if (req.body.payment == 'Razorpay') {
         res.redirect('/payment')
@@ -610,8 +602,31 @@ const orderSuccess = async (req, res) => {
   const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
   const authorData = await Author.find({ isBlocked: false, isDeleted: false })
   const userData = await User.findById({ _id: req.session.user_id })
+  for (let j = 0; j < userData.cart.item.length; j++) {
+    let singleId = userData.cart.item[j].productId
+    let singleProduct = await Product.findOne({ _id: singleId })
+    // await Product.findByIdAndUpdate({_id: singleId}, {$set: { quantity: cart.item[i].quantity}})
+    console.log('single product detailssssss' + singleProduct)
+    singleProduct.stock -= userData.cart.item[j].quantity
+    singleProduct.save()
+    console.log('single product detailssssss' + singleProduct)
+  }
+  userData.cart.item = []
+  userData.cart.totalPrice = 0
+  userData.save()
+  // console.log('current order id ' + req.session.currentOrderId)
+  await Orders.updateOne({ userId: req.session.user_id, _id: req.session.currentOrderId}, { $set: { status: 'Success' } })
   res.render('orderSuccess', { userData, categoryData, authorData })
 }
+
+// ordered successfully
+const orderFailed = async (req, res) => {
+  const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
+  const authorData = await Author.find({ isBlocked: false, isDeleted: false })
+  const userData = await User.findById({ _id: req.session.user_id })
+  res.render('orderFailed', { userData, categoryData, authorData })
+}
+
 // product Load
 const productLoad = async (req, res) => {
   try {
@@ -667,7 +682,6 @@ const razorpayCheckout = async (req, res) => {
     console.log(error.message);
   }
 }
-
 
 // ---------------------------------End Razor Pay -----------------------------------------------//
 
@@ -864,6 +878,7 @@ module.exports = {
   checkoutLoad,
   createOrder,
   orderSuccess,
+  orderFailed,
   cancelOrder,
   getSingleOrderView,
   productLoad,

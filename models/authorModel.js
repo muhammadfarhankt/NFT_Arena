@@ -2,15 +2,13 @@ const mongoose = require('mongoose')
 const authorSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   description: {
     type: String
   },
   email: {
-    type: String,
-    unique: true
+    type: String
   },
   mobile: {
     type: Number

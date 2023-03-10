@@ -49,21 +49,21 @@
   <div class="row text-center m-auto">
     
     <div class="col-lg-3 col-md-3 col-sm-12 text-center ml-2">
-      <a class="title-link" href="category?id=63fb9bf49f0986dd75178ca4">
+      <a class="title-link" href="/category?id=6406f3b6a434c65aa50fd43b">
         <img src="http://cdn.shopify.com/s/files/1/0002/9091/4356/articles/MUSIC_NFT_1_1024x1024.jpg" alt="category" class="circle-img" />
         <h4 class="mb-3 mt-3">Music NFTs</h4>
       </a>
     </div>
     
     <div class="col-lg-3 col-md-3 col-sm-12 text-center ml-2">
-      <a class="title-link" href="/category?id=63fb9be99f0986dd75178ca1">
+      <a class="title-link" href="/category?id=6406f3e1a434c65aa50fd441">
         <img src="https://www.creativityculturecapital.org/wp-content/uploads/2021/09/22_Diego_Balan_Web.png" alt="category" class="circle-img" />
         <h4 class="mb-3 mt-3">Art NFTs</h4>
       </a>
     </div>
     
     <div class="col-lg-3 col-md-3 col-sm-12 text-center ml-2">
-      <a class="title-link" href="category?id=63fb9bfd9f0986dd75178ca7">
+      <a class="title-link" href="/category?id=6405dc172233cf2a535919b6">
         <img src="https://meta-legends.com/img/celestial.ee45254d.png" alt="category" class="circle-img" />
         <h4 class="mb-3 mt-3">Meta Legends</h4>
       </a>
@@ -112,13 +112,13 @@
     </div>
     <!--/.Controls-->
 
-    <!--Slides-->
+    <!-- Slides-->
     <div class="carousel-inner" role="listbox">
       <!--First slide-->
       <div class="carousel-item active">
         <div class="row">
           
-          <% for(let i=0;i<3;i++) { %>
+          <% for(let j=0,i=0;i<3;i++) { %>
 
           <div class="col-md-4 product-index-box">
             <div class="single-product d-flex flex-column h-100">
@@ -136,9 +136,9 @@
                   class="title-link"
                   href="/product?id=<%= productData[i]._id %>"
                 >
-                  <h6 class="mt-2 mb-2"><%= productData[i].name %></h6></a
+                  <h6 class="mt-2 mb-2"><%= productData[j].name %></h6></a
                 >
-                <div class="price">$ <%= productData[i].price %></div>
+                <div class="price">Price: $ <%= productData[j].price %></div>
               </div>
               
               <a
@@ -181,7 +181,7 @@
                   >
                     <h6 class="mt-2 mb-2"><%= productData[j].name %></h6></a
                   >
-                  <div class="price">$ <%= productData[j].price %></div>
+                  <div class="price">Price : $ <%= productData[j].price %></div>
                 </div>
                 
                 <a
@@ -199,7 +199,7 @@
           
         </div>
       </div>
-      <!--/.Second slide-->
+      <!--/.Second slide -->
 
       
     </div>

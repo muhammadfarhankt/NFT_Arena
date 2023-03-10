@@ -149,6 +149,7 @@
                 <th> <center> Sl No.</center></th>
                 <th><center>Order ID</center></th>
                 <th><center>Payement Method</center></th>
+                <th><center>No of Items</center></th>
                 <th><center>Amount</center></th>
                 <th><center>Status</center></th>
                 <th><center>Edit</center></th>
@@ -174,6 +175,13 @@
                         <%= orderData[i].payment %>
                       </p>
                     </td>
+                    
+                    <td align="center">
+                      <p>
+                        <%= orderData[i].products.item.length %>
+                      </p>
+                    </td>
+
                     <td align="center">
                       <%= orderData[i].sellingPrice %>
                     </td>

@@ -1,0 +1,107 @@
+<link rel="stylesheet" href="/css/vertical-layout-light/style.css" />
+<div class="work-space py-3 px-5">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <div class="container">
+        <div class="row">
+          
+            
+            
+      </div>
+    </div>
+    <div>
+      
+      <h5 class="ms-5">Daily Sales Report</h5>
+        <canvas id="myChart" class="w-50 h-50 ms-5 mt-3"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <input type="hidden" value="<%=amount %>" id="amount" />
+</div>
+<style>
+  body{
+    margin-top:20px;
+    background:#FAFAFA;
+}
+.order-card {
+    color: #fff;
+}
+
+.bg-c-blue {
+    background: linear-gradient(45deg,#4099ff,#73b4ff);
+}
+
+.bg-c-green {
+    background: linear-gradient(45deg,#2ed8b6,#59e0c5);
+}
+
+.bg-c-yellow {
+    background: linear-gradient(45deg,#FFB64D,#ffcb80);
+}
+
+.bg-c-pink {
+    background: linear-gradient(45deg,#FF5370,#ff869a);
+}
+
+
+.card {
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+    box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+    border: none;
+    margin-bottom: 30px;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.card .card-block {
+    padding: 25px;
+}
+
+.order-card i {
+    font-size: 26px;
+}
+
+.f-left {
+    float: left;
+}
+
+.f-right {
+    float: right;
+}
+</style>
+<script>
+    const ctx = document.getElementById("myChart");
+        const a = document.getElementById("amount").value
+        const k=a.split(',').map(c=>{
+          return parseInt(c)
+        })
+        console.log(k);
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: [
+                "Sunday",
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+            ],
+            datasets: [
+                {
+                    label: "amount",
+                    data: k,
+                    borderWidth: 1,
+                },
+            ],
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
+</script>

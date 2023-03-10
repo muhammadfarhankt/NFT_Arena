@@ -2,7 +2,8 @@ const session = require('express-session')
 
 const isLogin = async (req, res, next) => {
   try {
-    if (req.session.user_id) {} else {
+    if (req.session.user_id) {} 
+    else {
       res.redirect('/login')
     }
     next()

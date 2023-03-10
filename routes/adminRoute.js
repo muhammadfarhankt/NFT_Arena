@@ -34,6 +34,9 @@ adminRoute.get('/', adminAuth.isLogout, adminController.loadLogin)
 adminRoute.post('/', adminController.verifyLogin)
 adminRoute.get('/home', adminAuth.isLogin, adminController.loadDashboard)
 
+adminRoute.get('/salesReport', adminAuth.isLogin, adminController.downloadSalesReport)
+adminRoute.get('/sales', adminAuth.isLogin, adminController.salesReport)
+
 adminRoute.get('/category', adminAuth.isLogin, adminController.categoryLoad)
 adminRoute.get('/addcategory', adminAuth.isLogin, adminController.addCategoryLoad)
 adminRoute.post('/addcategory', adminController.addCategory)

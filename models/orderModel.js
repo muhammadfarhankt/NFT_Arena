@@ -12,7 +12,8 @@ const orderSchema = new mongoose.Schema({
   },
   payment: {
     type: String,
-    required: true
+    required: true,
+    enum: ['Cash on delivery', 'Razorpay']
   },
   products: {
     item: [{
@@ -40,7 +41,8 @@ const orderSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    default: 'Pending'
+    default: 'Attempted',
+    enum: ['Attempted', 'Success', 'Cancelled', 'Failed']
   },
   isOrder: {
     type: Boolean,
