@@ -1,0 +1,24 @@
+<aside class="category-sidebar">
+  <div class="category-header">
+    <h4 class="category-title"><i class="fas fa-align-left"></i><span>Categories</span></h4><button class="category-close"><i class="icofont-close"></i></button>
+  </div>
+  <ul class="category-list">
+
+
+    <% if(typeof categoryData!=='undefined' ) { %>
+      <% for(let i=0;i<categoryData.length;i++){%>
+        <li class="category-item">
+          <a class="category-link" href="/category?id=<%= categoryData[i]._id%>">
+            <%= categoryData[i].name%>
+          </a>
+        </li>
+
+      <%} %>
+    <% } %>
+
+
+  </ul>
+  <div class="category-footer">
+    <p>All Rights Reserved by <a href="#">Greeny</a></p>
+  </div>
+</aside>

@@ -1,0 +1,68 @@
+<aside class="cart-sidebar">
+  <% if (userData == null) { %>
+
+    <div class="cart-header">
+      <div class="cart-total"><span>Please login/register to use the cart !!</span></div>
+      <div class="nav-content">
+        <div class="nav-btn"><a href="/login" class="btn btn-inline"><i class="fa fa-unlock-alt"></i>
+            <span>join here</span></a>
+        </div>
+      </div>
+      <button class="cart-close"><i class="icofont-close"></i></button>
+    </div>
+
+  <% } else { %>
+  
+
+      <% if ( userData.cart.item.length > 0 ) { %>
+      <div class="cart-header">
+        <div class="cart-total">
+          <i class="fas fa-shopping-basket"></i>
+          <span id="cart-toatal-item">total item (<%= userData.cart.item.length %>)</span>
+        </div>
+        <button class="cart-close"><i class="icofont-close"></i></button>
+      </div>
+      <!-- Loop through user.cart -->
+    
+      <ul class="cart-list">
+        <% userData.cart.item.forEach(item =>{ %>
+        <li class="cart-item" data-pid="<%= item.productId %>">
+          <div class="cart-media" data-pid="<%= item.productId %>">
+            <a href="/product?id=<%= item.productId %>">
+              <img src="/imagess/<%= item.image %>" alt="product">
+            </a>
+            <button class="cart-delete">
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </div>
+          <div class="cart-info-group">
+            <div class="cart-info">
+              <h6><a href="/product?id=<%= item.productId %>"><%= item.name %></a></h6>
+              <p class="unit-price">Unit Price - $<%= item.price %></p>
+            </div>
+           
+          </div>
+        </li>
+    
+        <% }) %>
+    
+      </ul>
+      <div class="cart-footer">
+        
+        <a class="cart-checkout-btn" href="/checkout?cart=<%= userData._id %>">
+          <span class="checkout-label">Proceed to Checkout</span>
+          <span id="checkout-price" class="checkout-price">$<%= userData.cart.totalPrice %></span>
+        </a>
+      </div>
+    
+    
+      <% } else { %>
+  
+      <div class="cart-header">
+        <div class="cart-total"><i class="fas fa-shopping-basket"></i><span>total item (0)</span></div>
+        <button class="cart-close"><i class="icofont-close"></i></button>
+      </div>
+      <% } %>
+
+  <% } %>
+</aside>
