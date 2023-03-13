@@ -393,12 +393,20 @@ const shopLoad = async (req, res) => {
     const endIndex = startIndex + productsPerPage
     const pageProducts = productList.slice(startIndex, endIndex)
     const totalPages = Math.ceil(productList.length / productsPerPage)
+    // const shopSort = newQuery.sort || 'default';
+    const shopRating = 5
+    const shopCategory = null
+    const shopSort = 'default'
+    const shopPrice = null
+    const shopLimit = 12
+    const shopPage = 1
 
     if (req.session.user_id) {
       const userData = await User.findById({ _id: req.session.user_id })
-      res.render('shop', { userData, categoryData, authorData, pageProducts, totalPages, currentPage: parseInt(page, 10) })
+      res.render('shop', { userData, categoryData, authorData, pageProducts, totalPages, currentPage: parseInt(page, 10), shopRating, shopSort, shopCategory, shopPrice, shopLimit, shopPage })
     } else {
-      res.render('shop', { categoryData, authorData, pageProducts, totalPages, currentPage: parseInt(page, 10) })
+      const userData = null
+      res.render('shop', { userData, categoryData, authorData, pageProducts, totalPages, currentPage: parseInt(page, 10), shopRating, shopSort, shopCategory, shopPrice, shopLimit, shopPage })
     }
   } catch (error) {
     console.log(error.message)

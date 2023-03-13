@@ -16,9 +16,21 @@
       <%} %>
     <% } %>
 
+    <li class="category-item">
+    <h4 class="category-title"><i class="fas fa-align-left"></i><span>Authors</span></h4>
+      </li>
+
+    <% if(typeof authorData!=='undefined' ) { %>
+      <% for(let i=0;i<authorData.length;i++){%>
+        <li class="category-item">
+          <a class="category-link" href="/author-products?id=<%= authorData[i]._id%>">
+            <%= authorData[i].name%>
+          </a>
+        </li>
+
+      <%} %>
+    <% } %>
 
   </ul>
-  <div class="category-footer">
-    <p>All Rights Reserved by <a href="#">Greeny</a></p>
-  </div>
+
 </aside>

@@ -11,12 +11,11 @@
         <ul class="header-top-list">
           <% if(userData) { %>
           <li><a href="/orders">My Orders</a></li>
-          <% } %>
-
-          <li><a href="#">contact us</a></li>
-
-          <% if(userData) { %>
+          <li><a href="/cart">Cart</a></li>
+          <li><a href="/wishlist">Wishlist</a></li>
           <li><a href="/logout">Logout</a></li>
+          <% } else { %>
+            <li><a href="/login">Login</a></li>
           <% } %>
 
         </ul>
@@ -70,6 +69,7 @@
           <i class="fas fa-random"></i>
           <sup class="compare-count">0</sup>
         </a>
+
         <a href="/wishlist" class="header-widget" title="Wishlist">
           <i id="wish-round" class="fas fa-heart"></i>
           <sup class="wishlist-count">
@@ -80,13 +80,16 @@
             <% }%>
           </sup>
         </a>
-        <button class="header-widget header-cart" title="Cartlist">
+
+        <a href="/wishlist" class="header-widget" title="Wishlist">
+        <!-- <button class="header-widget header-cart" title="Cartlist"> -->
           <i id="cart-round" class="fas fa-shopping-basket"></i>
           <sup>
             <%= (userData != null ) ? userData.cart.item.length : 0 ; %>
           </sup>
           <span>total price<small>₹ <%= (userData != null) ? userData.cart.totalPrice : 0.00 ; %></small></span>
-        </button>
+        <!-- </button> -->
+        </a>
       </div>
     </div>
   </div>

@@ -81,19 +81,22 @@ const loadDashboard = async (req, res) => {
       if (err) {
         console.error(err)
       } else {
-        const total = result[0].total
-        console.log('Sum of all order amount:', total)
-        return total
+        const totalA = Number(result[0].total)
+        console.log('Sum of all order amount:', totalA)
+        console.log(typeof(totalA))
+        return totalA
       }
     })
-    const totalAmount = total[0].total
+    console.log(total)
+
+    const totalAmount = total
     const orderDataDaily = await Order.aggregate([
       {
         $group: {
-          _id: { $dayOfWeek: { date: "$createdAt" } },
-          amount: { $sum: "$sellingPrice" },
-        },
-      },
+          _id: { $dayOfWeek: { date: '$createdAt' } },
+          amount: { $sum: '$sellingPrice' }
+        }
+      }
     ])
 
     const a = orderDataDaily.map((x) => x._id)
@@ -103,7 +106,7 @@ const loadDashboard = async (req, res) => {
     // const orders = orderNumber.count()
     // console.log('order count : ' + orderNumber)
 
-    res.render('home', { admin: userData, orderCount, userCount, totalAmount: 0, authorCount, productCount, total, categoryCount, bannerCount, couponCount: 40, amount })
+    res.render('home', { admin: userData, orderCount, userCount, totalAmount: 0, authorCount, productCount, total: total[0].total, categoryCount, bannerCount, couponCount: 40, amount })
   } catch (error) {
     console.log(error.message)
   }
@@ -448,29 +451,29 @@ const updateAuthor = async (req, res) => {
 const blockAuthor = async (req, res) => {
   try {
     const authorId = req.query.id
-    console.log('author id for blocking : ' + authorId)
+    // console.log('author id for blocking : ' + authorId)
     const authorData = await Author.findOne({ _id: authorId })
     // await Product.updateMany({}, { $set: { isBlocked: false } })
     const value = authorData.isBlocked
     if (value === true) {
       await Author.findByIdAndUpdate({ _id: authorId }, { $set: { isBlocked: false } })
       const authorProducts = await Product.find({ author: authorId })
-      console.log("author productsssssssssssssssss : " + authorProducts)
+      // console.log("author productsssssssssssssssss : " + authorProducts)
       for (const eachProduct of authorProducts) {
-        eachProduct.isBlocked = false
+        eachProduct.isAuthorBlocked = false
         await eachProduct.save()
       }
-      console.log("author update  : " + authorProducts)
+      // console.log("author update  : " + authorProducts)
       res.redirect('/admin/author')
     } else if (value === false) {
       await Author.findByIdAndUpdate({ _id: authorId }, { $set: { isBlocked: true } })
       const authorProducts = await Product.find({ author: authorId })
-      console.log("author productsssssssssssssssss : " + authorProducts)
+      // console.log("author productsssssssssssssssss : " + authorProducts)
       for (const eachProduct of authorProducts) {
-        eachProduct.isBlocked = true
+        eachProduct.isAuthorBlocked = true
         await eachProduct.save()
       }
-      console.log("author update productsssssssssssssssss : " + authorProducts)
+      // console.log("author update productsssssssssssssssss : " + authorProducts)
       res.redirect('/admin/author')
     }
   } catch (error) {
@@ -592,29 +595,29 @@ const updateCategory = async (req, res) => {
 const blockCategory = async (req, res) => {
   try {
     const categoryId = req.query.id
-    console.log('category id for blocking : ' + categoryId)
+    // console.log('category id for blocking : ' + categoryId)
     const categoryData = await Category.findOne({ _id: categoryId })
-    // await Product.updateMany({}, { $set: { isBlocked: false } })
+    // await Product.updateMany({}, { $set: { isBlocked: false, isSold: false, isAuthorBlocked: false, isCategoryBlocked: false, wishlistCount: 0, viewCount: 0} })
     const value = categoryData.isBlocked
     if (value === true) {
       await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { isBlocked: false } })
       const categoryProducts = await Product.find({ category: categoryId })
-      console.log("category before true : " + categoryProducts)
+      // console.log("category before true : " + categoryProducts)
       for (const eachProduct of categoryProducts) {
-        eachProduct.isBlocked = false
+        eachProduct.isCategoryBlocked = false
         await eachProduct.save()
       }
-      console.log("category after false : " + categoryProducts)
+      // console.log("category after false : " + categoryProducts)
       res.redirect('/admin/category')
     } else if (value === false) {
       await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { isBlocked: true } })
       const categoryProducts = await Product.find({ category: categoryId })
-      console.log("category before false : " + categoryProducts)
+      // console.log("category before false : " + categoryProducts)
       for (const eachProduct of categoryProducts) {
-        eachProduct.isBlocked = true
+        eachProduct.isCategoryBlocked = true
         await eachProduct.save()
       }
-      console.log("category after true : " + categoryProducts)
+      // console.log("category after true : " + categoryProducts)
       res.redirect('/admin/category')
     }
   } catch (error) {
