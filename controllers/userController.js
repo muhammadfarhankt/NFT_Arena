@@ -674,8 +674,8 @@ const razorpayCheckout = async (req, res) => {
   try {
     console.log('razor pay post')
     const userData = await User.findById({ _id: req.session.user_id })
-    const completeUser = await userData.populate('cart.item.productId')
-    let instance = new Razorpay({ key_id: process.env.razorPayId, key_secret: process.env.razorPaySecret })
+    // const completeUser = await userData.populate('cart.item.productId')
+    const instance = new Razorpay({ key_id: process.env.razorPayId, key_secret: process.env.razorPaySecret })
     // console.log('razir pay id : ' + process.env.razorPayId + '   razor pay secret : : ' + process.env.razorPaySecret)
     // console.log(' instanceeeeeeeeeeeeeeeee  ' + instance)
     const order = await instance.orders.create({

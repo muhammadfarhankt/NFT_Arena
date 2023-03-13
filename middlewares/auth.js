@@ -1,9 +1,10 @@
+// eslint-disable-next-line no-unused-vars
 const session = require('express-session')
 
 const isLogin = async (req, res, next) => {
   try {
-    if (req.session.user_id) {} 
-    else {
+    // eslint-disable-next-line no-empty
+    if (req.session.user_id) { } else {
       res.redirect('/login')
     }
     next()

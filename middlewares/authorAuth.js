@@ -1,5 +1,6 @@
 const isLogin = async (req, res, next) => {
   try {
+    // eslint-disable-next-line no-empty
     if (req.session.author_id) {} else {
       res.redirect('/author')
     }
