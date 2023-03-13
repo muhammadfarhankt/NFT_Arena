@@ -26,7 +26,7 @@ const securePassword = async (password) => {
 }
 
 // for mail send
-const sendVerifyMail = async (name, email, user_id) => {
+const sendVerifyMail = async (name, email, userId) => {
   try {
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -42,7 +42,7 @@ const sendVerifyMail = async (name, email, user_id) => {
       from: process.env.myemail,
       to: email,
       subject: 'Verify your NFT Arena Account',
-      html: '<p> Hello Mr. ' + name + ' , Plesase Click  <a href="http://localhost:3000/verify?id=' + user_id + '"> here to verify </a> your NFT Arena account</p>'
+      html: '<p> Hello Mr. ' + name + ' , Plesase Click  <a href="http://localhost:3000/verify?id=' + userId + '"> here to verify </a> your NFT Arena account</p>'
     }
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
@@ -88,6 +88,7 @@ const sendResetMail = async (name, email, token) => {
 }
 
 // for otp login
+// eslint-disable-next-line prefer-const
 let otp = otpGenerator.generate(6, { digits: true, upperCaseAlphabets: false, lowerCaseAlphabets: false, specialChars: false })
 const sendOtpMail = async (name, email, otp) => {
   try {
@@ -193,8 +194,8 @@ const verifyMail = async (req, res) => {
 // loading login page
 const loginLoad = async (req, res) => {
   try {
-    categoryData = await Category.find({ isBlocked: false, isDeleted: false })
-    authorData = await Author.find({ isBlocked: false, isDeleted: false })
+    const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
+    const authorData = await Author.find({ isBlocked: false, isDeleted: false })
     res.render('login', { authorData, categoryData })
   } catch (error) {
     console.log(error.message)
@@ -267,8 +268,8 @@ const otpLoginVerification = async (req, res) => {
 
 const otpPasswordVerify = async (req, res) => {
   try {
-    userId = req.session.otpUserId
-    uData = await User.findById({ _id: userId })
+    const userId = req.session.otpUserId
+    const uData = await User.findById({ _id: userId })
     res.render('otpLoginVerify', { uData })
   } catch (error) {
     console.log(error.message)
@@ -277,16 +278,16 @@ const otpPasswordVerify = async (req, res) => {
 
 const otpPasswordVerifyPost = async (req, res) => {
   console.log('otpPasswordVerifyPost')
-  userId = req.body.id
-  userOtp = req.body.otp
+  const userId = req.body.id
+  const userOtp = req.body.otp
   console.log('userId ' + userId)
   console.log('user otp : ' + userOtp + '    otp   :  + ' + otp)
-  if (userOtp == otp) {
-    console.log('otp is correct')
+  if (userOtp === otp) {
+    // console.log('otp is correct')
     req.session.user_id = userId
     res.redirect('/home')
   } else {
-    console.log(' Incorrect OTP')
+    // console.log(' Incorrect OTP')
     res.render('otpLoginVerify', { message: 'Incorrect OTP' })
   }
 }
@@ -297,11 +298,11 @@ const loadHome = async (req, res) => {
     if (req.session.user_id) {
       const userData = await User.findById({ _id: req.session.user_id })
       // console.log('userData')
-      console.log(userData)
+      // console.log(userData)
       const bannerData = await Banner.find({})
       const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
       const productData = await Product.find({})
-      console.log(categoryData)
+      // console.log(categoryData)
       res.render('home', { userData, categoryData, bannerData, productData })
     } else {
       res.redirect('/login')
@@ -340,7 +341,7 @@ const forgetLink = async (req, res) => {
         res.render('forget', { message: 'Not verified Email yet!. Pls Verify your email' })
       } else {
         const randomString = randomstring.generate()
-        const updatedData = await User.updateOne({ email }, { $set: { token: randomString } })
+        await User.updateOne({ email }, { $set: { token: randomString } })
         sendResetMail(userData.name, userData.email, randomString)
         res.render('forget', { message: 'Pls check your Mail to Reset Password' })
       }
@@ -356,7 +357,7 @@ const forgetPasswordLoad = async (req, res) => {
   try {
     const token = req.query.token
     const tokenData = await User.findOne({ token })
-    console.log(tokenData)
+    // console.log(tokenData)
     if (tokenData) {
       res.render('forget-password', { user_id: tokenData })
     } else {
@@ -370,10 +371,10 @@ const forgetPasswordLoad = async (req, res) => {
 const resetPassword = async (req, res) => {
   try {
     const password = req.body.password
-    const user_id = req.body.user_id
-    console.log(user_id)
+    const userId = req.body.user_id
+    // console.log(user_id)
     const sPassword = await securePassword(password)
-    const updatedData = await User.findByIdAndUpdate({ _id: user_id }, { $set: { password: sPassword, token: '' } })
+    const updatedData = await User.findByIdAndUpdate({ _id: userId }, { $set: { password: sPassword, token: '' } })
     res.render('forget success', { message: 'Password Updated Succesfully' })
     console.log(updatedData)
   } catch (error) {
@@ -460,8 +461,8 @@ const logoutUser = async (req, res) => {
 const profileLoad = async (req, res) => {
   try {
     const userData = await User.findById({ _id: req.session.user_id })
-    console.log('userData')
-    console.log(userData)
+    // console.log('userData')
+    // console.log(userData)
     res.render('profile', { userData })
   } catch (error) {
     console.log(error.message)
@@ -477,7 +478,7 @@ const saveUserDetails = async (req, res) => {
 
     res.redirect('/profile')
   } catch (error) {
-    console.log(error.message);
+    console.log(error.message)
   }
 }
 
@@ -514,7 +515,7 @@ const getSingleOrderView = async (req, res) => {
     const populatedData = await orderData.populate('products.item.productId')
     res.render('singleOrderView', { userData, categoryData, authorData, orderData, populatedData })
   } catch (error) {
-    console.log(error.message);
+    console.log(error.message)
   }
 }
 
@@ -541,7 +542,7 @@ const createOrder = async (req, res) => {
     if (req.body.currentAddress) {
       const { _id, country, address, city, state, zip, phonenumber, email } = userData
       order = new Orders({
-        userId: req.session.user_id,
+        userId: _id,
         name: userData.name,
         country,
         address,
@@ -555,7 +556,7 @@ const createOrder = async (req, res) => {
         sellingPrice: totalCartPrice
       })
     } else if (req.body.address) {
-      const { name, country, address, city, state, zip, phone, email, payment } = req.body;
+      const { name, country, address, city, state, zip, phone, email, payment } = req.body
       order = new Orders({
         userId: req.session.user_id,
         name,
@@ -587,13 +588,13 @@ const createOrder = async (req, res) => {
     console.log('order data after save ' + orderData)
     if (orderData) {
       // await User.updateOne({ _id: req.session.user_id }, { cart: {} })
-      let afterPrice = 0 
-      let isApplied = 0
-      console.log(req.body.payment);
-      if (req.body.payment == 'Cash on delivery') {
+      // let afterPrice = 0
+      // let isApplied = 0
+      console.log(req.body.payment)
+      if (req.body.payment === 'Cash on delivery') {
         // console.log(' cart length ' + userData.cart.item.length)
         res.redirect('/orderSuccess')
-      } else if (req.body.payment == 'Razorpay') {
+      } else if (req.body.payment === 'Razorpay') {
         res.redirect('/payment')
       } else {
         res.redirect('/checkout')
@@ -602,7 +603,7 @@ const createOrder = async (req, res) => {
       res.redirect('/checkout')
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.message)
   }
 }
 
@@ -612,19 +613,19 @@ const orderSuccess = async (req, res) => {
   const authorData = await Author.find({ isBlocked: false, isDeleted: false })
   const userData = await User.findById({ _id: req.session.user_id })
   for (let j = 0; j < userData.cart.item.length; j++) {
-    let singleId = userData.cart.item[j].productId
-    let singleProduct = await Product.findOne({ _id: singleId })
+    const singleId = userData.cart.item[j].productId
+    const singleProduct = await Product.findOne({ _id: singleId })
     // await Product.findByIdAndUpdate({_id: singleId}, {$set: { quantity: cart.item[i].quantity}})
-    console.log('single product detailssssss' + singleProduct)
+    // console.log('single product detailssssss' + singleProduct)
     singleProduct.stock -= userData.cart.item[j].quantity
     singleProduct.save()
-    console.log('single product detailssssss' + singleProduct)
+    // console.log('single product detailssssss' + singleProduct)
   }
   userData.cart.item = []
   userData.cart.totalPrice = 0
   userData.save()
   // console.log('current order id ' + req.session.currentOrderId)
-  await Orders.updateOne({ userId: req.session.user_id, _id: req.session.currentOrderId}, { $set: { status: 'Success' } })
+  await Orders.updateOne({ userId: req.session.user_id, _id: req.session.currentOrderId }, { $set: { status: 'Success' } })
   res.render('orderSuccess', { userData, categoryData, authorData })
 }
 
@@ -640,10 +641,10 @@ const orderFailed = async (req, res) => {
 const productLoad = async (req, res) => {
   try {
     const productId = req.query.id
-    categoryData = await Category.find({ isBlocked: false, isDeleted: false })
-    authorData = await Author.find({ isBlocked: false, isDeleted: false })
+    const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
+    const authorData = await Author.find({ isBlocked: false, isDeleted: false })
     const productDetails = await Product.findById({ _id: productId }).populate('category').populate('author')
-    console.log('product details ::::::::::::::  ' + productDetails)
+    // console.log('product details ::::::::::::::  ' + productDetails)
     if (req.session.user_id) {
       const userData = await User.findById({ _id: req.session.user_id })
       res.render('product', { productDetails, userData, authorData, categoryData })
@@ -665,7 +666,7 @@ const loadPayment = async (req, res) => {
     const authorData = await Author.find({ isBlocked: false, isDeleted: false })
     res.render('payment', { userData, categoryData, authorData })
   } catch (error) {
-    console.log(error.message);
+    console.log(error.message)
   }
 }
 
@@ -675,11 +676,11 @@ const razorpayCheckout = async (req, res) => {
     const userData = await User.findById({ _id: req.session.user_id })
     const completeUser = await userData.populate('cart.item.productId')
     let instance = new Razorpay({ key_id: process.env.razorPayId, key_secret: process.env.razorPaySecret })
-    console.log('razir pay id : ' + process.env.razorPayId + '   razor pay secret : : ' + process.env.razorPaySecret)
-    console.log(' instanceeeeeeeeeeeeeeeee  ' + instance)
-    let order = await instance.orders.create({
+    // console.log('razir pay id : ' + process.env.razorPayId + '   razor pay secret : : ' + process.env.razorPaySecret)
+    // console.log(' instanceeeeeeeeeeeeeeeee  ' + instance)
+    const order = await instance.orders.create({
       amount: totalCartPrice * 100,
-      currency: "INR",
+      currency: 'INR',
       receipt: 'receipt#1'
     })
     console.log(' rzor pay order ' + order)
@@ -688,7 +689,7 @@ const razorpayCheckout = async (req, res) => {
       order
     })
   } catch (error) {
-    console.log(error.message);
+    console.log(error.message)
   }
 }
 
@@ -716,7 +717,7 @@ const addToCart = async (req, res) => {
     const userId = req.session.user_id
     // console.log(userId)
     const userData = await User.findById({ _id: userId })
-    console.log('user data :  ' + userData)
+    // console.log('user data :  ' + userData)
     userData.addToCart(productData)
     res.redirect('/cart')
   } catch (error) {
@@ -728,8 +729,8 @@ const addToCart = async (req, res) => {
 const reduceFromCart = async (req, res) => {
   const productId = req.query.id
   const userData = await User.findById({ _id: req.session.user_id })
-  const productIndex = await userData.cart.item.findIndex((p) => p.productId == productId)
-  console.log('product Index : ' + productIndex)
+  const productIndex = await userData.cart.item.findIndex((p) => p.productId === productId)
+  // console.log('product Index : ' + productIndex)
   userData.cart.item[productIndex].quantity -= 1
   userData.cart.totalPrice -= userData.cart.item[productIndex].price
   if (userData.cart.item[productIndex].quantity === 0) {
@@ -738,7 +739,7 @@ const reduceFromCart = async (req, res) => {
     const qty = { a: parseInt(userData.cart.item[productIndex].quantity) }
     userData.cart.item[productIndex].quantity = qty.a
   }
-  console.log('total price  after : ' + userData.cart.totalPrice)
+  // console.log('total price  after : ' + userData.cart.totalPrice)
   await userData.save()
   res.redirect('/cart')
 }
@@ -755,11 +756,11 @@ const removeFromCart = async (req, res) => {
   // res.redirect('/cart')
   const productId = req.query.id
   const userData = await User.findById({ _id: req.session.user_id })
-  const productIndex = await userData.cart.item.findIndex((p) => p.productId == productId)
-  console.log('product Index : ' + productIndex)
-  console.log('product quantity : ' + userData.cart.item[productIndex].quantity)
+  const productIndex = await userData.cart.item.findIndex((p) => p.productId === productId)
+  // console.log('product Index : ' + productIndex)
+  // console.log('product quantity : ' + userData.cart.item[productIndex].quantity)
   const qty = { a: parseInt(userData.cart.item[productIndex].quantity) }
-  console.log('qty a  :  ' + qty.a)
+  // console.log('qty a  :  ' + qty.a)
   userData.cart.item[productIndex].quantity = qty.a
   userData.cart.totalPrice -= userData.cart.item[productIndex].price * userData.cart.item[productIndex].quantity
   userData.cart.item.splice(productIndex, 1)
@@ -780,8 +781,8 @@ const moveToWishlist = async (req, res) => {
   console.log('move to wishlist')
   const productId = req.query.id
   const userData = await User.findById({ _id: req.session.user_id })
-  const productIndex = await userData.cart.item.findIndex((p) => p.productId == productId)
-  const wishList = await userData.addWishlist(req.query.id)
+  const productIndex = await userData.cart.item.findIndex((p) => p.productId === productId)
+  await userData.addWishlist(req.query.id)
   userData.cart.totalPrice -= parseInt(userData.cart.item[productIndex].price * userData.cart.item[productIndex].quantity)
   userData.cart.item.splice(productIndex, 1)
   await userData.save()
@@ -794,9 +795,9 @@ const moveToWishlist = async (req, res) => {
 const wishlistLoad = async (req, res) => {
   try {
     const userData = await User.findById({ _id: req.session.user_id })
-    console.log('userData   :  ' + userData)
+    // console.log('userData   :  ' + userData)
     const populatedData = await userData.populate('wishlist.item.productId')
-    console.log('populated data : ' + populatedData)
+    // console.log('populated data : ' + populatedData)
     res.render('wishlist', { userData, wishListData: populatedData.wishlist })
   } catch (error) {
     console.log(error.message)
@@ -806,14 +807,14 @@ const wishlistLoad = async (req, res) => {
 // add product to wishlist
 const addToWishlist = async (req, res) => {
   try {
-    const productId = req.query.id
+    // const productId = req.query.id
     const userId = req.session.user_id
-    console.log(productId)
-    console.log(userId)
+    // console.log(productId)
+    // console.log(userId)
     const userData = await User.findById({ _id: userId })
-    console.log('wish list' + userData.wishList)
-    const wishList = await userData.addWishlist(req.query.id)
-    console.log(wishList)
+    // console.log('wish list' + userData.wishList)
+    await userData.addWishlist(req.query.id)
+    // console.log(wishList)
     res.redirect('/wishlist')
   } catch (error) {
     console.log('add to wish list catch error')
@@ -823,20 +824,18 @@ const addToWishlist = async (req, res) => {
 // remove an item from wishlist
 const removeFromWishlist = async (req, res) => {
   const productId = req.query.id
-  userData = await User.findById({ _id: req.session.user_id })
-
+  const userData = await User.findById({ _id: req.session.user_id })
   // console.log(userData)
-  const wishListIndex = await userData.wishlist.item.findIndex((x) => x.productId == productId)
-  console.log('wish list index  :  ' + wishListIndex)
+  const wishListIndex = await userData.wishlist.item.findIndex((x) => x.productId === productId)
+  // console.log('wish list index  :  ' + wishListIndex)
   userData.wishlist.item.splice(wishListIndex, 1)
-
   userData.save()
   res.redirect('/wishlist')
 }
 
 // empty wishlist
 const emptyWishlist = async (req, res) => {
-  userData = await User.findById({ _id: req.session.user_id })
+  const userData = await User.findById({ _id: req.session.user_id })
   userData.wishlist.item.splice(0, userData.wishlist.item.length)
   userData.save()
   res.redirect('/wishlist')
@@ -844,11 +843,11 @@ const emptyWishlist = async (req, res) => {
 
 // move an item from wishlist to cart
 const moveToCart = async (req, res) => {
-  console.log('move to cart')
+  // console.log('move to cart')
   const productId = req.query.id
-  productData = await Product.findById({ _id: productId })
-  userData = await User.findById({ _id: req.session.user_id })
-  const wishListIndex = await userData.wishlist.item.findIndex((x) => x.productId == productId)
+  const productData = await Product.findById({ _id: productId })
+  const userData = await User.findById({ _id: req.session.user_id })
+  const wishListIndex = await userData.wishlist.item.findIndex((x) => x.productId === productId)
   userData.wishlist.item.splice(wishListIndex, 1)
   userData.addToCart(productData)
   res.redirect('/wishlist')
