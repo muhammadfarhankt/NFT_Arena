@@ -5,14 +5,14 @@ const bcrypt = require('bcrypt')
 const Product = require('../models/productModel')
 const Banner = require('../models/bannerModel')
 const Order = require('../models/orderModel')
-const Offer = require("../models/offerModel")
+const Offer = require('../models/offerModel')
 const multer = require('multer')
 // const bodyParser = require('body-parser');
 const randomstring = require('randomstring')
 const { find } = require('../models/userModel')
 const excelJs = require('exceljs')
 const objectId = require('mongodb').ObjectId
-const { ObjectId } = require("mongodb")
+const { ObjectId } = require('mongodb')
 
 const securePassword = async (password) => {
   try {
@@ -81,15 +81,10 @@ const loadDashboard = async (req, res) => {
       if (err) {
         console.error(err)
       } else {
-        const totalA = Number(result[0].total)
-        console.log('Sum of all order amount:', totalA)
-        console.log(typeof(totalA))
-        return totalA
+        const total = Number(result[0].total)
+        return total
       }
     })
-    console.log(total)
-
-    const totalAmount = total
     const orderDataDaily = await Order.aggregate([
       {
         $group: {
@@ -153,21 +148,21 @@ const downloadSalesReport = async function (req, res) {
     })
 
     workSheet.getRow(1).eachCell(function (cell) {
-      cell.font = { bold: true };
+      cell.font = { bold: true }
     })
 
     res.setHeader(
-      "Content-Type",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    );
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
 
-    res.setHeader("Content-Disposition", `attachment;filename=order.xlsx`);
+    res.setHeader('Content-Disposition', 'attachment;filename=order.xlsx')
 
     return workBook.xlsx.write(res).then(function () {
-      res.status(200);
+      res.status(200)
     })
   } catch (error) {
-    console.log(error.message);
+    console.log(error.message)
   }
 }
 
@@ -176,17 +171,17 @@ const salesReport = async (req, res) => {
     const orderData = await Order.aggregate([
       {
         $group: {
-          _id: { $dayOfWeek: { date: "$createdAt" } },
-          amount: { $sum: "$sellingPrice" },
-        },
-      },
+          _id: { $dayOfWeek: { date: '$createdAt' } },
+          amount: { $sum: '$sellingPrice' }
+        }
+      }
     ])
 
     const a = orderData.map((x) => x._id)
     const amount = orderData.map((x) => x.amount)
     res.render('salesGraph', { amount })
   } catch (error) {
-    console.log(error.messaage);
+    console.log(error.messaage)
   }
 }
 
@@ -196,10 +191,10 @@ const salesReport = async (req, res) => {
 
 // banner loading
 const bannerLoad = async (req, res) => {
-  const productData = await Product.find({}).populate('category').populate('author')
+  await Product.find({}).populate('category').populate('author')
   // console.log('product data ' + productData)
   const bannerData = await Banner.find({})
-  console.log('Banner Dataaaaaa' + bannerData)
+  // console.log('Banner Dataaaaaa' + bannerData)
   try {
     res.render('banners', { bannerData })
   } catch (error) {
@@ -219,7 +214,7 @@ const addBannerLoad = async (req, res) => {
 
 // banner post
 const addBannerPost = async (req, res) => {
-  console.log('banner post')
+  // console.log('banner post')
   // res.redirect('/admin/banners')
   try {
     const banner = new Banner({
@@ -227,8 +222,8 @@ const addBannerPost = async (req, res) => {
       link: req.body.link,
       image: req.file.filename
     })
-    const bannerData = await banner.save()
-    console.log('Banner dataaaaaaaaaa ' + bannerData)
+    await banner.save()
+    // console.log('Banner dataaaaaaaaaa ' + bannerData)
     res.redirect('/admin/banners')
   } catch (error) {
     console.log(error.message)
@@ -244,8 +239,8 @@ const updateBannerLoad = async (req, res) => {
 }
 
 const updateBannerPost = async (req, res) => {
-  const bannerData = await Banner.findById({ _id: req.query.id })
-  console.log('baner dataaaaaaaaaaa ' + bannerData)
+  await Banner.findById({ _id: req.query.id })
+  // console.log('baner dataaaaaaaaaaa ' + bannerData)
   res.redirect('/admin/banners')
 }
 
@@ -254,17 +249,17 @@ const blockBanner = async (req, res) => {
   try {
     const bannerId = req.query.id
     const bannerData = await Banner.findById({ _id: bannerId })
-    console.log('banner data for blocking : ' + bannerData)
+    // console.log('banner data for blocking : ' + bannerData)
     // console.log('blocked dddddddddddd   ' + bannerData.isBlocked)
     const value = bannerData.isBlocked
-    console.log(value)
+    // console.log(value)
     if (value === true) {
-      const bannerUpdate = await Banner.findByIdAndUpdate({ _id: bannerId }, { $set: { isBlocked: false } })
+      await Banner.findByIdAndUpdate({ _id: bannerId }, { $set: { isBlocked: false } })
       res.redirect('/admin/banners')
     } else if (value === false) {
-      const bannerUpdate = await Banner.findByIdAndUpdate({ _id: bannerId }, { $set: { isBlocked: true } })
+      await Banner.findByIdAndUpdate({ _id: bannerId }, { $set: { isBlocked: true } })
       res.redirect('/admin/banners')
-      console.log(bannerData)
+      // console.log(bannerData)
     }
   } catch (error) {
     console.log(error.message)
@@ -307,7 +302,7 @@ const addProduct = async (req, res) => {
       stock: req.body.stock,
       isDeleted: false
     })
-    const productData = await product.save()
+    await product.save()
     res.redirect('/admin/products')
   } catch (error) {
     console.log(error.message)
@@ -318,20 +313,20 @@ const addProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const productId = req.query.id
-    console.log('product id : ' + productId)
+    // console.log('product id : ' + productId)
     const productData = await Product.findOne({ _id: productId })
     const value = productData.isDeleted
-    console.log(value)
+    // console.log(value)
     if (value === false) {
-      console.log('false')
-      const productDelete = await Product.findByIdAndUpdate({ _id: productId }, { $set: { isDeleted: true } })
+      // console.log('false')
+      await Product.findByIdAndUpdate({ _id: productId }, { $set: { isDeleted: true } })
       // productData.isDeleted = {$toBool: 1}
       // productData.save()
       res.redirect('/admin/products')
       // console.log(productData)
     } else {
-      console.log('true')
-      const productDelete = await Product.findByIdAndUpdate({ _id: productId }, { $set: { isDeleted: false } })
+      // console.log('true')
+      await Product.findByIdAndUpdate({ _id: productId }, { $set: { isDeleted: false } })
       // productData.isDeleted = {$toBool: false}
       // productData.save()
       res.redirect('/admin/products')
@@ -359,7 +354,7 @@ const blockUser = async (req, res) => {
     // console.log(userId)
     const userData = await User.findOne({ _id: userId })
     const value = userData.isBlocked
-    console.log(value)
+    // console.log(value)
     if (value === true) {
       await User.findByIdAndUpdate({ _id: userId }, { $set: { isBlocked: false } })
       res.redirect('/admin/user')
@@ -422,7 +417,7 @@ const updateAuthorLoad = async (req, res) => {
   try {
     const authorId = req.query.id
     const authorData = await Author.findOne({ _id: authorId })
-    console.log(authorData)
+    // console.log(authorData)
     res.render('updateAuthor', { author: authorData })
   } catch (error) {
     console.log(error.mesage)
@@ -488,12 +483,12 @@ const deleteAuthor = async (req, res) => {
     const authorData = await Author.findByIdAndUpdate({ _id: authorId }, { $set: { isDeleted: true } })
     await authorData.save()
     const authorProducts = await Product.find({ author: authorId })
-    console.log("author products before deleting : " + authorProducts)
+    // console.log("author products before deleting : " + authorProducts)
     for (const eachProduct of authorProducts) {
       eachProduct.isDeleted = true
       await eachProduct.save()
     }
-    console.log('author delted data : ' + authorData)
+    // console.log('author delted data : ' + authorData)
     res.redirect('/admin/author')
   } catch (error) {
     console.log(error.message)
@@ -547,9 +542,9 @@ const addCategory = async (req, res) => {
 const deleteCategory = async (req, res) => {
   try {
     const categoryId = req.query.id
-    const categoryData = await Category.findByIdAndDelete({ _id: categoryId })
+    await Category.findByIdAndDelete({ _id: categoryId })
     const categoryProducts = await Product.find({ category: categoryId })
-    console.log("category products before deleting : " + categoryProducts)
+    // console.log("category products before deleting : " + categoryProducts)
     for (const eachProduct of categoryProducts) {
       eachProduct.isDeleted = true
       await eachProduct.save()
@@ -578,7 +573,7 @@ const updateCategory = async (req, res) => {
     const categoryData = await Category.findOne({ _id: categoryId })
     const categoryName = req.body.name.trim().toLowerCase()
     const isExists = await Category.findOne({ name: categoryName })
-    console.log('is exists : ' + isExists)
+    // console.log('is exists : ' + isExists)
 
     if (isExists === null) {
       await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { name: req.body.name.trim(), description: req.body.description.trim() } })
@@ -641,7 +636,7 @@ const updateProductLoad = async (req, res) => {
   try {
     const productId = req.query.id
 
-    console.log('hii')
+    // console.log('hii')
     const productData = await Product.findOne({ _id: productId }).populate('category').populate('author')
     const authorData = await Author.find({})
     const categoryData = await Category.find({})
@@ -655,9 +650,9 @@ const updateProductLoad = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const productId = req.body.id
-    console.log('try')
-    console.log(productId)
-    const updateData = await Product.findByIdAndUpdate({ _id: productId }, { $set: { name: req.body.name, description: req.body.description, author: req.body.author, category: req.body.category, price: req.body.price, stock: req.body.stock } })
+    // console.log('try')
+    // console.log(productId)
+    await Product.findByIdAndUpdate({ _id: productId }, { $set: { name: req.body.name, description: req.body.description, author: req.body.author, category: req.body.category, price: req.body.price, stock: req.body.stock } })
     res.redirect('/admin/products')
   } catch (error) {
     console.log(error.mesage)
@@ -677,8 +672,8 @@ const orderLoad = async (req, res) => {
 
 const cancelOrder = async (req, res) => {
   try {
-    const singleOrder = await Order.findByIdAndUpdate({ _id: req.query.id }, { $set: { status: 'Cancelled' } })
-    console.log('cancelled order detailsssssssssss' + singleOrder)
+    await Order.findByIdAndUpdate({ _id: req.query.id }, { $set: { status: 'Cancelled' } })
+    // console.log('cancelled order detailsssssssssss' + singleOrder)
     // const orderData = await Order.find({})
     res.redirect('/admin/orders')
   } catch (error) {
@@ -696,9 +691,9 @@ const editOrderLoad = async (req, res) => {
 
 const postOrderLoad = async (req, res) => {
   try {
-    console.log('order edit post')
-    const orderData = await Order.findByIdAndUpdate({ _id: req.body.id }, { $set: { status: req.body.status } })
-    console.log('order data psot ' + orderData)
+    // console.log('order edit post')
+    await Order.findByIdAndUpdate({ _id: req.body.id }, { $set: { status: req.body.status } })
+    // console.log('order data psot ' + orderData)
     res.redirect('/admin/orders')
   } catch (error) {
   }

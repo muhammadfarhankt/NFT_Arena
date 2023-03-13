@@ -1,4 +1,4 @@
 const sessionSecret = "mysessionsecret"
-module.exports ={
-    sessionSecret
+module.exports = {
+  sessionSecret
 }
