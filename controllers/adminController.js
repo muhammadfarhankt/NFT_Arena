@@ -397,7 +397,8 @@ const addAuthorPost = async (req, res) => {
     if (isExists === null) {
       const author = new Author({
         name: req.body.name.trim(),
-        description: req.body.description.trim()
+        description: req.body.description.trim(),
+        email: req.body.email.trim()
       })
       await author.save()
       res.redirect('author')
@@ -517,11 +518,11 @@ const addCategoryLoad = async (req, res) => {
 // add new category POST
 const addCategory = async (req, res) => {
   try {
-    const categoryName = req.body.name.trim().toLowerCase()
-    const isExists = await Category.findOne({ name: categoryName })
+    const categoryName = req.body.name.trim()
+    const isExists = await Category.findOne({ name: { $regex: '.*' + categoryName + '.*', $options: 'i' } })
     if (isExists === null) {
       const category = new Category({
-        name: req.body.name.trim(),
+        name: categoryName,
         description: req.body.description.trim()
       })
       await category.save()
@@ -538,15 +539,35 @@ const addCategory = async (req, res) => {
 // delete category
 const deleteCategory = async (req, res) => {
   try {
+    // const categoryId = req.query.id
+    // await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { isDeleted: true } })
+    // const categoryProducts = await Product.find({ category: categoryId })
+    // // console.log("category products before deleting : " + categoryProducts)
+    // for (const eachProduct of categoryProducts) {
+    //   eachProduct.isCategoryBlocked = true
+    //   await eachProduct.save()
+    // }
+    // res.redirect('/admin/category')
+
     const categoryId = req.query.id
-    await Category.findByIdAndDelete({ _id: categoryId })
+    const categoryData = await Category.findOne({ _id: categoryId })
+    const value = categoryData.isDeleted
     const categoryProducts = await Product.find({ category: categoryId })
-    // console.log("category products before deleting : " + categoryProducts)
-    for (const eachProduct of categoryProducts) {
-      eachProduct.isDeleted = true
-      await eachProduct.save()
+    if (value === true) {
+      await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { isDeleted: false } })
+      for (const eachProduct of categoryProducts) {
+        eachProduct.isCategoryBlocked = false
+        await eachProduct.save()
+      }
+      res.redirect('/admin/category')
+    } else if (value === false) {
+      await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { isDeleted: true } })
+      for (const eachProduct of categoryProducts) {
+        eachProduct.isCategoryBlocked = true
+        await eachProduct.save()
+      }
+      res.redirect('/admin/category')
     }
-    res.redirect('/admin/category')
   } catch (error) {
     console.log(error.message)
   }
@@ -568,12 +589,15 @@ const updateCategory = async (req, res) => {
   try {
     const categoryId = req.body.id
     const categoryData = await Category.findOne({ _id: categoryId })
-    const categoryName = req.body.name.trim().toLowerCase()
-    const isExists = await Category.findOne({ name: categoryName })
+    const categoryName = req.body.name.trim()
+    const isExists = await Category.findOne({ name: { $regex: '.*' + categoryName + '.*', $options: 'i' } })
     // console.log('is exists : ' + isExists)
-
-    if (isExists === null) {
-      await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { name: req.body.name.trim(), description: req.body.description.trim() } })
+    if (categoryData.name === categoryName) {
+      console.log('same name')
+      await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { description: req.body.description.trim() } })
+      res.redirect('/admin/category')
+    } else if (isExists === null) {
+      await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { name: categoryName, description: req.body.description.trim() } })
       res.redirect('/admin/category')
     } else {
       res.render('updateCategory', { category: categoryData, message: 'Category Name already exists' })
