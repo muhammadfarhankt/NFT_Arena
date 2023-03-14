@@ -13,7 +13,6 @@ const { find } = require('../models/userModel')
 const excelJs = require('exceljs')
 const objectId = require('mongodb').ObjectId
 const { ObjectId } = require('mongodb')
-
 const securePassword = async (password) => {
   try {
     const passwordHash = await bcrypt.hash(password, 7)
@@ -99,8 +98,6 @@ const loadDashboard = async (req, res) => {
     // console.log('Sum of all orders', total[0].total)
     // let orderNumber = await User.count({}, function(count){ return count})
     // const orders = orderNumber.count()
-    // console.log('order count : ' + orderNumber)
-
     res.render('home', { admin: userData, orderCount, userCount, totalAmount: 0, authorCount, productCount, total: total[0].total, categoryCount, bannerCount, couponCount: 40, amount })
   } catch (error) {
     console.log(error.message)
