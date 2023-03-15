@@ -373,7 +373,7 @@ const blockUser = async (req, res) => {
 // author show
 const authorLoad = async (req, res) => {
   try {
-    const authorData = await Author.find({ })
+    const authorData = await Author.find({})
     res.render('author', { authorData })
   } catch (error) {
     console.log(error.message)
@@ -392,8 +392,8 @@ const addAuthor = async (req, res) => {
 // add new author post
 const addAuthorPost = async (req, res) => {
   try {
-    const authorName = req.body.name.trim().toLowerCase()
-    const isExists = await Author.findOne({ name: authorName })
+    const authorName = req.body.name.trim()
+    const isExists = await Author.findOne({ name: { $regex: '.*' + authorName + '.*', $options: 'i' } })
     if (isExists === null) {
       const author = new Author({
         name: req.body.name.trim(),
@@ -426,10 +426,13 @@ const updateAuthorLoad = async (req, res) => {
 const updateAuthor = async (req, res) => {
   try {
     const authorId = req.body.id
-    const authorName = req.body.name.trim().toLowerCase()
+    const authorName = req.body.name.trim()
     const authorData = await Author.findOne({ _id: authorId })
-    const isExists = await Author.findOne({ name: authorName })
-    if (isExists === null) {
+    const isExists = await Author.findOne({ name: { $regex: '.*' + authorName + '.*', $options: 'i' } })
+    if (authorData.name === authorName) {
+      await Author.findByIdAndUpdate({ _id: authorId }, { $set: { description: req.body.description.trim() } })
+      res.redirect('/admin/author')
+    } else if (isExists === null) {
       await Author.findByIdAndUpdate({ _id: authorId }, { $set: { name: req.body.name.trim(), description: req.body.description.trim() } })
       res.redirect('/admin/author')
     } else {
@@ -444,29 +447,24 @@ const updateAuthor = async (req, res) => {
 const blockAuthor = async (req, res) => {
   try {
     const authorId = req.query.id
-    // console.log('author id for blocking : ' + authorId)
     const authorData = await Author.findOne({ _id: authorId })
-    // await Product.updateMany({}, { $set: { isBlocked: false } })
     const value = authorData.isBlocked
+    const authorProducts = await Product.find({ author: authorId })
     if (value === true) {
       await Author.findByIdAndUpdate({ _id: authorId }, { $set: { isBlocked: false } })
-      const authorProducts = await Product.find({ author: authorId })
-      // console.log("author productsssssssssssssssss : " + authorProducts)
-      for (const eachProduct of authorProducts) {
-        eachProduct.isAuthorBlocked = false
-        await eachProduct.save()
+      if (authorData.isDeleted === false) {
+        for (const eachProduct of authorProducts) {
+          eachProduct.isAuthorBlocked = false
+          await eachProduct.save()
+        }
       }
-      // console.log("author update  : " + authorProducts)
       res.redirect('/admin/author')
     } else if (value === false) {
       await Author.findByIdAndUpdate({ _id: authorId }, { $set: { isBlocked: true } })
-      const authorProducts = await Product.find({ author: authorId })
-      // console.log("author productsssssssssssssssss : " + authorProducts)
       for (const eachProduct of authorProducts) {
         eachProduct.isAuthorBlocked = true
         await eachProduct.save()
       }
-      // console.log("author update productsssssssssssssssss : " + authorProducts)
       res.redirect('/admin/author')
     }
   } catch (error) {
@@ -478,15 +476,24 @@ const blockAuthor = async (req, res) => {
 const deleteAuthor = async (req, res) => {
   try {
     const authorId = req.query.id
-    const authorData = await Author.findByIdAndUpdate({ _id: authorId }, { $set: { isDeleted: true } })
-    await authorData.save()
+    const authorData = await Author.findOne({ _id: authorId })
+    const value = authorData.isDeleted
     const authorProducts = await Product.find({ author: authorId })
-    // console.log("author products before deleting : " + authorProducts)
-    for (const eachProduct of authorProducts) {
-      eachProduct.isDeleted = true
-      await eachProduct.save()
+    if (value === false) {
+      await Author.findByIdAndUpdate({ _id: authorId }, { $set: { isDeleted: true } })
+      for (const eachProduct of authorProducts) {
+        eachProduct.isAuthorBlocked = true
+        await eachProduct.save()
+      }
+    } else {
+      await Author.findByIdAndUpdate({ _id: authorId }, { $set: { isDeleted: false } })
+      if (authorData.isBlocked === false) {
+        for (const eachProduct of authorProducts) {
+          eachProduct.isAuthorBlocked = false
+          await eachProduct.save()
+        }
+      }
     }
-    // console.log('author delted data : ' + authorData)
     res.redirect('/admin/author')
   } catch (error) {
     console.log(error.message)
@@ -539,25 +546,17 @@ const addCategory = async (req, res) => {
 // delete category
 const deleteCategory = async (req, res) => {
   try {
-    // const categoryId = req.query.id
-    // await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { isDeleted: true } })
-    // const categoryProducts = await Product.find({ category: categoryId })
-    // // console.log("category products before deleting : " + categoryProducts)
-    // for (const eachProduct of categoryProducts) {
-    //   eachProduct.isCategoryBlocked = true
-    //   await eachProduct.save()
-    // }
-    // res.redirect('/admin/category')
-
     const categoryId = req.query.id
     const categoryData = await Category.findOne({ _id: categoryId })
     const value = categoryData.isDeleted
     const categoryProducts = await Product.find({ category: categoryId })
     if (value === true) {
       await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { isDeleted: false } })
-      for (const eachProduct of categoryProducts) {
-        eachProduct.isCategoryBlocked = false
-        await eachProduct.save()
+      if (categoryData.isBlocked === false) {
+        for (const eachProduct of categoryProducts) {
+          eachProduct.isCategoryBlocked = false
+          await eachProduct.save()
+        }
       }
       res.redirect('/admin/category')
     } else if (value === false) {
@@ -593,7 +592,6 @@ const updateCategory = async (req, res) => {
     const isExists = await Category.findOne({ name: { $regex: '.*' + categoryName + '.*', $options: 'i' } })
     // console.log('is exists : ' + isExists)
     if (categoryData.name === categoryName) {
-      console.log('same name')
       await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { description: req.body.description.trim() } })
       res.redirect('/admin/category')
     } else if (isExists === null) {
@@ -611,29 +609,24 @@ const updateCategory = async (req, res) => {
 const blockCategory = async (req, res) => {
   try {
     const categoryId = req.query.id
-    // console.log('category id for blocking : ' + categoryId)
     const categoryData = await Category.findOne({ _id: categoryId })
-    // await Product.updateMany({}, { $set: { isBlocked: false, isSold: false, isAuthorBlocked: false, isCategoryBlocked: false, wishlistCount: 0, viewCount: 0} })
     const value = categoryData.isBlocked
+    const categoryProducts = await Product.find({ category: categoryId })
     if (value === true) {
       await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { isBlocked: false } })
-      const categoryProducts = await Product.find({ category: categoryId })
-      // console.log("category before true : " + categoryProducts)
-      for (const eachProduct of categoryProducts) {
-        eachProduct.isCategoryBlocked = false
-        await eachProduct.save()
+      if (categoryData.isDeleted === false) {
+        for (const eachProduct of categoryProducts) {
+          eachProduct.isCategoryBlocked = false
+          await eachProduct.save()
+        }
       }
-      // console.log("category after false : " + categoryProducts)
       res.redirect('/admin/category')
     } else if (value === false) {
       await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { isBlocked: true } })
-      const categoryProducts = await Product.find({ category: categoryId })
-      // console.log("category before false : " + categoryProducts)
       for (const eachProduct of categoryProducts) {
         eachProduct.isCategoryBlocked = true
         await eachProduct.save()
       }
-      // console.log("category after true : " + categoryProducts)
       res.redirect('/admin/category')
     }
   } catch (error) {
@@ -726,15 +719,15 @@ module.exports = {
   loadLogin,
   verifyLogin,
   loadDashboard,
-  categoryLoad,
-  addCategoryLoad,
-  addCategory,
   productLoad,
   addProductLoad,
   addProduct,
   deleteProduct,
   userLoad,
   blockUser,
+  categoryLoad,
+  addCategoryLoad,
+  addCategory,
   deleteCategory,
   updateCategoryLoad,
   updateCategory,
