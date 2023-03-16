@@ -129,7 +129,7 @@ const loadpage = async (req, res) => {
     const authorData = await Author.find({ isBlocked: false, isDeleted: false })
     const bannerData = await Banner.find({})
     const userData = null
-    console.log('banner dataaaaaaaaaa ' + bannerData[0].image)
+    // console.log('banner dataaaaaaaaaa ' + bannerData[0].image)
     res.render('home', { categoryData, authorData, bannerData, productData, userData })
   } catch (error) {
     console.log(error.message)

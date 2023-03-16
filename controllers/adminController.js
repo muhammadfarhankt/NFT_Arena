@@ -209,14 +209,17 @@ const addBannerLoad = async (req, res) => {
   }
 }
 
-// banner post
+// add banner post
 const addBannerPost = async (req, res) => {
   // console.log('banner post')
   // res.redirect('/admin/banners')
   try {
     const banner = new Banner({
-      name: req.body.name,
-      link: req.body.link,
+      name: req.body.name.trim(),
+      link: req.body.link.trim(),
+      textHeader: req.body.heading.trim(),
+      textContent: req.body.bannerContent.trim(),
+      textPosition: req.body.position,
       image: req.file.filename
     })
     await banner.save()
@@ -229,15 +232,21 @@ const addBannerPost = async (req, res) => {
 
 // update banner load
 const updateBannerLoad = async (req, res) => {
-  // console.log('update banner load')
   const bannerData = await Banner.findById({ _id: req.query.id })
-  // console.log('baner dataaaaaaaaaaa ' + bannerData)
   res.render('updateBanner', { bannerData })
 }
 
 const updateBannerPost = async (req, res) => {
-  await Banner.findById({ _id: req.query.id })
-  // console.log('baner dataaaaaaaaaaa ' + bannerData)
+  // const bannerData = await Banner.findById({ _id: req.query.id })
+  // console.log('baner id ' + bannerId)
+  // await Banner.findByIdAndUpdate({ _id: req.query.id }, { $set: { name: req.body.name, link: req.body.link, textHeader: req.body.heading, textContent: req.body.bannerContent } })
+  if (req.file != null) {
+    console.log('update image name :  ' + req.file.filename)
+    await Banner.findByIdAndUpdate({ _id: req.body.id }, { $set: { name: req.body.name.trim(), link: req.body.link, textHeader: req.body.heading, textContent: req.body.bannerContent, image: req.file.filename } })
+  } else {
+    await Banner.findByIdAndUpdate({ _id: req.body.id }, { $set: { name: req.body.name.trim(), link: req.body.link, textHeader: req.body.heading, textContent: req.body.bannerContent } })
+  }
+  //bannerData.name = req.body.name.trim()
   res.redirect('/admin/banners')
 }
 
@@ -290,14 +299,12 @@ const addProductLoad = async (req, res) => {
 const addProduct = async (req, res) => {
   try {
     const product = new Product({
-      name: req.body.name,
-      description: req.body.description,
+      name: req.body.name.trim(),
+      description: req.body.description.trim(),
       price: req.body.price,
       image: req.file.filename,
       category: req.body.category,
-      author: req.body.author,
-      stock: req.body.stock,
-      isDeleted: false
+      author: req.body.author
     })
     await product.save()
     res.redirect('/admin/products')
