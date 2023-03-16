@@ -124,13 +124,14 @@ const sendOtpMail = async (name, email, otp) => {
 // loading loadpage
 const loadpage = async (req, res) => {
   try {
-    const productData = await Product.find({})
+    const productData = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false })
     const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
     const authorData = await Author.find({ isBlocked: false, isDeleted: false })
     const bannerData = await Banner.find({})
     const userData = null
+    const newlyAddedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).sort({ createdAt: -1 }).limit(10)
     // console.log('banner dataaaaaaaaaa ' + bannerData[0].image)
-    res.render('home', { categoryData, authorData, bannerData, productData, userData })
+    res.render('home', { categoryData, authorData, bannerData, productData, userData, newlyAddedProducts })
   } catch (error) {
     console.log(error.message)
   }
@@ -299,11 +300,12 @@ const loadHome = async (req, res) => {
       const userData = await User.findById({ _id: req.session.user_id })
       // console.log('userData')
       // console.log(userData)
-      const bannerData = await Banner.find({})
+      const bannerData = await Banner.find({ isBlocked: false })
       const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
-      const productData = await Product.find({})
+      const productData = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false })
+      const newlyAddedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).sort({ createdAt: -1 }).limit(10)
       // console.log(categoryData)
-      res.render('home', { userData, categoryData, bannerData, productData })
+      res.render('home', { userData, categoryData, bannerData, productData, newlyAddedProducts })
     } else {
       res.redirect('/login')
     }
@@ -386,7 +388,7 @@ const resetPassword = async (req, res) => {
 const shopLoad = async (req, res) => {
   try {
     const page = req.query.page || 1
-    const productList = await Product.find({ isDeleted: false, isBlocked: false }).populate('category').populate('author')
+    const productList = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).populate('category').populate('author')
     const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
     const authorData = await Author.find({ isBlocked: false, isDeleted: false })
     const productsPerPage = 4
@@ -419,7 +421,7 @@ const categoryLoad = async (req, res) => {
   const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
   const authorData = await Author.find({ isBlocked: false, isDeleted: false })
   const singleCategory = await Category.findById({ _id: req.query.id })
-  const categoryProducts = await Product.find({ category: req.query.id, isDeleted: false }).populate('author')
+  const categoryProducts = await Product.find({ category: req.query.id, isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).populate('author')
   // console.log('single category ' + singleCategory)
   // console.log(' category products ' + categoryProducts)
   if (req.session.user_id) {
@@ -436,7 +438,7 @@ const authorLoad = async (req, res) => {
   const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
   const authorData = await Author.find({ isBlocked: false, isDeleted: false })
   const singleAuthor = await Author.findById({ _id: req.query.id })
-  const authorProducts = await Product.find({ author: req.query.id, isDeleted: false, isBlocked: false }).populate('category')
+  const authorProducts = await Product.find({ author: req.query.id, isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).populate('category')
   // console.log('single author ' + singleAuthor)
   // console.log(' category products ' + categoryProducts)
   if (req.session.user_id) {
@@ -537,7 +539,7 @@ const createOrder = async (req, res) => {
     const userData = await User.findById({ _id: req.session.user_id })
     // await Coupons.updateOne({ value: req.body.value }, { $push: { coustomer: req.session.userid } });
     const populatedData = await userData.populate('cart.item.productId')
-    const productData = await Product.find({})
+    // const productData = await Product.find({})
     let order
     if (req.body.currentAddress) {
       const { _id, country, address, city, state, zip, phonenumber, email } = userData
@@ -649,7 +651,7 @@ const productLoad = async (req, res) => {
       const userData = await User.findById({ _id: req.session.user_id })
       res.render('product', { productDetails, userData, authorData, categoryData })
     } else {
-      res.render('product', { productDetails, authorData, categoryData })
+      res.render('product', { productDetails, authorData, categoryData, userData: null })
     }
   } catch (error) {
     console.log(error.message)
@@ -673,7 +675,7 @@ const loadPayment = async (req, res) => {
 const razorpayCheckout = async (req, res) => {
   try {
     console.log('razor pay post')
-    const userData = await User.findById({ _id: req.session.user_id })
+    // const userData = await User.findById({ _id: req.session.user_id })
     // const completeUser = await userData.populate('cart.item.productId')
     const instance = new Razorpay({ key_id: process.env.razorPayId, key_secret: process.env.razorPaySecret })
     // console.log('razir pay id : ' + process.env.razorPayId + '   razor pay secret : : ' + process.env.razorPaySecret)
