@@ -1202,6 +1202,37 @@ button:focus {
     -o-transition: all linear .3s
 }
 
+.product-add {
+    width: 100%;
+    font-size: 15px;
+    padding: 6px 0px;
+    border-radius: 6px;
+    text-align: center;
+    text-transform: capitalize;
+    color: var(--heading);
+    background: var(--border);
+    text-shadow: var(-primary-tshadow);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    transition: all linear .3s;
+    -webkit-transition: all linear .3s;
+    -moz-transition: all linear .3s;
+    -ms-transition: all linear .3s;
+    -o-transition: all linear .3s
+}
+
+.product-add i {
+    font-size: 14px;
+    margin-right: 5px
+}
+
 .product-addNew i {
     font-size: 14px;
     margin-right: 5px
@@ -1367,7 +1398,7 @@ tbody tr td:last-child {
     width: 180px
 }
 
-.table-shop .product-addNew {
+.table-shop .product-add .product-addNew {
     color: var(--white);
     background: var(--primary)
 }
@@ -1791,7 +1822,7 @@ tbody tr td:last-child {
     bottom: 15px
 }
 
-.product-card:hover .product-addNew {
+.product-card:hover .product-add .product-addNew {
     color: var(--white);
     background: var(--primary)
 }
@@ -2007,7 +2038,7 @@ tbody tr td:last-child {
     box-shadow: none
 }
 
-.product-disable:hover .product-addNew {
+.product-disable:hover .product-add .product-addNew {
     color: var(--heading);
     background: var(--border)
 }
@@ -2578,7 +2609,7 @@ tbody tr td:last-child {
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr))
 }
 
-.standard-action-group .product-addNew,
+.standard-action-group .product-add .product-addNew,
 .standard-action-group .action-input {
     padding: 10px 0px;
     letter-spacing: 0.5px;
@@ -2587,7 +2618,7 @@ tbody tr td:last-child {
     background: var(--primary)
 }
 
-.standard-action-group .product-addNew {
+.standard-action-group .product-add .product-addNew {
     font-size: 14px;
     font-weight: 500
 }
@@ -2723,11 +2754,13 @@ tbody tr td:last-child {
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr))
     }
 
+    .product-add,
     .product-addNew,
     .standard-wish {
         padding: 8px 0px
     }
 
+    .product-add,
     .product-addNew i,
     .standard-wish i {
         display: none
@@ -2766,11 +2799,13 @@ tbody tr td:last-child {
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr))
     }
 
+    .product-add,
     .product-addNew,
     .standard-wish {
         padding: 8px 0px
     }
 
+    .product-add i,
     .product-addNew i,
     .standard-wish i {
         display: none
@@ -5716,7 +5751,7 @@ tbody tr td:last-child {
     margin: 45px 0px 15px
 }
 
-.view-add-group .product-addNew,
+.view-add-group .product-add .product-addNew,
 .view-add-group .action-input {
     height: 46px;
     line-height: 46px;

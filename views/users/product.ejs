@@ -1,405 +1,725 @@
-<% let wishlist=locals.wishlist || null %>
-  <%- include('../partials/__user-head.ejs') %>
-    <link rel="stylesheet" href="/static/css/index.css">
-    <title>
-      <%= productDetails.name %> | NFT Arena
-    </title>
-    </head>
 
 
-    <body>
-
-      <%- include('../partials/__user-nav.ejs') %>
-        <%- include('../partials/__user-side-cat.ejs') %>
-          <%- include('../partials/__user-cart.ejs') %>
-            <%- include('../partials/__user-sidenav.ejs') %>
-              <%- include('../partials/__user-mobile.ejs') %>
-
-                <!-------------- Here starts the actual body --------------------->
-
-
-                <section class="single-banner inner-section"
-                  style="background: url(static/images/single-banner.jpg) no-repeat center;">
-                  <div class="container">
-                    <h2> dfa </h2>
-                    <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                      <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
-                      <li class="breadcrumb-item active" aria-current="page">dfa</li>
-                    </ol>
-                  </div>
-                </section>
-                <section class="inner-section">
-                  <div class="container">
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="details-gallery">
-
-
-                          <div class="details-label-group">
-
-                            <label class="view-label new">new</label><label class="view-label off">-0%</label>
-
-                          </div>
-                          <ul class="details-preview">
-
-                            <!-------------- iterate through product image --------------------->
-                            <li><img src="/static/images/product/01.jpg" alt="product"></li>
-
-                            <li><img src="/static/images/product/01.jpg" alt="product"></li>
-
-                            <!-------------- /iterate through image --------------------->
-
-                          </ul>
-                          <ul class="details-thumb">
-                            <!-------------- iterate through product image --------------------->
-
-
-                            <!-------------- /iterate through image --------------------->
-
-                          </ul>
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-
-                        <div class="details-content">
-                          <h3 class="details-name"><a href="#">dfa</a></h3>
-                          <div class="details-meta">
-                            <p>SKU:<span>640dbe82524f6e7969cf737f</span></p>
-                            <p>BRAND:<a href="#">dasfasdfa</a></p>
-                          </div>
-                          <div class="details-rating">
-
-
-                            <i class="active icofont-star"></i>
-
-                            <i class="active icofont-star"></i>
-
-                            <i class="active icofont-star"></i>
-
-
-                            <i class="icofont-star"></i>
-
-                            <i class="icofont-star"></i>
-
-
-                            <a href="#review-div">( reviews)</a>
-                          </div>
-
-
-                          <h3 class="details-price"><span>₹100<small>/kilogram</small></span></h3>
-
-
-                          <p class="details-desc">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus
-                            nemo accusantium, distinctio doloribus iste alias amet, asperiores quis eaque labore sit
-                            unde hic. Maxime, atque. Repellendus eligendi nemo numquam fuga beatae explicabo molestiae
-                            ea perferendis quidem alias voluptatem cum in dicta tempore maxime corporis fugiat, sint
-                            laboriosam possimus laudantium hic dolores earum incidunt. Suscipit, atque recusandae sit
-                            eum itaque consequuntur.</p>
-                          <div class="details-list-group"><label class="details-list-title">tags:</label>
-                            <ul class="details-tag-list">
-
-                              <!-- iterate through tags -->
-
-                              <li><a href="/shop?filter=tags&tag=fdasf">fdasf</a></li>
-
-                              <li><a href="/shop?filter=tags&tag=sdfasd">sdfasd</a></li>
-
-
-                            </ul>
-                          </div>
-
-                          <div class="details-add-group">
-
-
-                            <button class="product-addNew" title="Add to Cart">
-                              <i class="fas fa-shopping-basket"></i><span>Login to Add</span>
-                            </button>
-                            <div class="product-action" data-pid="640dbe82524f6e7969cf737f" data-action="remove">
-                              <p class="text-danger">Please login to use the cart</p>
-                            </div>
-
-
-                          </div>
-                          <div class="details-action-group"><a class="details-wish wish "
-                              data-pid="640dbe82524f6e7969cf737f" href="#" title="Add Your Wishlist"><i
-                                class="icofont-heart"></i><span>add to wish</span></a><a class="details-compare"
-                              href="#" title="Compare This Item"><i class="fas fa-random"></i><span>Compare
-                                This</span></a></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-                <section class="inner-section">
-                  <div class="container">
-                    <div class="row">
-                      <div class="col-lg-12">
-                        <div class="product-details-frame">
-                          <h3 class="frame-title">Description</h3>
-                          <div class="tab-descrip">
-                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus nemo accusantium,
-                              distinctio doloribus iste alias amet, asperiores quis eaque labore sit unde hic. Maxime,
-                              atque. Repellendus eligendi nemo numquam fuga beatae explicabo molestiae ea perferendis
-                              quidem alias voluptatem cum in dicta tempore maxime corporis fugiat, sint laboriosam
-                              possimus laudantium hic dolores earum incidunt. Suscipit, atque recusandae sit eum itaque
-                              consequuntur.</p>
-                          </div>
-                        </div>
-                        <div class="product-details-frame">
-                          <h3 class="frame-title">Spacification</h3>
-                          <table class="table table-bordered">
-                            <tbody>
-                              <tr>
-                                <th scope="row">Product code</th>
-                                <td>ID: 640dbe82524f6e7969cf737f </td>
-                              </tr>
-                              <tr>
-                                <th scope="row">Category</th>
-                                <td>dfsfasd</td>
-                              </tr>
-                              <tr>
-                                <th scope="row">Brand</th>
-                                <td>dasfasdfa</td>
-                              </tr>
-                              <tr>
-                                <th scope="row">Available in</th>
-                                <td>kilogram</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-
-                        <div class="product-details-frame" id="review-div">
-                          <h3 class="frame-title">Reviews (0)</h3>
-                          <ul class="review-list">
-
-                            <!---------- iterate through review  -->
-
-
-                            <!---------- /iterate through review  -->
-
-                          </ul>
-                        </div>
-
-
-
-
-
-                      </div>
-                    </div>
-                  </div>
-                </section>
-                <section class="inner-section">
-                  <div class="container">
-                    <div class="row">
-                      <div class="col">
-                        <div class="section-heading">
-                          <h2>related this items</h2>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-
-                      <!---------- iterate through related items  -->
-
-
-
-
-
-                      <div class="col">
-                        <div class="product-card ">
-                          <div class="product-media">
-                            <div class="product-label">
-                              <label class="label-text sale">sale</label>
-                            </div>
-                            <button class="product-wish wish " data-pid="640dbe82524f6e7969cf737f">
-                              <i class="fas fa-heart"></i>
-                            </button>
-                            <a class="product-image" href="/product?id=640dbe82524f6e7969cf737f">
-                              <img src="images/product/01.jpg" alt="product">
-                            </a>
-                            <div class="product-widget">
-                              <a title="Product Compare" href="compare.html" class="fas fa-random"></a>
-                              <a title="Product View" href="#" class="fas fa-eye" data-bs-toggle="modal"
-                                data-bs-target="#dfa"></a>
-                            </div>
-                          </div>
-                          <div class="product-content">
-                            <div class="product-rating">
-                              <i class="active icofont-star"></i>
-                              <i class="active icofont-star"></i>
-                              <i class="active icofont-star"></i>
-                              <i class="active icofont-star"></i>
-                              <i class="icofont-star"></i>
-                              <a href="href=" /product?id=640dbe82524f6e7969cf737f"">(1)</a>
-                            </div>
-                            <h6 class="product-name"><a href="/product?id=640dbe82524f6e7969cf737f">dfa</a></h6>
-
-
-                            <h6 class="product-price"><span>₹100<small>/kilogram</small></span></h6>
-
-
-
-
-                            <button class="product-addNew" title="Add to Cart">
-                              <i class="fas fa-shopping-basket"></i><span>Login to Add</span>
-                            </button>
-                            <div class="product-action" data-pid="640dbe82524f6e7969cf737f" data-action="remove">
-                              <p class="text-danger">Please login to use the cart</p>
-                            </div>
-
-
-                          </div>
-                        </div>
-                      </div>
-
-
-
-                      <!---------- /iterate through related items  -->
-
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-12">
-                        <div class="section-btn-25"><a href="/shop" class="btn btn-outline"><i
-                              class="fas fa-eye"></i><span>view all related</span></a></div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-
-
-
-                <!-- Product view modal -->
-                <div class="modal fade" id="dfa">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <button class="modal-close icofont-close" data-bs-dismiss="modal"></button>
-                      <div class="product-view">
-                        <div class="row">
-                          <div class="col-md-6 col-lg-6">
-                            <div class="view-gallery">
-                              <div class="view-label-group">
-                                <label class="view-label new">new</label><label class="view-label off">-0%</label>
-                              </div>
-                              <ul class="preview-slider slider-arrow">
-
-
-                                <li><img src="/images/product/01.jpg" alt="product"></li>
-
-
-                              </ul>
-                              <ul class="thumb-slider">
-
-
-                                <li><img src="/static/images/product/01.jpg" alt="product"></li>
-
-
-                              </ul>
-                            </div>
-                          </div>
-                          <div class="col-md-6 col-lg-6">
-                            <div class="view-details">
-                              <h3 class="view-name">
-                                <a href="/product?id=640dbe82524f6e7969cf737f">dfa</a>
-                              </h3>
-                              <div class="view-meta">
-                                <!-- <p>SKU:<span>1234567</span></p> -->
-                                <p>BRAND:<a href="#">dasfasdfa</a></p>
-                              </div>
-                              <div class="view-rating">
-
-
-                                <i class="active icofont-star"></i>
-
-                                <i class="active icofont-star"></i>
-
-                                <i class="active icofont-star"></i>
-
-
-                                <i class="icofont-star"></i>
-
-                                <i class="icofont-star"></i>
-
-
-                                <a href="/product?id=640dbe82524f6e7969cf737f">(1 reviews)</a>
-                              </div>
-                              <h3 class="view-price">
-
-                                <span>₹100<small>/kilogram</small></span></h6>
-
-                              </h3>
-
-                              <!-- <del>$38.00</del><span>$24.00<small>/per kilo</small></span> -->
-                              <p class="view-desc">
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus nemo accusantium,
-                                distinctio doloribus iste alias amet, asperiores quis eaque labore sit unde hic. Maxime,
-                                atque. Repellendus eligendi nemo numquam fuga beatae explicabo molestiae ea perferendis
-                                quidem alias voluptatem cum in dicta tempore maxime corporis fugiat, sint laboriosam
-                                possimus laudantium hic dolores earum incidunt. Suscipit, atque recusandae sit eum
-                                itaque consequuntur.
-                              </p>
-                              <div class="view-list-group">
-                                <label class="view-list-title">tags:</label>
-                                <ul class="view-tag-list">
-
-
-                                  <li><a href="/shop?filter=tags&tag=fdasf">fdasf</a></li>
-
-                                  <li><a href="/shop?filter=tags&tag=sdfasd">sdfasd</a></li>
-
-
-                                </ul>
-                              </div>
-
-                              <div class="view-add-group">
-
-
-                                <button class="product-addNew" title="Add to Cart">
-                                  <i class="fas fa-shopping-basket"></i><span>Login to Add</span>
-                                </button>
-                                <div class="product-action" data-pid="640dbe82524f6e7969cf737f" data-action="remove">
-                                  <p class="text-danger">Please login to use the cart</p>
-                                </div>
-
-
-                              </div>
-                              <div class="view-action-group">
-                                <a class="view-wish wish " data-pid="640dbe82524f6e7969cf737f"
-                                  title="Add Your Wishlist">
-                                  <i class="icofont-heart"></i>
-                                  <span>add to wish</span>
-                                </a>
-                                <a class="view-compare" href="#" title="Compare This Item">
-                                  <i class="fas fa-random"></i>
-                                  <span>Compare This</span>
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="template" content="greeny">
+  <meta name="title" content="greeny - Ecommerce Food Store HTML Template">
+  <meta name="keywords" content="organic, food, shop, ecommerce, store, html, bootstrap, template, agriculture, vegetables, products, farm, grocery, natural, online">
+  <link rel="icon" href="/static/images/favicon.png">
+  <link rel="stylesheet" href="/static/fonts/flaticon/flaticon.css">
+  <link rel="stylesheet" href="/static/fonts/icofont/icofont.min.css">
+  <link rel="stylesheet" href="/static/fonts/fontawesome/fontawesome.min.css">
+  <link rel="stylesheet" href="/static/vendor/venobox/venobox.min.css">
+  <link rel="stylesheet" href="/static/vendor/slickslider/slick.min.css">
+  <link rel="stylesheet" href="/static/vendor/niceselect/nice-select.min.css">
+  <link rel="stylesheet" href="/static/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/main.css">
+<link rel="stylesheet" href="/static/css/product-details.css">
+<title>Greeny | dfa</title>
+</head>
+
+<body>
+
+  
+<div class="backdrop"></div><a class="backtop fas fa-arrow-up" href="#"></a>
+<div class="header-top">
+  <div class="container">
+    <div class="row justify-content-between">
+      <div class="col-md-12 col-lg-5">
+        <div class="header-top-welcome">
+          <p>Welcome to Ecomart in Your Dream Online Store!</p>
+        </div>
+      </div>
+      <div class="col-md-7 col-lg-4">
+        <ul class="header-top-list">
+          
+
+          <li><a href="#">contact us</a></li>
+
+          
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<header class="header-part">
+  <div class="container">
+    <div class="header-content">
+      <div class="header-media-group">
+        <button class="header-user">
+
+          
+          <img src="/static/images/users/user.png" alt="user">
+          
+
+
+        </button>
+        <a href="/home">
+          <img src="/static/images/logo.png" alt="logo">
+        </a>
+        <button class="header-src"><i class="fas fa-search"></i></button>
+      </div>
+      <a href="/home" class="header-logo"><img src="/static/images/logo.png" alt="logo"></a>
+
+      
+      <a href="/login" class="header-widget" title="My Account">
+        <img src="/static/images/users/user.png" alt="user">
+        <button class="btn-success rounded p-1 ms-3">Login</button>
+      </a>
+      
+
+      <form class="header-form" id="user-search-form">
+        <input type="text" placeholder="Search anything..." onkeyup="sendData(this)">
+        <button type="submit"><i class="fas fa-search"></i></button>
+        <section class="search-result" id="search-result" style="z-index: 2;">
+          <ol id="search-result" class="list-group list-group-numbered">
+          </ol>
+        </section>
+      </form>
+      <div class="header-widget-group">
+        <a href="#" class="header-widget" title="Compare List">
+          <i class="fas fa-random"></i>
+          <sup class="compare-count">0</sup>
+        </a>
+        <a href="/wishlist" class="header-widget" title="Wishlist">
+          <i id="wish-round" class="fas fa-heart"></i>
+          <sup class="wishlist-count">0</sup>
+        </a>
+        <button class="header-widget header-cart" title="Cartlist">
+          <i id="cart-round" class="fas fa-shopping-basket"></i>
+          <sup>0</sup>
+          <span>total price<small>₹ 0</small></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+<nav class="navbar-part">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="navbar-content">
+          <ul class="navbar-list">
+            <li class="navbar-item"><a class="navbar-link" href="/home">home</a>
+            </li>
+            <li class="navbar-item"><a class="navbar-link" href="/shop">shop</a>
+            </li>
+            <li class="navbar-item dropdown">
+              <a class="navbar-link dropdown-arrow" href="/category">category</a>
+
+              <ul class="dropdown-position-list">
+                
+                
+                <li><a href="/shop?category=640bed42ea95b176998c2504">fdsfs</a></li>
+                
+                <li><a href="/shop?category=640bed4fea95b176998c250f">dfsfasd</a></li>
+                
+                
+              </ul>
+
+            </li>
+
+            
+          </ul>
+          <div class="navbar-info-group">
+            <div class="navbar-info"><i class="icofont-ui-touch-phone"></i>
+              <p><small>call us</small><span>(+91) 9999999999</span></p>
+            </div>
+            <div class="navbar-info"><i class="icofont-ui-email"></i>
+              <p><small>email us</small><span>support@greeny.com</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+  <aside class="category-sidebar">
+  <div class="category-header">
+    <h4 class="category-title"><i class="fas fa-align-left"></i><span>categories</span></h4><button class="category-close"><i class="icofont-close"></i></button>
+  </div>
+  <ul class="category-list">
+
+
+    
+    
+
+    <li class="category-item">
+      <a class="category-link" href="/shop?category=640bed42ea95b176998c2504">
+        <span>fdsfs</span>
+      </a>
+
+    </li>
+
+    
+
+    <li class="category-item">
+      <a class="category-link" href="/shop?category=640bed4fea95b176998c250f">
+        <span>dfsfasd</span>
+      </a>
+
+    </li>
+
+    
+    
+
+
+  </ul>
+  <div class="category-footer">
+    <p>All Rights Reserved by <a href="#">Greeny</a></p>
+  </div>
+</aside>
+  <aside class="cart-sidebar">
+  
+  <div class="cart-header">
+    <div class="cart-total"><span>Please login/register to use the cart !!</span></div>
+    <div class="nav-content">
+      <div class="nav-btn"><a href="/login" class="btn btn-inline"><i class="fa fa-unlock-alt"></i>
+          <span>join here</span></a>
+      </div>
+    </div>
+    <button class="cart-close"><i class="icofont-close"></i></button>
+  </div>
+  
+</aside>
+  <aside class="nav-sidebar">
+  <div class="nav-header"><a href="#"><img src="/static/images/logo.png" alt="logo"></a><button class="nav-close"><i class="icofont-close"></i></button></div>
+  <div class="nav-content">
+    
+    <div class="nav-btn">
+      <a href="/login" class="btn btn-inline">
+        <i class="fa fa-unlock-alt"></i><span>join here</span>
+      </a>
+    </div>
+    
+    <ul class="nav-list">
+      <li><a class="nav-link dropdown-link" href="/"><i class="icofont-home"></i>Home</a>
+      </li>
+      <li><a class="nav-link dropdown-link" href="/shop"><i class="icofont-food-cart"></i>shop</a>
+      </li>
+      
+    </ul>
+    <div class="nav-info-group">
+      <div class="nav-info"><i class="icofont-ui-touch-phone"></i>
+        <p><small>call us</small><span>(+91) 987 654 3210</span></p>
+      </div>
+      <div class="nav-info"><i class="icofont-ui-email"></i>
+        <p><small>email us</small><span>support@greeny.com</span></p>
+      </div>
+    </div>
+  </div>
+</aside>
+  
+<div class="mobile-menu">
+  <a href="/home" title="Home Page">
+    <i class="fas fa-home"></i>
+    <span>Home</span>
+  </a>
+  <button class="cate-btn" title="Category List">
+    <i class="fas fa-list"></i>
+    <span>category</span>
+  </button>
+  <button class="cart-btn" title="Cartlist">
+    <i id="mob-cart-round" class="fas fa-shopping-basket"></i>
+    <span>cartlist</span><sup id="mob-cart-sup">0</sup>
+  </button>
+  <a href="/wishlist" title="Wishlist">
+    <i id="mob-wish-round" class="fas fa-heart"></i>
+    <span>wishlist</span>
+    <sup class="wishlist-count" id="mob-wish-sup">0</sup>
+  </a>
+  <a href="/compare" title="Compare List">
+    <i class="fas fa-random"></i>
+    <span>compare</span>
+    <sup>0</sup>
+  </a>
+</div>
+
+
+
+  <!-------------- Here starts the actual body --------------------->
+
+
+  <section class="single-banner inner-section" style="background: url(static/images/single-banner.jpg) no-repeat center;">
+    <div class="container">
+      <h2> dfa </h2>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+        <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
+        <li class="breadcrumb-item active" aria-current="page">dfa</li>
+      </ol>
+    </div>
+  </section>
+  <section class="inner-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="details-gallery">
+
+
+            <div class="details-label-group">
+              
+              <label class="view-label new">new</label><label class="view-label off">-0%</label>
+              
+            </div>
+            <ul class="details-preview">
+
+              <!-------------- iterate through product image --------------------->
+              <li><img src="/static/images/product/01.jpg" alt="product"></li>
+              
+              <li><img src="/static/images/product/01.jpg" alt="product"></li>
+              
+              <!-------------- /iterate through image --------------------->
+
+            </ul>
+            <ul class="details-thumb">
+              <!-------------- iterate through product image --------------------->
+              <li><img src="/static/images/product/01.jpg" alt="product"></li>
+
+              
+              <li><img src="/static/images/product/01.jpg" alt="product"></li>
+              
+              <!-------------- /iterate through image --------------------->
+
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6">
+
+          <div class="details-content">
+            <h3 class="details-name"><a href="#">dfa</a></h3>
+            <div class="details-meta">
+              <p>SKU:<span>640dbe82524f6e7969cf737f</span></p>
+              <p>BRAND:<a href="#">dasfasdfa</a></p>
+            </div>
+            <div class="details-rating">
+
+              
+              <i class="active icofont-star"></i>
+              
+              <i class="active icofont-star"></i>
+              
+              <i class="active icofont-star"></i>
+              
+              
+              <i class="icofont-star"></i>
+              
+              <i class="icofont-star"></i>
+              
+
+              <a href="#review-div">( reviews)</a>
+            </div>
+
+            
+            <h3 class="details-price"><span>₹100<small>/kilogram</small></span></h3>
+            
+
+            <p class="details-desc">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus nemo accusantium, distinctio doloribus iste alias amet, asperiores quis eaque labore sit unde hic. Maxime, atque. Repellendus eligendi nemo numquam fuga beatae explicabo molestiae ea perferendis quidem alias voluptatem cum in dicta tempore maxime corporis fugiat, sint laboriosam possimus laudantium hic dolores earum incidunt. Suscipit, atque recusandae sit eum itaque consequuntur.</p>
+            <div class="details-list-group"><label class="details-list-title">tags:</label>
+              <ul class="details-tag-list">
+
+                <!-- iterate through tags -->
+                
+                <li><a href="/shop?filter=tags&tag=fdasf">fdasf</a></li>
+                
+                <li><a href="/shop?filter=tags&tag=sdfasd">sdfasd</a></li>
+                
+
+              </ul>
+            </div>
+
+            <div class="details-add-group">
+
+              
+              <button class="product-add" title="Add to Cart">
+                <i class="fas fa-shopping-basket"></i><span>Login to Add</span>
+              </button>
+              <div class="product-action" data-pid="640dbe82524f6e7969cf737f" data-action="remove">
+                <p class="text-danger">Please login to use the cart</p>
+              </div>
+              
+
+            </div>
+            <div class="details-action-group"><a class="details-wish wish " data-pid="640dbe82524f6e7969cf737f" href="#" title="Add Your Wishlist"><i class="icofont-heart"></i><span>add to wish</span></a><a class="details-compare" href="#" title="Compare This Item"><i class="fas fa-random"></i><span>Compare This</span></a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="inner-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="product-details-frame">
+            <h3 class="frame-title">Description</h3>
+            <div class="tab-descrip">
+              <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus nemo accusantium, distinctio doloribus iste alias amet, asperiores quis eaque labore sit unde hic. Maxime, atque. Repellendus eligendi nemo numquam fuga beatae explicabo molestiae ea perferendis quidem alias voluptatem cum in dicta tempore maxime corporis fugiat, sint laboriosam possimus laudantium hic dolores earum incidunt. Suscipit, atque recusandae sit eum itaque consequuntur.</p>
+            </div>
+          </div>
+          <div class="product-details-frame">
+            <h3 class="frame-title">Spacification</h3>
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <th scope="row">Product code</th>
+                  <td>ID: 640dbe82524f6e7969cf737f </td>
+                </tr>
+                <tr>
+                  <th scope="row">Category</th>
+                  <td>dfsfasd</td>
+                </tr>
+                <tr>
+                  <th scope="row">Brand</th>
+                  <td>dasfasdfa</td>
+                </tr>
+                <tr>
+                  <th scope="row">Available in</th>
+                  <td>kilogram</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="product-details-frame" id="review-div">
+            <h3 class="frame-title">Reviews (0)</h3>
+            <ul class="review-list">
+
+              <!---------- iterate through review  -->
+              
+
+              <!---------- /iterate through review  -->
+
+            </ul>
+          </div>
+          
+
+
+          
+
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="inner-section">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="section-heading">
+            <h2>related this items</h2>
+          </div>
+        </div>
+      </div>
+      <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+
+        <!---------- iterate through related items  -->
+
+        
+
+
+
+        <div class="col">
+          <div class="product-card ">
+            <div class="product-media">
+              <div class="product-label">
+                <label class="label-text sale">sale</label>
+              </div>
+              <button class="product-wish wish " data-pid="640dbe82524f6e7969cf737f">
+                <i class="fas fa-heart"></i>
+              </button>
+              <a class="product-image" href="/product?id=640dbe82524f6e7969cf737f">
+                <img src="/static/images/product/01.jpg" alt="product">
+              </a>
+              <div class="product-widget">
+                <a title="Product Compare" href="compare.html" class="fas fa-random"></a>
+                <a title="Product View" href="#" class="fas fa-eye" data-bs-toggle="modal" data-bs-target="#dfa"></a>
+              </div>
+            </div>
+            <div class="product-content">
+              <div class="product-rating">
+                <i class="active icofont-star"></i>
+                <i class="active icofont-star"></i>
+                <i class="active icofont-star"></i>
+                <i class="active icofont-star"></i>
+                <i class="icofont-star"></i>
+                <a href="/product?id=640dbe82524f6e7969cf737f">(1)</a>
+              </div>
+              <h6 class="product-name"><a href="/product?id=640dbe82524f6e7969cf737f">dfa</a></h6>
+
+              
+              <h6 class="product-price"><span>₹100<small>/kilogram</small></span></h6>
+              
+
+
+              
+              <button class="product-add" title="Add to Cart">
+                <i class="fas fa-shopping-basket"></i><span>Login to Add</span>
+              </button>
+              <div class="product-action" data-pid="640dbe82524f6e7969cf737f" data-action="remove">
+                <p class="text-danger">Please login to use the cart</p>
+              </div>
+              
+
+            </div>
+          </div>
+        </div>
+
+        
+
+        <!---------- /iterate through related items  -->
+
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-btn-25"><a href="/shop" class="btn btn-outline"><i class="fas fa-eye"></i><span>view all related</span></a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <!-- Product view modal -->
+  <div class="modal fade" id="dfa">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <button class="modal-close icofont-close" data-bs-dismiss="modal"></button>
+        <div class="product-view">
+          <div class="row">
+            <div class="col-md-6 col-lg-6">
+              <div class="view-gallery">
+                <div class="view-label-group">
+                  <label class="view-label new">new</label><label class="view-label off">-0%</label>
+                </div>
+                <ul class="preview-slider slider-arrow">
+
+                  
+                  <li><img src="/static/images/product/01.jpg" alt="product"></li>
+                  
+
+                </ul>
+                <ul class="thumb-slider">
+
+                  
+                  <li><img src="/static/images/product/01.jpg" alt="product"></li>
+                  
+
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-6">
+              <div class="view-details">
+                <h3 class="view-name">
+                  <a href="/product?id=640dbe82524f6e7969cf737f">dfa</a>
+                </h3>
+                <div class="view-meta">
+                  <!-- <p>SKU:<span>1234567</span></p> -->
+                  <p>BRAND:<a href="#">dasfasdfa</a></p>
+                </div>
+                <div class="view-rating">
+
+                  
+                  <i class="active icofont-star"></i>
+                  
+                  <i class="active icofont-star"></i>
+                  
+                  <i class="active icofont-star"></i>
+                  
+                  
+                  <i class="icofont-star"></i>
+                  
+                  <i class="icofont-star"></i>
+                  
+
+                  <a href="/product?id=640dbe82524f6e7969cf737f">(1 reviews)</a>
+                </div>
+                <h3 class="view-price">
+                  
+                  <span>₹100<small>/kilogram</small></span></h6>
+                  
+                </h3>
+
+                <!-- <del>$38.00</del><span>$24.00<small>/per kilo</small></span> -->
+                <p class="view-desc">
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus nemo accusantium, distinctio doloribus iste alias amet, asperiores quis eaque labore sit unde hic. Maxime, atque. Repellendus eligendi nemo numquam fuga beatae explicabo molestiae ea perferendis quidem alias voluptatem cum in dicta tempore maxime corporis fugiat, sint laboriosam possimus laudantium hic dolores earum incidunt. Suscipit, atque recusandae sit eum itaque consequuntur.
+                </p>
+                <div class="view-list-group">
+                  <label class="view-list-title">tags:</label>
+                  <ul class="view-tag-list">
+
+                    
+                    <li><a href="/shop?filter=tags&tag=fdasf">fdasf</a></li>
+                    
+                    <li><a href="/shop?filter=tags&tag=sdfasd">sdfasd</a></li>
+                    
+
+                  </ul>
                 </div>
 
+                <div class="view-add-group">
 
-                <%- include('../partials/__user-features.ejs') %>
-                  <%- include('../partials/__user-footer.ejs') %>
+                  
+                  <button class="product-add" title="Add to Cart">
+                    <i class="fas fa-shopping-basket"></i><span>Login to Add</span>
+                  </button>
+                  <div class="product-action" data-pid="640dbe82524f6e7969cf737f" data-action="remove">
+                    <p class="text-danger">Please login to use the cart</p>
+                  </div>
+                  
 
-                    <script src="/static/vendor/bootstrap/jquery-1.12.4.min.js"></script>
-                    <script src="/static/vendor/bootstrap/popper.min.js"></script>
-                    <script src="/static/vendor/bootstrap/bootstrap.min.js"></script>
-                    <script src="/static/vendor/countdown/countdown.min.js"></script>
-                    <script src="/static/vendor/niceselect/nice-select.min.js"></script>
-                    <script src="/static/vendor/slickslider/slick.min.js"></script>
-                    <script src="/static/vendor/venobox/venobox.min.js"></script>
-                    <script src="/static/js/nice-select.js"></script>
-                    <script src="/static/js/countdown.js"></script>
-                    <script src="/static/js/accordion.js"></script>
-                    <script src="/static/js/venobox.js"></script>
-                    <script src="/static/js/slick.js"></script>
-                    <script src="/static/js/main.js"></script>
-    </body>
+                </div>
+                <div class="view-action-group">
+                  <a class="view-wish wish " data-pid="640dbe82524f6e7969cf737f" title="Add Your Wishlist">
+                    <i class="icofont-heart"></i>
+                    <span>add to wish</span>
+                  </a>
+                  <a class="view-compare" href="#" title="Compare This Item">
+                    <i class="fas fa-random"></i>
+                    <span>Compare This</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    </html>
+  
+
+  <section class="intro-part">
+  <div class="container">
+    <div class="row intro-content">
+      <div class="col-sm-6 col-lg-3">
+        <div class="intro-wrap">
+          <div class="intro-icon"><i class="fas fa-truck"></i></div>
+          <div class="intro-content">
+            <h5>free home delivery</h5>
+            <p>Lorem ipsum dolor sit amet adipisicing elit nobis.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="intro-wrap">
+          <div class="intro-icon"><i class="fas fa-sync-alt"></i></div>
+          <div class="intro-content">
+            <h5>instant return policy</h5>
+            <p>Lorem ipsum dolor sit amet adipisicing elit nobis.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="intro-wrap">
+          <div class="intro-icon"><i class="fas fa-headset"></i></div>
+          <div class="intro-content">
+            <h5>quick support system</h5>
+            <p>Lorem ipsum dolor sit amet adipisicing elit nobis.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="intro-wrap">
+          <div class="intro-icon"><i class="fas fa-lock"></i></div>
+          <div class="intro-content">
+            <h5>secure payment way</h5>
+            <p>Lorem ipsum dolor sit amet adipisicing elit nobis.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  <footer class="footer-part">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 col-xl-3">
+        <div class="footer-widget"><a class="footer-logo" href="#"><img src="/static/images/logo.png" alt="logo"></a>
+          <p class="footer-desc">Adipisci asperiores ipsum ipsa repellat consequatur repudiandae
+            quisquam
+            assumenda dolor perspiciatis sit ipsum dolor amet.</p>
+          <ul class="footer-social">
+            <li><a class="icofont-facebook" href="#"></a></li>
+            <li><a class="icofont-instagram" href="#"></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="footer-widget contact">
+          <h3 class="footer-title">contact us</h3>
+          <ul class="footer-contact">
+            <li><i class="icofont-ui-email"></i>
+              <p><span>support@example.com</span><span>carrer@example.com</span></p>
+            </li>
+            <li><i class="icofont-ui-touch-phone"></i>
+              <p><span>+120 279 532 13</span><span>+120 279 532 14</span></p>
+            </li>
+            <li><i class="icofont-location-pin"></i>
+              <p>1Hd- 50, 010 Avenue, NY 90001 United States</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="footer-widget">
+          <h3 class="footer-title">quick Links</h3>
+          <div class="footer-links">
+            <ul>
+              <li><a href="#">My Account</a></li>
+              <li><a href="#">Order History</a></li>
+              <li><a href="#">Order Tracking</a></li>
+              <li><a href="#">Best Seller</a></li>
+              <li><a href="#">New Arrivals</a></li>
+            </ul>
+            <ul>
+              <li><a href="#">Location</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="footer-widget">
+          <h3 class="footer-title">Download App</h3>
+          <p class="footer-desc">Lorem ipsum dolor sit amet tenetur dignissimos ipsum eligendi
+            autem
+            obcaecati minus ducimus totam reprehenderit exercitationem!</p>
+          <div class="footer-app"><a href="#"><img src="/static/images/google-store.png" alt="google"></a><a href="#"><img src="/static/images/app-store.png" alt="app"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="footer-bottom">
+          <p class="footer-copytext">&copy; All Copyrights Reserved by <a href="#">Greeny</a></p>
+          <div class="footer-card"><a href="#"><img src="/static/images/payment/jpg/01.jpg" alt="payment"></a><a href="#"><img src="/static/images/payment/jpg/02.jpg" alt="payment"></a><a href="#"><img src="/static/images/payment/jpg/03.jpg" alt="payment"></a><a href="#"><img src="/static/images/payment/jpg/04.jpg" alt="payment"></a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js" integrity="sha512-0qU9M9jfqPw6FKkPafM3gy2CBAvUWnYVOfNPDYKVuRTel1PrciTj+a9P3loJB+j0QmN2Y0JYQmkBBS8W+mbezg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="/static/vendor/swal/sweetalert2.all.min.js"></script>
+<script src="/static/js/formControl.js"></script>
+
+  <script src="/static/vendor/bootstrap/jquery-1.12.4.min.js"></script>
+  <script src="/static/vendor/bootstrap/popper.min.js"></script>
+  <script src="/static/vendor/bootstrap/bootstrap.min.js"></script>
+  <script src="/static/vendor/countdown/countdown.min.js"></script>
+  <script src="/static/vendor/niceselect/nice-select.min.js"></script>
+  <script src="/static/vendor/slickslider/slick.min.js"></script>
+  <script src="/static/vendor/venobox/venobox.min.js"></script>
+  <script src="/static/js/nice-select.js"></script>
+  <script src="/static/js/countdown.js"></script>
+  <script src="/static/js/accordion.js"></script>
+  <script src="/static/js/venobox.js"></script>
+  <script src="/static/js/slick.js"></script>
+  <script src="/static/js/main.js"></script>
+</body>
+
+</html>
