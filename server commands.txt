@@ -1,0 +1,47 @@
+created ec2 instance
+ubuntu 22.04
+
+8 GB space
+
+
+sudo apt update
+sudo apt upgrade
+apt install nginx -y
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install nodejs -y
+node -v
+sudo apt-get install gcc g++ make
+apt install build-essential -y
+cd /var/www/html
+nano index.js
+////////////////////
+var http = require('http');
+
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Hello World!');
+}).listen(3000);
+/////////////////////
+nano /etc/nginx/sites-available/default
+/////////////////////
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+
+        root /var/www/html;
+        index index.html index.htm index.nginx-debian.html;
+
+        server_name _;
+
+        location / {
+                        proxy_pass http://localhost:3000;
+                        proxy_set_header Host $host;
+                        proxy_set_header X-Real-IP $remote_addr;
+                        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                        proxy_set_header X-Forwarded-Proto $scheme;
+                }
+}
+////////////////////
+
+

@@ -1,5 +1,6 @@
+require('dotenv').config()
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://127.0.0.1:27017/nftArena')
+mongoose.connect(process.env.mongoConnect)
 const express = require('express')
 const app = express()
 const userRoute = require('./routes/userRoute')
