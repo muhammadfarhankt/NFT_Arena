@@ -107,7 +107,7 @@ const addProduct = async (req, res) => {
       author: req.body.author,
       stock: req.body.stock
     })
-    const productData = await product.save()
+    await product.save()
     res.redirect('/author/products')
   } catch (error) {
     console.log(error.message)
@@ -118,7 +118,7 @@ const addProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const productId = req.query.id
-    const deleteData = await Product.findByIdAndDelete({ _id: productId })
+    await Product.findByIdAndDelete({ _id: productId })
     res.redirect('/author/products')
   } catch (error) {
     console.log(error.message)
@@ -128,7 +128,7 @@ const deleteProduct = async (req, res) => {
 // logout
 const logout = async (req, res) => {
   try {
-    req.session.author_id=''
+    req.session.author_id = ''
     res.redirect('/author')
   } catch (error) {
     console.log(error.mesage)
@@ -153,7 +153,7 @@ const updateProduct = async (req, res) => {
     const productId = req.body.id
     console.log('try')
     console.log(productId)
-    const updateData = await Product.findByIdAndUpdate({ _id: productId }, { $set: { name: req.body.name, description: req.body.description, price: req.body.price, stock: req.body.stock, category: req.body.category} })
+    await Product.findByIdAndUpdate({ _id: productId }, { $set: { name: req.body.name, description: req.body.description, price: req.body.price, stock: req.body.stock, category: req.body.category } })
     res.redirect('/author/products')
   } catch (error) {
     console.log(error.mesage)
@@ -264,7 +264,7 @@ const forgetLink = async (req, res) => {
         res.render('forget', { message: 'Not verified Email yet!. Pls Verify your email' })
       } else {
         const randomString = randomstring.generate()
-        const updatedData = await Author.updateOne({ email }, { $set: { token: randomString } })
+        await Author.updateOne({ email }, { $set: { token: randomString } })
         sendResetMail(authorData.name, authorData.email, randomString)
         res.render('forget', { message: 'Pls check your Mail to Reset Password' })
       }

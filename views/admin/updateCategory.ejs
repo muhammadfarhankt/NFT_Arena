@@ -166,19 +166,18 @@
                     <input type="text" name="description" id="description" class="form-control" value="<%= category.description %>">
                     <input type="hidden" name="id" value="<%= category._id %>">
                     <br><br>
-                    <div class="head-title">
+                    <div class="head-title" style="display: inline-flex;">
                       <input type="submit" class="btn-download" id="submitButton">
                     </input>
+
+                    <a href="/admin/category">
+                      <button type="button" class="btn-download">
+                        Cancel
+                      </button>
+                    </a>
+
                     </div> 
               </form>
-
-              <br>
-              <div class="head-title">
-              <a href="/admin/category">
-              <button type="button" class="btn-download">
-                Cancel
-              </button>
-              </a>
 
               <script>
 

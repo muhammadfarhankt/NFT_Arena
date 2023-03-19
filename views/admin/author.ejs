@@ -207,8 +207,16 @@
                     </td>
 
                     <td align="center">
-                      <span class="status delete-button" data-id="<%= authorData[i]._id %>"
-                        style="background: rgb(215, 9, 33);">Delete</span>
+                      <% if(authorData[i].isDeleted==false){%>
+                        <span class="status delete-button" style="background-color: green; align-items: center;" 
+                        data-id="<%= authorData[i]._id %>">
+                        Active
+                      </span>
+                    <%}else{%>
+                          <span class="status unDelete-button" style="align-items: center; background-color: red;"
+                          data-id="<%= authorData[i]._id %>">
+                          Deleted</span>
+                    <%}%>
                     </td>
 
 
@@ -256,6 +264,32 @@
     });
   </script>
 
+  <!-- undelete -->
+  <script>
+    const unDeleteButtons = document.querySelectorAll('.unDelete-button');
+    unDeleteButtons.forEach((unDeleteButton) => {
+      unDeleteButton.addEventListener('click', (event) => {
+        event.preventDefault(); 
+        const categoryId = unDeleteButton.getAttribute('data-id');
+
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'Do you want to un-delete this Author?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Yes, un delete!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `/admin/deleteAuthor?id=${categoryId}`;
+          }
+        });
+      });
+    });
+  </script>
+
+<!-- block button -->
 <script>
   const blockButtons = document.querySelectorAll('.block-button');
   blockButtons.forEach((blockButton) => {
@@ -279,7 +313,7 @@
   });
 </script>
 
-unBlock-button
+<!-- unBlock-button -->
 
 <script>
   const unBlockButtons = document.querySelectorAll('.unBlock-button');

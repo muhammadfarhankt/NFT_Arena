@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+// eslint-disable-next-line no-unused-vars
 const Product = require('../models/productModel')
 
 const userSchema = new mongoose.Schema({
@@ -102,7 +103,8 @@ const userSchema = new mongoose.Schema({
 userSchema.methods.addToCart = function (product) {
   const cart = this.cart
   const indexNumber = cart.item.findIndex(objInItems => {
-    return new String(objInItems.productId).trim() == new String(product._id).trim()
+    // eslint-disable-next-line no-new-wrappers
+    return new String(objInItems.productId).trim() === new String(product._id).trim()
   })
   console.log('indexNumber :  ' + indexNumber)
   if (indexNumber >= 0) {
@@ -123,10 +125,11 @@ userSchema.methods.addToCart = function (product) {
 // add wishlist
 userSchema.methods.addWishlist = function (productId) {
   const wishlist = this.wishlist
+  // eslint-disable-next-line no-new-wrappers
   const indexNumber = wishlist.item.findIndex(objInItems => new String(objInItems.productId).trim() === new String(productId).trim())
   console.log('wish indexNumber :   ' + indexNumber)
   if (indexNumber < 0) {
-    wishlist.item.push({ productId: productId })
+    wishlist.item.push({ productId })
   }
   return this.save()
 }

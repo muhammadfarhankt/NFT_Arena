@@ -152,7 +152,6 @@
                 <th><center>No of Items</center></th>
                 <th><center>Amount</center></th>
                 <th><center>Status</center></th>
-                <th><center>Edit</center></th>
                 <th><center>Actions</center></th>
               </tr>
             </thead>
@@ -187,29 +186,33 @@
                     </td>
                     <td align="center">
                       <% if( orderData[i].status == 'Cancelled') { %>
-                        <P style="color: red;">Cancelled</P>
-                        <%} else { %>
-                          <%= orderData[i].status %>
-                        <%  } %>
+                        <span class="status" style="background: red;">Cancelled</span>
+                      <%} else if (orderData[i].status == 'Attempted') { %>
+                          <span class="status completed">
+                            Attempted</span>
+                       <% } else if (orderData[i].status == 'Failed')  {%>
+                        <span class="status pending">
+                          Failed</span>
+                     <% } else if (orderData[i].status == 'Success')  {%>
+                      <span class="status" style="background-color: green;">
+                        Success</span>
+                   <% } %>
                     </td>
-                    <td align="center">
-                      <p>
-                          <a href="/admin/editOrder?id=<%= orderData[i]._id%>">
-                            <span class="status" style="background-color: green;">Edit</span>
-                          </a>
-                      </p>
-                    </td>
+                    
 
                     <td align="center">
                       <p>
-                          <a href="/admin/cancelOrder?id=<%= orderData[i]._id%>" onclick="return unblock_alert(this)">
-                            <script type="text/javascript">
-                              function unblock_alert(node) {
-                                return confirm("Do you want to cancel Order ? ")
-                              }
-                            </script>
-                            <span class="status" style="background: red;">Cancel Order</span>
-                          </a>
+                        <a href="/admin/editOrder?id=<%= orderData[i]._id%>">
+                          <span class="status" style="background-color: green;">Edit</span>
+                        </a>
+                        <% if (orderData[i].status == 'Attempted' || orderData[i].status == 'Success') { %>  
+                       
+                          <span class="status delete-button" style="background-color: red; align-items: center;" 
+                        data-id="<%= orderData[i]._id %>">
+                        Cancel
+                      </span>
+
+                        <% } %>
                       </p>
                     </td>
 
@@ -243,6 +246,29 @@
       $('#tablePagination').DataTable();
     });
   </script>
+   <!--  SweetAlert2 script -->
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+   <script>
+     const deleteButtons = document.querySelectorAll('.delete-button');
+     deleteButtons.forEach((deleteButton) => {
+       deleteButton.addEventListener('click', (event) => {
+         event.preventDefault();
+         const orderId = deleteButton.getAttribute('data-id');
+         Swal.fire({
+           title: 'Are you sure to cancel Order ?',
+           icon: 'warning',
+           showCancelButton: true,
+           confirmButtonColor: '#d33',
+           cancelButtonColor: '#3085d6',
+           confirmButtonText: 'Yes, Cancel'
+         }).then((result) => {
+           if (result.isConfirmed) {
+             window.location.href = `/admin/cancelOrder?id=${orderId}`;
+           }
+         });
+       });
+     });
+   </script>
 </body>
 
 </html>

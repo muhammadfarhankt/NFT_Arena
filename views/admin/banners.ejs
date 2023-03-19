@@ -7,12 +7,12 @@
 
   <!-- Boxicons -->
   <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-  
+
   <!-- My CSS -->
   <link rel="stylesheet" href="/adminhome/style.css">
 
   <!-- Table Pagination -->
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
 
   <title>Banners | NFT Arena</title>
 </head>
@@ -144,22 +144,30 @@
 
           <% if(bannerData.length>0){ %>
 
-          <table id="tablePagination" class="display">
-            <thead>
-              <tr>
-                <th>Sl No.</th>
-                <th>Name</th>
-                <th>Image</th>
-                <th>Link</th>
-                <th>Edit</th>
-                <th><center>Block / Unblock</center></th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-                <tbody>
-                  <% for(let i=0;i<bannerData.length;i++){ %>
+            <table id="tablePagination" class="display">
+              <thead>
+                <tr>
+                  <th>
+                    <center>Sl No.</center></th>
+                  <th>Name</th>
+                  <th>
+                    <center>
+                    Image
+                  </center>
+                  </th>
+                  <th>Link</th>
+                  <th>
+                    <center>Edit</th></center>
+                  <th>
+                    <center>Block / Unblock</center>
+                  </th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for(let i=0;i<bannerData.length;i++){ %>
                   <tr>
-                    <td>
+                    <td align="center">
                       <%= i+1 %>
                     </td>
                     <td>
@@ -167,7 +175,7 @@
                         <%= bannerData[i].name %>
                       </p>
                     </td>
-                    <td>
+                    <td align="center">
                       <p>
                         <img src="/imagess/<%= bannerData[i].image %>">
                       </p>
@@ -177,7 +185,7 @@
                         <%= bannerData[i].link %>
                       </p>
                     </td>
-                    <td> <a href="/admin/updateBanner?id=<%= bannerData[i]._id %>"><span class="status"
+                    <td align="center"> <a href="/admin/updateBanner?id=<%= bannerData[i]._id %>"><span class="status"
                           style="background: rgb(8, 38, 15);">Edit</span></a>
                     </td>
 
@@ -185,38 +193,21 @@
                       <p>
 
                         <% if(bannerData[i].isBlocked==false){%>
-                          <a href="/admin/blockBanner?id=<%= bannerData[i]._id%>" onclick="return block_alert(this)">
-                            <script type="text/javascript">
-                              function block_alert(node) {
-                                return confirm("Do you want to block Banner ? ")
-                              }
-                            </script>
-                            <span class="status" style="background-color: green; align-items: center;">Active</span>
-                          </a>
-
+                          <span class="status block-button" style="background-color: green; align-items: center;"
+                            data-id="<%= bannerData[i]._id %>">
+                            Active
+                          </span>
                           <%}else{%>
-                            <a href="/admin/blockBanner?id=<%= bannerData[i]._id%>"
-                              onclick="return unblock_alert(this)">
-                              <script type="text/javascript">
-                                function unblock_alert(node) {
-                                  return confirm("Do you want to un-block Banner ? ")
-                                }
-                              </script>
-                              <span class="status" style="background: red; align-items: center;">Blocked</span>
-                            </a>
+                            <span class="status pending unBlock-button" style="align-items: center;" data-id="<%= bannerData[i]._id %>">
+                              Blocked</span>
                             <%}%>
+
                       </p>
                     </td>
 
                     <td>
-                      <a href="/admin/deleteBanner?id=<%= bannerData[i]._id %>" onclick="return confirm_alert(this)">
-                        <span class="status" style="background: rgb(215, 9, 33);">Delete</span>
-                        <script type="text/javascript">
-                          function confirm_alert(node) {
-                            return confirm("Do you want to delete Banner ? ")
-                          }
-                        </script>
-                      </a>
+                        <span class="status delete-button" style="background: rgb(215, 9, 33);" data-id="<%= bannerData[i]._id %>">
+                          Delete</span>
                     </td>
 
 
@@ -224,12 +215,12 @@
 
                   <% } %>
 
-                </tbody>
+              </tbody>
             </table>
 
             <% } else { %>
               No Banners found
-            <% } %>
+              <% } %>
 
 
 
@@ -238,18 +229,91 @@
     </main>
     <!-- MAIN -->
   </section>
+<!--  SweetAlert2 script -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<!-- block button -->
+<script>
+    const blockButtons = document.querySelectorAll('.block-button');
+    blockButtons.forEach((blockButton) => {
+      blockButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        const bannerId = blockButton.getAttribute('data-id');
+        Swal.fire({
+          title: 'Are you sure to block banner ?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Yes, Block'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `/admin/blockBanner?id=${bannerId}`;
+          }
+        });
+      });
+    });
+  </script>
+  
+  <!-- unBlock-button -->
+  <script>
+    const unBlockButtons = document.querySelectorAll('.unBlock-button');
+    unBlockButtons.forEach((unBlockButton) => {
+      unBlockButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        const bannerId = unBlockButton.getAttribute('data-id');
+        Swal.fire({
+          title: 'Are you sure to un-block banner ?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Yes, un-block'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `/admin/blockBanner?id=${bannerId}`;
+          }
+        });
+      });
+    });
+  </script>
+  
+  <script>
+    const deleteButtons = document.querySelectorAll('.delete-button');
+    deleteButtons.forEach((deleteButton) => {
+      deleteButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        const bannerId = deleteButton.getAttribute('data-id');
+        Swal.fire({
+          title: 'Are you sure to delete Banner ?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Yes, delete'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `/admin/deleteBanner?id=${bannerId}`;
+          }
+        });
+      });
+    });
+  </script>
+
   <!-- CONTENT -->
 
   <!-- Pagination Script  -->
-	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-	<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-	<script type="text/javascript" charset="utf8"
-	  src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
-	<script>
-	  $(document).ready(function () {
-		$('#tablePagination').DataTable();
-	  });
-	</script>
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" charset="utf8"
+    src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('#tablePagination').DataTable();
+    });
+  </script>
+
+
 
   <script src="/adminhome/script.js"></script>
 </body>

@@ -10,7 +10,7 @@
   <!-- My CSS -->
   <link rel="stylesheet" href="/adminhome/style.css">
 
-  
+
 
   <title>Add Authors | NFT Arena</title>
 </head>
@@ -74,7 +74,7 @@
           <span class="text" style="text-decoration: line-through;">Coupons</span>
         </a>
       </li>
-      
+
     </ul>
     <ul class="side-menu">
       <li>
@@ -149,63 +149,63 @@
           </div> -->
 
           <section>
-                  <h2 class="text-left">Add Author</h2>
-                  <form action="addAuthor" method="post">
-                    
-                    <br>
-								<!-- Flash message -->
+            <h2 class="text-left">Add Author</h2>
+            <form action="addAuthor" method="post">
 
-								<% if(typeof message !=='undefined' ) {%>
-									<div id="flash-msg" class="alert alert-danger" style="color: red;">
-										<%= message %>
-									</div>
+              <br>
+              <!-- Flash message -->
 
-									<% } %>
-                  
+              <% if(typeof message !=='undefined' ) {%>
+                <div id="flash-msg" class="alert alert-danger" style="color: red;">
+                  <%= message %>
+                </div>
+
+                <% } %>
+
                   <br>
-                    <label for="">Name</label>
-                    <input type="text" name="name" id="name" class="form-control" required>
-                    
-                    <br><br>
-                    <label for="">Description</label>
-                    <input type="text" name="description" id="description" class="form-control" required>
-                    
-                    <br><br>
-                    <div class="head-title">
-                      <button type="submit" class="btn-download">
-                        Submit
+                  <label for="">Name</label>
+                  <input type="text" name="name" id="name" class="form-control" required>
+
+                  <br><br>
+                  <label for="">Description</label>
+                  <input type="text" name="description" id="description" class="form-control" required>
+
+                  <br><br>
+                  <label for="">Email</label>
+                  <input type="email" name="email" id="email" class="form-control" required>
+
+                  <br><br>
+                  <div class="head-title" style="display: inline-flex;">
+                    <button type="submit" class="btn-download">
+                      Submit
+                    </button>
+
+                    <a href="/admin/author">
+                      <button type="button" class="btn-download">
+                        Cancel
                       </button>
-                    </div>
-                  </form>
-
-                  <br>
-              				<div class="head-title">
-							<a href="/admin/author">
-								<button type="button" class="btn-download">
-									Cancel
-								</button>
-							</a>
-              				</div>
+                    </a>
+                  </div>
+            </form>
           </section>
 
 
         </div>
-       </div>
+      </div>
 
-       <script>
+      <script>
 
         document.getElementById("name").addEventListener("input", function () {
           var authorName = document.getElementById("name").value;
           console.log(name)
-    
+
           if (authorName.trim() == "") {
             document.getElementById("name").setCustomValidity("Author Name cannot be null");
-            console.log("Name null")
           } else {
             document.getElementById("name").setCustomValidity("");
           }
         });
-    
+
         document.getElementById("description").addEventListener("input", function () {
           var description = document.getElementById("description").value;
           if (description.trim() == "") {
@@ -214,9 +214,18 @@
             document.getElementById("description").setCustomValidity("");
           }
         });
-    
+
+        document.getElementById("email").addEventListener("input", function () {
+          var description = document.getElementById("email").value;
+          if (description.trim() == "") {
+            document.getElementById("email").setCustomValidity("Email cannot be null");
+          } else {
+            document.getElementById("email").setCustomValidity("");
+          }
+        });
+
       </script>
-    
+
 
 
     </main>
@@ -224,7 +233,7 @@
   </section>
   <!-- CONTENT -->
 
-  
+
   <script src="/adminhome/script.js"></script>
 </body>
 

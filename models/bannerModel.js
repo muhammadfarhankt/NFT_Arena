@@ -12,6 +12,19 @@ const bannerSchema = new mongoose.Schema({
   link: {
     type: String
   },
+  textPosition: {
+    type: String,
+    default: 'right',
+    enum: ['left', 'right']
+  },
+  textHeader: {
+    type: String,
+    default: 'Banner Heading '
+  },
+  textContent: {
+    type: String,
+    default: 'NFT Arena combines dynamic NFTs and Hyperlane to allow users to create an NFT hero and train it via different training courses in different chains,..'
+  },
   isBlocked: {
     type: Boolean,
     default: false

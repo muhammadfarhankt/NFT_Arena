@@ -1,218 +1,461 @@
-<%- include('../partials/header') %>
-<!-- navbar -->
-<%- include('../partials/categories-navbar') %>
-    <!-- Top Carousel -->
-    <div id="topCarousel" class="carousel slide mb-3 mt-0 pt-0" data-ride="carousel">
-      <ol class="carousel-indicators">
-        
-        <li data-target="#topCarousel" data-slide-to="0" class="active"></li>
-        
-        <% for(let i=1;i<bannerData.length;i++) { %>
-          <li data-target="#topCarousel" data-slide-to="<%= i+1 %>"></li>
-          <% } %>
-        
-      </ol>
-      <div class="carousel-inner">
+<%- include('../partials/__user-head.ejs') %>
+  <link rel="stylesheet" href="/static/css/index.css">
+  <title>NFT Arena</title>
+  </head>
 
-        <div class="carousel-item">
-          <a href="<%= bannerData[0].link %>">
-            <img class="d-block w-100" src="/imagess/<%=bannerData[0].image%>" alt="0 slide" />
-            </a>
-          </div>
 
-        <% for (let j=1;j<bannerData.length;j++) { %>
-        <div class="carousel-item active">
-          <a href="<%= bannerData[j].link %>">
-          <img class="d-block w-100" src="/imagess/<%=bannerData[j].image%>" alt="<%= j+1 %> slide" />
-          </a>
-        </div>
+  <body>
 
-        <% } %>
-      </div>
+    <%- include('../partials/__user-nav.ejs') %>
+      <%- include('../partials/__user-side-cat.ejs') %>
+        <%- include('../partials/__user-cart.ejs') %>
+          <%- include('../partials/__user-sidenav.ejs') %>
+            <%- include('../partials/__user-mobile.ejs') %>
 
-      <a class="carousel-control-prev" href="#topCarousel" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
 
-      <a class="carousel-control-next" href="#topCarousel" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div>
+              <!-- Hero -->
+              <section class="home-index-slider slider-arrow slider-dots">
 
-   
-    <!-- Store's categories section -->
-<div class="container">
-  <h3 class="text-center mb-3 mt-4">NFT Store's Categories</h3>
-  
-  <div class="row text-center m-auto">
-    
-    <div class="col-lg-3 col-md-3 col-sm-12 text-center ml-2">
-      <a class="title-link" href="/category?id=6406f3b6a434c65aa50fd43b">
-        <img src="http://cdn.shopify.com/s/files/1/0002/9091/4356/articles/MUSIC_NFT_1_1024x1024.jpg" alt="category" class="circle-img" />
-        <h4 class="mb-3 mt-3">Music NFTs</h4>
-      </a>
-    </div>
-    
-    <div class="col-lg-3 col-md-3 col-sm-12 text-center ml-2">
-      <a class="title-link" href="/category?id=6406f3e1a434c65aa50fd441">
-        <img src="https://www.creativityculturecapital.org/wp-content/uploads/2021/09/22_Diego_Balan_Web.png" alt="category" class="circle-img" />
-        <h4 class="mb-3 mt-3">Art NFTs</h4>
-      </a>
-    </div>
-    
-    <div class="col-lg-3 col-md-3 col-sm-12 text-center ml-2">
-      <a class="title-link" href="/category?id=6405dc172233cf2a535919b6">
-        <img src="https://meta-legends.com/img/celestial.ee45254d.png" alt="category" class="circle-img" />
-        <h4 class="mb-3 mt-3">Meta Legends</h4>
-      </a>
-    </div>
-    
-    <div class="col-lg-1 col-md-1 col-sm-12 text-center mx-auto">
-      <a href="/shop">
-        <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
-      </a>
-    </div>
-  </div>
-  
-</div>
+                <% if (bannerData.length> 0) { %>
 
-<hr class="gradient-style" />
+                  <% bannerData.forEach((banner,index)=> { %>
 
-<!-- Latest products slider -->
-<div class="container mb-4 mt-4">
-  <!--Carousel Wrapper-->
-  <div
-    id="products-carousel"
-    class="carousel slide carousel-multi-item"
-    data-ride="carousel"
-  >
-    <!--Controls-->
-    <div class="controls-top mb-2">
-      <div class="row">
-        <div class="col-8">
-          <h3>Latest Products</h3>
-        </div>
-        <div class="col-4">
-          <div class="controls float-right hidden-xs">
-            <a
-              class="left fa fa-chevron-left btn btn"
-              href="#products-carousel"
-              data-slide="prev"
-            ></a
-            ><a
-              class="right fa fa-chevron-right btn"
-              href="#products-carousel"
-              data-slide="next"
-            ></a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/.Controls-->
+                    <!-- left -->
+                    <div class="banner-part banner-<%= index %>">
+                      <div class="container">
+                        <div class="row align-items-center">
 
-    <!-- Slides-->
-    <div class="carousel-inner" role="listbox">
-      <!--First slide-->
-      <div class="carousel-item active">
-        <div class="row">
-          
-          <% for(let j=0,i=0;i<3;i++) { %>
+                          <% if (banner.textPosition==='right' ) { %>
 
-          <div class="col-md-4 product-index-box">
-            <div class="single-product d-flex flex-column h-100">
-              <a
-                class="title-link"
-                href="/product?id=<%= productData[i]._id %>"
-              >
-                <img
-                  src="/imagess/<%=productData[i].image%>"
-                  alt="NFT"
-                  class="img-fluid"
-              /></a>
-              <div class="product-info">
-                <a
-                  class="title-link"
-                  href="/product?id=<%= productData[i]._id %>"
-                >
-                  <h6 class="mt-2 mb-2"><%= productData[j].name %></h6></a
-                >
-                <div class="price">Price: $ <%= productData[j].price %></div>
-              </div>
-              
-              <a
-                href="/add-to-cart?id=<%= productData[i]._id %>"
-                class="btn btn-block btn-secondary button-style mt-auto mb-2"
-              >
-                Add to Shopping Cart
-              </a>
-              
-            </div>
-          </div>
+                            <div class="col-md-6 col-lg-6">
+                              <div class="banner-img"><img src="/imagess/<%= banner.image %>" alt="index"></div>
+                            </div>
 
-          <% } %>
-          
-        </div>
-      </div>
-      <!--/.First slide-->
+                            <% } %>
 
-      <!--Second slide-->
-      <div class="carousel-item">
-        <div class="row">
-          
-          <% for(let j=3;j<6;j++) { %>
+                              <div class="col-md-6 col-lg-6">
+                                <div class="banner-content">
+                                  <h1>
+                                    <%= banner.textHeader %>
+                                  </h1>
+                                  <p>
+                                    <%= banner.textContent %>
+                                  </p>
+                                  <div class="banner-btn"><a class="btn btn-inline" href="/shop"><i
+                                        class="fas fa-shopping-basket"></i><span>shop now</span></a><a
+                                      class="btn btn-outline" href="/shop"><i
+                                        class="icofont-sale-discount"></i><span>get offer</span></a></div>
+                                </div>
+                              </div>
 
-            <div class="col-md-4 product-index-box">
-              <div class="single-product d-flex flex-column h-100">
-                <a
-                  class="title-link"
-                  href="/product?id=<%= productData[j]._id %>"
-                >
-                  <img
-                    src="/imagess/<%=productData[j].image%>"
-                    alt="NFT"
-                    class="img-fluid"
-                /></a>
-                <div class="product-info">
-                  <a
-                    class="title-link"
-                    href="/product?id=<%= productData[j]._id %>"
-                  >
-                    <h6 class="mt-2 mb-2"><%= productData[j].name %></h6></a
-                  >
-                  <div class="price">Price : $ <%= productData[j].price %></div>
+                              <% if (banner.textPosition==='left' ) { %>
+
+                                <div class="col-md-6 col-lg-6">
+                                  <div class="banner-img"><img src="/imagess/<%= banner.image %>" alt="index"></div>
+                                </div>
+
+                                <% } %>
+
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <% }) %>
+                      <% } else { %>
+
+                        <!-- left -->
+                        <div class="banner-part banner-1">
+                          <div class="container">
+                            <div class="row align-items-center">
+
+                              <div class="col-md-6 col-lg-6">
+                                <div class="banner-content">
+                                  <h1>free home delivery within 24 hours now.</h1>
+                                  <p>Lorem ipsum dolor consectetur adipisicing elit modi consequatur eaque expedita
+                                    porro
+                                    necessitatibus eveniet voluptatum quis pariatur Laboriosam molestiae architecto
+                                    excepturi</p>
+                                  <div class="banner-btn"><a class="btn btn-inline" href="/shop"><i
+                                        class="fas fa-shopping-basket"></i><span>shop now</span></a><a
+                                      class="btn btn-outline" href="/shop"><i
+                                        class="icofont-sale-discount"></i><span>get offer</span></a></div>
+                                </div>
+                              </div>
+
+                              <div class="col-md-6 col-lg-6">
+                                <div class="banner-img"><img src="/static/images/home/index/01.png" alt="index"></div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- right -->
+                        <div class="banner-part banner-2">
+                          <div class="container">
+                            <div class="row align-items-center">
+                              <div class="col-md-6 col-lg-6">
+                                <div class="banner-img"><img src="/static/images/home/index/02.png" alt="index"></div>
+                              </div>
+                              <div class="col-md-6 col-lg-6">
+                                <div class="banner-content">
+                                  <h1>free home delivery within 24 hours now.</h1>
+                                  <p>Lorem ipsum dolor consectetur adipisicing elit modi consequatur eaque expedita
+                                    porro
+                                    necessitatibus eveniet voluptatum quis pariatur Laboriosam molestiae architecto
+                                    excepturi</p>
+                                  <div class="banner-btn"><a class="btn btn-inline" href="/shop"><i
+                                        class="fas fa-shopping-basket"></i><span>shop now</span></a><a
+                                      class="btn btn-outline" href="/shop"><i
+                                        class="icofont-sale-discount"></i><span>get offer</span></a></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <% } %>
+
+              </section>
+
+              <!------------ Category Slider -------------->
+              <section class="section suggest-part">
+                <div class="container">
+                  <ul class="suggest-slider slider-arrow">
+                    <% let i=0 %>
+                      <!-- Iterate Categories -->
+                      <% categoryData.forEach(cat=> { %>
+
+                        <li><a class="suggest-card" href="/shop?category=<%= cat._id %>">
+                            <img src="/static/images/category/dairy.jpg" alt="suggest">
+                            <h5>
+                              <%= cat.name %><span>
+
+                                </span>
+                            </h5>
+                          </a></li>
+
+                        <% i++ }) %>
+
+                  </ul>
                 </div>
-                
-                <a
-                  href="/add-to-cart?id=<%= productData[j]._id %>"
-                  class="btn btn-block btn-secondary button-style mt-auto mb-2"
-                >
-                  Add to Shopping Cart
-                </a>
-                
+              </section>
+
+
+             
+
+
+
+              <!----------------- Newly Added products ----------------->
+              <section class="section newitem-part">
+                <div class="container">
+                  <div class="row">
+                    <div class="col">
+                      <div class="section-heading">
+                        <h2>collected new NFTs</h2>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <ul class="new-slider slider-arrow">
+
+                      <% newlyAddedProducts.forEach(prod=> { %>
+
+
+                        <li>
+                          <div class="product-card ">
+                            <div class="product-media">
+
+
+                              <div class="product-label">
+                                <label class="label-text new">new</label>
+                              </div>
+                              <a href="/add-to-wishlist?id=<%= prod._id%>">
+                              <button class="product-wish" >
+                                <i class="fas fa-heart"></i>
+                              </button>
+                              </a>
+                              <a class="product-image" href="/product?id=<%=prod._id%>">
+                                <img src="/imagess/<%= prod.image  %>" alt="product">
+                              </a>
+                              <div class="product-widget">
+                                <a title="Product View" href="/product?id=<%=prod._id%>" class="fas fa-eye"></a>
+                              </div>
+                            </div>
+                            <div class="product-content">
+                              <div class="product-rating">
+                                <i class="active icofont-star"></i>
+                                <i class="active icofont-star"></i>
+                                <i class="active icofont-star"></i>
+                                <i class="active icofont-star"></i>
+                                <i class="active icofont-star"></i>(1)
+                              </div>
+
+                              <h6 class="product-name"><a href="/product?id=<%= prod._id %>"><%= prod.name %></a></h6>
+                              <h6 class="product-price"><span>$ <%= prod.price %></span></h6>
+
+                             
+                              <a class="product-addNew" title="Add to Cart" href="/add-to-cart?id=<%= prod._id %>">
+                                <i class="fas fa-shopping-basket" href=""></i><span>Add</span>
+                              </a>
+
+                            </div>
+                          </div>
+                        </li>
+
+                      <% }) %>
+
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="section-btn-25"><a href="/shop" class="btn btn-outline"><i
+                            class="fas fa-eye"></i><span>show more</span></a></div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+
+              <!---------- Promotion Ad Banner ----------------->
+              <div class="section promo-part">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6 px-xl-3">
+                      <div class="promo-img"><a href="/shop"><img src="/static/images/promo/home/01.jpg"
+                            alt="promo"></a></div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 px-xl-3">
+                      <div class="promo-img"><a href="/shop"><img src="/static/images/promo/home/02.jpg"
+                            alt="promo"></a></div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-  
-            <% } %>
-          
-          
-        </div>
-      </div>
-      <!--/.Second slide -->
 
-      
-    </div>
-    <!--/.Slides-->
-  </div>
-  <!--/.Carousel Wrapper-->
-</div>
+              <!------------------ TOP 10 Products  ------------------->
 
- 
+              <section class="section niche-part">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="section-heading">
+                        <h2>Browse by Top 10</h2>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <ul class="nav nav-tabs">
+                        <li><a href="#top-order" class="tab-link active" data-bs-toggle="tab"><i
+                              class="icofont-price"></i><span>top
+                              order</span></a></li>
+                        <li><a href="#top-rate" class="tab-link" data-bs-toggle="tab"><i
+                              class="icofont-star"></i><span>top
+                              rating</span></a></li>
+                        <li><a href="#top-disc" class="tab-link" data-bs-toggle="tab"><i
+                              class="icofont-sale-discount"></i><span>top
+                              discount</span></a></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <!------------------ First tab: Top 10 most sold per period (10 cards) ----------------->
+                  <div class="tab-pane fade show active" id="top-order">
+                    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+
+
+                    </div>
+                  </div>
+
+                  <!------------------ Second tab: Top 10 most rated (10 cards) ----------------->
+
+                  <div class="tab-pane fade" id="top-rate">
+                    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
 
 
 
-    <!-- footer -->
+                    </div>
+                  </div>
+
+                  <!------------------ Second tab: Top 10 most discounted (10 cards) ----------------->
+
+                  <div class="tab-pane fade" id="top-disc">
+                    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
 
 
-    <%- include('../partials/footer') %>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="section-btn-25"><a href="/shop" class="btn btn-outline"><i
+                          class="fas fa-eye"></i><span>show
+                          more</span></a></div>
+                  </div>
+                </div>
+                </div>
+              </section>
+
+              <!--------------------MODALS-------------------------------------------------->
+
+              <!----------------- Recent sold Product view modal ----------------->
+
+
+              <!----------------- Newly Added Product view modal ----------------->
+
+
+              <!----------------- Most Sold Product view modal ----------------->
+
+
+              <!----------------- Most Rated Product view modal ----------------->
+
+
+
+              <!----------------- Most Discounted Product view modal ----------------->
+
+
+
+              <!-------------------- End of contents ------------------->
+
+              <section class="intro-part">
+                <div class="container">
+                  <div class="row intro-content">
+                    <div class="col-sm-6 col-lg-3">
+                      <div class="intro-wrap">
+                        <div class="intro-icon"><i class="fas fa-truck"></i></div>
+                        <div class="intro-content">
+                          <h5>free home delivery</h5>
+                          <p>Lorem ipsum dolor sit amet adipisicing elit nobis.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                      <div class="intro-wrap">
+                        <div class="intro-icon"><i class="fas fa-sync-alt"></i></div>
+                        <div class="intro-content">
+                          <h5>instant return policy</h5>
+                          <p>Lorem ipsum dolor sit amet adipisicing elit nobis.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                      <div class="intro-wrap">
+                        <div class="intro-icon"><i class="fas fa-headset"></i></div>
+                        <div class="intro-content">
+                          <h5>quick support system</h5>
+                          <p>Lorem ipsum dolor sit amet adipisicing elit nobis.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                      <div class="intro-wrap">
+                        <div class="intro-icon"><i class="fas fa-lock"></i></div>
+                        <div class="intro-content">
+                          <h5>secure payment way</h5>
+                          <p>Lorem ipsum dolor sit amet adipisicing elit nobis.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <footer class="footer-part">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm-6 col-xl-3">
+                      <div class="footer-widget"><a class="footer-logo" href="#"><img src="/static/images/logo.png"
+                            alt="logo"></a>
+                        <p class="footer-desc">Adipisci asperiores ipsum ipsa repellat consequatur repudiandae
+                          quisquam
+                          assumenda dolor perspiciatis sit ipsum dolor amet.</p>
+                        <ul class="footer-social">
+                          <li><a class="icofont-facebook" href="#"></a></li>
+                          <li><a class="icofont-instagram" href="#"></a></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                      <div class="footer-widget contact">
+                        <h3 class="footer-title">contact us</h3>
+                        <ul class="footer-contact">
+                          <li><i class="icofont-ui-email"></i>
+                            <p><span>support@example.com</span><span>carrer@example.com</span></p>
+                          </li>
+                          <li><i class="icofont-ui-touch-phone"></i>
+                            <p><span>+120 279 532 13</span><span>+120 279 532 14</span></p>
+                          </li>
+                          <li><i class="icofont-location-pin"></i>
+                            <p>1Hd- 50, 010 Avenue, NY 90001 United States</p>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                      <div class="footer-widget">
+                        <h3 class="footer-title">quick Links</h3>
+                        <div class="footer-links">
+                          <ul>
+                            <li><a href="#">My Account</a></li>
+                            <li><a href="#">Order History</a></li>
+                            <li><a href="#">Order Tracking</a></li>
+                            <li><a href="#">Best Seller</a></li>
+                            <li><a href="#">New Arrivals</a></li>
+                          </ul>
+                          <ul>
+                            <li><a href="#">Location</a></li>
+                            <li><a href="#">Contact</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                      <div class="footer-widget">
+                        <h3 class="footer-title">Download App</h3>
+                        <p class="footer-desc">Lorem ipsum dolor sit amet tenetur dignissimos ipsum eligendi
+                          autem
+                          obcaecati minus ducimus totam reprehenderit exercitationem!</p>
+                        <div class="footer-app"><a href="#"><img src="/static/images/google-store.png"
+                              alt="google"></a><a href="#"><img src="/static/images/app-store.png" alt="app"></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="footer-bottom">
+                        <p class="footer-copytext">&copy; All Copyrights Reserved by <a href="#">Greeny</a></p>
+                        <div class="footer-card"><a href="#"><img src="/static/images/payment/jpg/01.jpg"
+                              alt="payment"></a><a href="#"><img src="/static/images/payment/jpg/02.jpg"
+                              alt="payment"></a><a href="#"><img src="/static/images/payment/jpg/03.jpg"
+                              alt="payment"></a><a href="#"><img src="/static/images/payment/jpg/04.jpg"
+                              alt="payment"></a></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </footer>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js"
+                integrity="sha512-0qU9M9jfqPw6FKkPafM3gy2CBAvUWnYVOfNPDYKVuRTel1PrciTj+a9P3loJB+j0QmN2Y0JYQmkBBS8W+mbezg=="
+                crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+              <script src="/static/vendor/swal/sweetalert2.all.min.js"></script>
+              <script src="/static/js/formControl.js"></script>
+              <script src="/static/vendor/bootstrap/jquery-1.12.4.min.js"></script>
+              <script src="/static/vendor/bootstrap/popper.min.js"></script>
+              <script src="/static/vendor/bootstrap/bootstrap.min.js"></script>
+              <script src="/static/vendor/countdown/countdown.min.js"></script>
+              <script src="/static/vendor/niceselect/nice-select.min.js"></script>
+              <script src="/static/vendor/slickslider/slick.min.js"></script>
+              <script src="/static/vendor/venobox/venobox.min.js"></script>
+              <script src="/static/js/nice-select.js"></script>
+              <script src="/static/js/countdown.js"></script>
+              <script src="/static/js/accordion.js"></script>
+              <script src="/static/js/venobox.js"></script>
+              <script src="/static/js/slick.js"></script>
+              <script src="/static/js/main.js"></script>
+  </body>
+
+  </html>

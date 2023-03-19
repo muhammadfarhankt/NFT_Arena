@@ -1,0 +1,164 @@
+<div class="backdrop"></div><a class="backtop fas fa-arrow-up" href="#"></a>
+<div class="header-top">
+  <div class="container">
+    <div class="row justify-content-between">
+      <div class="col-md-12 col-lg-5">
+        <div class="header-top-welcome">
+          <p>Welcome to NFT Arena. The largest NFT Selling Platform!</p>
+        </div>
+      </div>
+      <div class="col-md-7 col-lg-4">
+        <ul class="header-top-list">
+          <% if(userData) { %>
+          <li><a href="/orders">My Orders</a></li>
+          <li><a href="/cart">Cart</a></li>
+          <li><a href="/wishlist">Wishlist</a></li>
+          <li><a href="/logout">Logout</a></li>
+          <% } else { %>
+            <li><a href="/login">Login</a></li>
+          <% } %>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<header class="header-part">
+  <div class="container">
+    <div class="header-content">
+      <div class="header-media-group">
+        <button class="header-user">
+
+          <%  if(userData) { %>
+  
+          <img src="/static/images/users/user.png" alt="user">
+
+          <% } %>
+
+
+        </button>
+        <a href="/home">
+          <img src="/static/images/logo.png" alt="logo">
+        </a>
+        <button class="header-src"><i class="fas fa-search"></i></button>
+      </div>
+      <a href="/home" class="header-logo"><img src="/static/images/logo.png" alt="logo"></a>
+
+      <% if (userData) { %>
+      <a href="/profile" class="header-widget" title="My Account">
+        <img src="/static/images/users/user.png" alt="user">
+        <button class="text-success ms-3 font-weight-bold text-uppercase"><%= userData.name %></button>
+      </a>
+      <% } else { %>
+      <a href="/login" class="header-widget" title="My Account">
+        <img src="/static/images/users/user.png" alt="user">
+        <button class="btn-success rounded p-1 ms-3">Login</button>
+      </a>
+      <% } %>
+
+      <form class="header-form" id="user-search-form">
+        <input type="text" placeholder="Search anything..." onkeyup="sendData(this)">
+        <button type="submit"><i class="fas fa-search"></i></button>
+        <section class="search-result" id="search-result" style="z-index: 2;">
+          <ol id="search-result" class="list-group list-group-numbered">
+          </ol>
+        </section>
+      </form>
+      <div class="header-widget-group">
+        <a href="#" class="header-widget" title="Compare List">
+          <i class="fas fa-random"></i>
+          <sup class="compare-count">0</sup>
+        </a>
+
+        <a href="/wishlist" class="header-widget" title="Wishlist">
+          <i id="wish-round" class="fas fa-heart"></i>
+          <sup class="wishlist-count">
+            <% if( userData == null ) { %>
+              0
+              <% } else {%>
+                <%= userData.wishlist.item.length %>
+            <% }%>
+          </sup>
+        </a>
+
+        <a href="/cart" class="header-widget" title="Cart">
+        <!-- <button class="header-widget header-cart" title="Cartlist"> -->
+          <i id="cart-round" class="fas fa-shopping-basket"></i>
+          <sup>
+            <%= (userData != null ) ? userData.cart.item.length : 0 ; %>
+          </sup>
+          <span>total price<small>₹ <%= (userData != null) ? userData.cart.totalPrice : 0.00 ; %></small></span>
+        <!-- </button> -->
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+<nav class="navbar-part">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="navbar-content">
+          <ul class="navbar-list">
+            <li class="navbar-item"><a class="navbar-link" href="/home">Home</a>
+            </li>
+            <li class="navbar-item"><a class="navbar-link" href="/shop">Shop</a>
+            </li>
+            <li class="navbar-item dropdown">
+              <a class="navbar-link dropdown-arrow" href="/category">Category</a>
+
+              <ul class="dropdown-position-list">
+                <% if(typeof categoryData!=='undefined' ) { %>
+                  <% for(let i=0;i<categoryData.length;i++){%>
+                    <li><a class="dropdown-item" href="/category?id=<%= categoryData[i]._id%>">
+                        <%= categoryData[i].name%>
+                      </a></li>
+
+                  <%} %>
+                <% } else {%>
+                  No Categories
+                <% }%>
+              </ul>
+
+            </li>
+
+            <li class="navbar-item dropdown">
+              <a class="navbar-link dropdown-arrow" href="/category">Authors</a>
+
+              <ul class="dropdown-position-list">
+
+
+                <% if(typeof authorData!=='undefined' ) { %>
+                  <% for(let i=0;i<authorData.length;i++){%>
+                    <li><a class="dropdown-item" href="/author-products?id=<%= authorData[i]._id%>">
+                      <%= authorData[i].name%>
+                    </a></li>
+                  <%} %>
+                <% } else {%>
+                  No Authors
+                <% }%>
+
+
+              </ul>
+
+            </li>
+
+            <% if(userData != null && userData.isAdmin == true) { %>
+            <li class="navbar-item"><a class="navbar-link" href="/admin">Admin Dashboard</a>
+            </li>
+            <% } %>
+
+          </ul>
+          <div class="navbar-info-group">
+            <div class="navbar-info"><i class="icofont-ui-touch-phone"></i>
+              <p><small>call us</small><span>(+91) 987 654 3210</span></p>
+            </div>
+            <div class="navbar-info"><i class="icofont-ui-email"></i>
+              <p><small>email us</small><span>support@nftarena.com</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

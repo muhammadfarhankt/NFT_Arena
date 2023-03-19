@@ -14,7 +14,8 @@ const productSchema = new mongoose.Schema({
     required: true
   },
   stock: {
-    type: Number
+    type: Number,
+    default: 1
   },
   image: {
     type: String
@@ -34,6 +35,30 @@ const productSchema = new mongoose.Schema({
   isDeleted: {
     type: Boolean,
     default: false
+  },
+  wishlistCount: {
+    type: Number,
+    default: 0
+  },
+  viewCount: {
+    type: Number,
+    default: 0
+  },
+  isSold: {
+    type: Boolean,
+    default: false
+  },
+  isAuthorBlocked: {
+    type: Boolean,
+    default: false
+  },
+  isCategoryBlocked: {
+    type: Boolean,
+    default: false
+  },
+  tags: {
+    type: [String],
+    default: ['nft']
   }
 }, {
   timestamps: true
