@@ -3,7 +3,6 @@ ubuntu 22.04
 
 8 GB space
 
-
 sudo apt update
 sudo apt upgrade
 apt install nginx -y
@@ -43,5 +42,109 @@ server {
                 }
 }
 ////////////////////
+
+sudo ufw app list
+sudo ufw status
+sudo ufw allow OpenSSH
+sufo ufw enable
+sudo ufw allow 'Nginx HTTP'
+sudo ufw enable
+sudo systemctl enable nginx
+sudo ufw status
+
+//Route 53
+4 DNS record to bigrock domain added
+IP of EC2 
+create another record as alias (www) and select A (nftarena.in)
+
+sudo mkdir -p /var/www/nftarena.in/html
+sudo chown -R $USER:$USER /var/www/nftarena.in/html
+sudo chmod -R 755 /var/www/nftarena.in
+nano /var/www/nftarena.in/html/index.html
+
+///////////
+<html>
+    <head>
+        <title>Welcome to your_domain!</title>
+    </head>
+    <body>
+        <h1>Success!  nftarena.in is working!</h1>
+    </body>
+</html>
+////////////
+
+sudo nano /etc/nginx/sites-available/nftarena.in
+
+/////////////
+server {
+        listen 80;
+        listen [::]:80;
+
+        root /var/www/nftarena.in/html;
+        index index.html index.htm index.nginx-debian.html;
+
+        server_name nftarena.in www.nftarena.in;
+
+        location / {
+                try_files $uri $uri/ =404;
+        }
+}
+//////////////////
+
+sudo ln -s /etc/nginx/sites-available/nftarena.in /etc/nginx/sites-enabled/
+
+sudo nginx -t
+
+
+//HTTPS
+sudo snap install core; sudo snap refresh core
+sudo apt remove certbot
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+sudo nginx -t
+sudo systemctl reload nginx
+sudo ufw allow 'Nginx Full'
+sudo ufw delete allow 'Nginx HTTP'
+sudo certbot --nginx -d nftarena.in -d www.nftarena.in
+email-id
+sudo systemctl status snap.certbot.renew.service
+sudo certbot renew --dry-run
+
+nano hello.js
+/////////////////
+const http = require('http');
+
+const hostname = 'localhost';
+const port = 3000;
+
+const server = http.createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello World!\n');
+});
+
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
+///////////////////////
+node hello.js
+sudo nano /etc/nginx/sites-available/nftarena.in 
+////////////////// inside location/
+proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+//////////////
+sudo nginx -t
+sudo systemctl reload nginx
+
+
+
+
+
+
+
 
 
