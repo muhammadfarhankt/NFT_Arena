@@ -140,6 +140,43 @@ proxy_pass http://localhost:3000;
 sudo nginx -t
 sudo systemctl reload nginx
 
+sudo npm install pm2@latest -g
+pm2 start hello.js
+
+// pm2 startup systemd
+// <follow>
+
+pm2 stop app_name_or_id (default 0)
+pm2 list
+
+git clone https://github.com/muhammadfarhankt/NFT_Arena.git
+
+npm install
+
+create .env
+
+pm2 start index.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
