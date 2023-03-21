@@ -646,12 +646,13 @@ const productLoad = async (req, res) => {
     const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
     const authorData = await Author.find({ isBlocked: false, isDeleted: false })
     const productDetails = await Product.findById({ _id: productId }).populate('category').populate('author')
+    const relatedProducts = await Product.find({ category: productDetails.category._id, author: productDetails.author._id }).populate('category').populate('author')
     // console.log('product details ::::::::::::::  ' + productDetails)
     if (req.session.user_id) {
       const userData = await User.findById({ _id: req.session.user_id })
-      res.render('product', { productDetails, userData, authorData, categoryData })
+      res.render('product', { productDetails, userData, authorData, categoryData, relatedProducts })
     } else {
-      res.render('product', { productDetails, authorData, categoryData, userData: null })
+      res.render('product', { productDetails, authorData, categoryData, userData: null, relatedProducts })
     }
   } catch (error) {
     console.log(error.message)
