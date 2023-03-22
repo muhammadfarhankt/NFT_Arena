@@ -302,6 +302,7 @@ const loadHome = async (req, res) => {
       const userData = await User.findById({ _id: req.session.user_id })
       // console.log('userData')
       // console.log(userData)
+      const authorData = await Author.find({ isBlocked: false, isDeleted: false })
       const bannerData = await Banner.find({ isBlocked: false })
       const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
       const productData = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false })
@@ -309,7 +310,7 @@ const loadHome = async (req, res) => {
       const wishedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).sort({ createdAt: -1 }).limit(10)
       const viewedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).sort({ createdAt: 1 }).limit(10)
       // console.log(categoryData)
-      res.render('home', { userData, categoryData, bannerData, productData, newlyAddedProducts, wishedProducts, viewedProducts   })
+      res.render('home', { userData, categoryData, bannerData, productData, newlyAddedProducts, wishedProducts, viewedProducts, authorData })
     } else {
       res.redirect('/login')
     }
