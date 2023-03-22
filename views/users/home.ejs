@@ -62,72 +62,28 @@
                     </div>
 
                     <% }) %>
-                      <% } else { %>
+                      <% } %>
 
-                        <!-- left -->
-                        <div class="banner-part banner-1">
-                          <div class="container">
-                            <div class="row align-items-center">
-
-                              <div class="col-md-6 col-lg-6">
-                                <div class="banner-content">
-                                  <h1>free home delivery within 24 hours now.</h1>
-                                  <p>Lorem ipsum dolor consectetur adipisicing elit modi consequatur eaque expedita
-                                    porro
-                                    necessitatibus eveniet voluptatum quis pariatur Laboriosam molestiae architecto
-                                    excepturi</p>
-                                  <div class="banner-btn"><a class="btn btn-inline" href="/shop"><i
-                                        class="fas fa-shopping-basket"></i><span>shop now</span></a><a
-                                      class="btn btn-outline" href="/shop"><i
-                                        class="icofont-sale-discount"></i><span>get offer</span></a></div>
-                                </div>
-                              </div>
-
-                              <div class="col-md-6 col-lg-6">
-                                <div class="banner-img"><img src="/static/images/home/index/01.png" alt="index"></div>
-                              </div>
-
-                            </div>
-                          </div>
-                        </div>
-
-                        <!-- right -->
-                        <div class="banner-part banner-2">
-                          <div class="container">
-                            <div class="row align-items-center">
-                              <div class="col-md-6 col-lg-6">
-                                <div class="banner-img"><img src="/static/images/home/index/02.png" alt="index"></div>
-                              </div>
-                              <div class="col-md-6 col-lg-6">
-                                <div class="banner-content">
-                                  <h1>free home delivery within 24 hours now.</h1>
-                                  <p>Lorem ipsum dolor consectetur adipisicing elit modi consequatur eaque expedita
-                                    porro
-                                    necessitatibus eveniet voluptatum quis pariatur Laboriosam molestiae architecto
-                                    excepturi</p>
-                                  <div class="banner-btn"><a class="btn btn-inline" href="/shop"><i
-                                        class="fas fa-shopping-basket"></i><span>shop now</span></a><a
-                                      class="btn btn-outline" href="/shop"><i
-                                        class="icofont-sale-discount"></i><span>get offer</span></a></div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <% } %>
-
+                       
               </section>
 
               <!------------ Category Slider -------------->
               <section class="section suggest-part">
                 <div class="container">
+                  <div class="col">
+                    <div class="section-heading">
+                      <h2>Categories</h2>
+                    </div>
+                  </div>
                   <ul class="suggest-slider slider-arrow">
                     <% let i=0 %>
                       <!-- Iterate Categories -->
                       <% categoryData.forEach(cat=> { %>
 
-                        <li><a class="suggest-card" href="/shop?category=<%= cat._id %>">
-                            <img src="/static/images/category/dairy.jpg" alt="suggest">
+                        <li><a class="suggest-card" href="/category?id=<%= cat._id %>">
+                            <img
+                              src="/static/images/category/background.avif"
+                              alt="suggest">
                             <h5>
                               <%= cat.name %><span>
 
@@ -142,9 +98,6 @@
               </section>
 
 
-             
-
-
 
               <!----------------- Newly Added products ----------------->
               <section class="section newitem-part">
@@ -152,7 +105,7 @@
                   <div class="row">
                     <div class="col">
                       <div class="section-heading">
-                        <h2>collected new NFTs</h2>
+                        <h2>collected Latest NFTs</h2>
                       </div>
                     </div>
                   </div>
@@ -160,45 +113,47 @@
                     <div class="col">
                       <ul class="new-slider slider-arrow">
 
-                      <% newlyAddedProducts.forEach(prod=> { %>
+                        <% newlyAddedProducts.forEach(prod=> { %>
 
 
-                        <li>
-                          <div class="product-card ">
-                            <div class="product-media">
+                          <li>
+                            <div class="product-card ">
+                              <div class="product-media">
 
 
-                              <div class="product-label">
-                                <label class="label-text new">new</label>
+                                <div class="product-label">
+                                  <label class="label-text new">new</label>
+                                </div>
+                                <a href="/add-to-wishlist?id=<%= prod._id%>">
+                                  <button class="product-wish">
+                                    <i class="fas fa-heart"></i>
+                                  </button>
+                                </a>
+                                <a class="product-image" href="/product?id=<%=prod._id%>">
+                                  <img src="/imagess/<%= prod.image  %>" alt="product">
+                                </a>
+                                <div class="product-widget">
+                                  <a title="Product View" href="/product?id=<%=prod._id%>" class="fas fa-eye"></a>
+                                </div>
                               </div>
-                              <a href="/add-to-wishlist?id=<%= prod._id%>">
-                              <button class="product-wish" >
-                                <i class="fas fa-heart"></i>
-                              </button>
-                              </a>
-                              <a class="product-image" href="/product?id=<%=prod._id%>">
-                                <img src="/imagess/<%= prod.image  %>" alt="product">
-                              </a>
-                              <div class="product-widget">
-                                <a title="Product View" href="/product?id=<%=prod._id%>" class="fas fa-eye"></a>
+                              <div class="product-content">
+
+
+                                <h6 class="product-name"><a href="/product?id=<%= prod._id %>">
+                                    <%= prod.name %>
+                                  </a></h6>
+                                <h6 class="product-price"><span>$ <%= prod.price %></span></h6>
+
+
+                                <a class="product-addNew" title="Add to Cart" href="/add-to-cart?id=<%= prod._id %>">
+                                  <i class="fas fa-shopping-basket" href=""></i><span>Add</span>
+                                </a>
+
                               </div>
                             </div>
-                            <div class="product-content">
-                              
+                          </li>
 
-                              <h6 class="product-name"><a href="/product?id=<%= prod._id %>"><%= prod.name %></a></h6>
-                              <h6 class="product-price"><span>$ <%= prod.price %></span></h6>
-
-                             
-                              <a class="product-addNew" title="Add to Cart" href="/add-to-cart?id=<%= prod._id %>">
-                                <i class="fas fa-shopping-basket" href=""></i><span>Add</span>
-                              </a>
-
-                            </div>
-                          </div>
-                        </li>
-
-                      <% }) %>
+                          <% }) %>
 
                       </ul>
                     </div>
@@ -218,16 +173,45 @@
                 <div class="container">
                   <div class="row">
                     <div class="col-sm-12 col-md-6 col-lg-6 px-xl-3">
-                      <div class="promo-img"><a href="/shop"><img src="/static/images/promo/home/01.jpg"
+                      <div class="promo-img"><a href="/shop"><img src="/static/images/promo/1.jpg"
                             alt="promo"></a></div>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-6 px-xl-3">
-                      <div class="promo-img"><a href="/shop"><img src="/static/images/promo/home/02.jpg"
+                      <div class="promo-img"><a href="/shop"><img src="/static/images/promo/2.jpg"
                             alt="promo"></a></div>
                     </div>
                   </div>
                 </div>
               </div>
+
+              <!------------ Author Slider -------------->
+              <section class="section suggest-part">
+                <div class="container">
+                  <div class="col">
+                    <div class="section-heading">
+                      <h2>Authors</h2>
+                    </div>
+                  </div>
+                  <ul class="suggest-slider slider-arrow">
+                    <% let j=0 %>
+                      <!-- Iterate Authors -->
+                      <% authorData.forEach(cat=> { %>
+
+                        <li><a class="suggest-card" href="/author-products?id=<%= cat._id %>">
+                            <img src="/static/images/category/background.avif" alt="suggest">
+                            <h5>
+                              <%= cat.name %><span>
+
+                                </span>
+                            </h5>
+                          </a></li>
+
+                        <% j++ }) %>
+
+                  </ul>
+                </div>
+              </section>
+
 
               <!------------------ TOP 10 Products  ------------------->
 
@@ -243,47 +227,114 @@
                   <div class="row">
                     <div class="col-lg-12">
                       <ul class="nav nav-tabs">
-                        <li><a href="#top-order" class="tab-link active" data-bs-toggle="tab"><i
-                              class="icofont-price"></i><span>top
-                              order</span></a></li>
-                        <li><a href="#top-rate" class="tab-link" data-bs-toggle="tab"><i
-                              class="icofont-star"></i><span>top
-                              rating</span></a></li>
-                        <li><a href="#top-disc" class="tab-link" data-bs-toggle="tab"><i
-                              class="icofont-sale-discount"></i><span>top
-                              discount</span></a></li>
+                        <li><a href="#top-wish" class="tab-link active" data-bs-toggle="tab"><i
+                              class="icofont-price"></i><span>
+                                top Wished NFTs</span></a></li>
+                        <li><a href="#top-view" class="tab-link" data-bs-toggle="tab"><i
+                              class="icofont-star"></i><span>
+                                top Viewed NFTs</span></a></li>
                       </ul>
                     </div>
                   </div>
 
-                  <!------------------ First tab: Top 10 most sold per period (10 cards) ----------------->
-                  <div class="tab-pane fade show active" id="top-order">
+                  <!------------------ First tab: Top 10 wish listed products (10 cards) ----------------->
+                  <div class="tab-pane fade show active" id="top-wish">
                     <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+
+                          <% wishedProducts.forEach(prod=> { %>
+                            <div class="col">
+                              <div class="product-card ">
+                                <div class="product-media">
+  
+  
+                                  <div class="product-label">
+                              <label class="label-text order">Trending</label>
+                                  </div>
+                                  <a href="/add-to-wishlist?id=<%= prod._id%>">
+                                    <button class="product-wish">
+                                      <i class="fas fa-heart"></i>
+                                    </button>
+                                  </a>
+                                  <a class="product-image" href="/product?id=<%=prod._id%>">
+                                    <img src="/imagess/<%= prod.image  %>" alt="product">
+                                  </a>
+                                  <div class="product-widget">
+                                    <a title="Product View" href="/product?id=<%=prod._id%>" class="fas fa-eye"></a>
+                                  </div>
+                                </div>
+                                <div class="product-content">
+  
+  
+                                  <h6 class="product-name"><a href="/product?id=<%= prod._id %>">
+                                      <%= prod.name %>
+                                    </a></h6>
+                                  <h6 class="product-price"><span>$ <%= prod.price %></span></h6>
+  
+  
+                                  <a class="product-addNew" title="Add to Cart" href="/add-to-cart?id=<%= prod._id %>">
+                                    <i class="fas fa-shopping-basket" href=""></i><span>Add</span>
+                                  </a>
+  
+                                </div>
+                              </div>
+                            </div>
+  
+                            <% }) %>
+
+                    </div>
+                  </div>
+
+                  <!------------------ Second tab: Top 10 most viewed products (10 cards) ----------------->
+
+                  <div class="tab-pane fade" id="top-view">
+                    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+
+                      <% viewedProducts.forEach(prod=> { %>
+                        <div class="col">
+                          <div class="product-card ">
+                            <div class="product-media">
+
+
+                              <div class="product-label">
+                                <label class="label-text rate">Popular</label>
+                              </div>
+                              <a href="/add-to-wishlist?id=<%= prod._id%>">
+                                <button class="product-wish">
+                                  <i class="fas fa-heart"></i>
+                                </button>
+                              </a>
+                              <a class="product-image" href="/product?id=<%=prod._id%>">
+                                <img src="/imagess/<%= prod.image  %>" alt="product">
+                              </a>
+                              <div class="product-widget">
+                                <a title="Product View" href="/product?id=<%=prod._id%>" class="fas fa-eye"></a>
+                              </div>
+                            </div>
+                            <div class="product-content">
+
+
+                              <h6 class="product-name"><a href="/product?id=<%= prod._id %>">
+                                  <%= prod.name %>
+                                </a></h6>
+                              <h6 class="product-price"><span>$ <%= prod.price %></span></h6>
+
+
+                              <a class="product-addNew" title="Add to Cart" href="/add-to-cart?id=<%= prod._id %>">
+                                <i class="fas fa-shopping-basket" href=""></i><span>Add</span>
+                              </a>
+
+                            </div>
+                          </div>
+                        </div>
+
+                        <% }) %>
+
 
 
                     </div>
                   </div>
 
-                  <!------------------ Second tab: Top 10 most rated (10 cards) ----------------->
-
-                  <div class="tab-pane fade" id="top-rate">
-                    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-
-
-
-                    </div>
-                  </div>
-
-                  <!------------------ Second tab: Top 10 most discounted (10 cards) ----------------->
-
-                  <div class="tab-pane fade" id="top-disc">
-                    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-
-
-
-                    </div>
-                  </div>
-                </div>
+                 
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="section-btn-25"><a href="/shop" class="btn btn-outline"><i
@@ -322,7 +373,7 @@
                       <div class="intro-wrap">
                         <div class="intro-icon"><i class="fas fa-truck"></i></div>
                         <div class="intro-content">
-                          <h5>free home delivery</h5>
+                          <h5>Instant Blockchain Ownership Transfer</h5>
                           <p>Lorem ipsum dolor sit amet adipisicing elit nobis.</p>
                         </div>
                       </div>
@@ -349,7 +400,7 @@
                       <div class="intro-wrap">
                         <div class="intro-icon"><i class="fas fa-lock"></i></div>
                         <div class="intro-content">
-                          <h5>secure payment way</h5>
+                          <h5>secure payment Gateway</h5>
                           <p>Lorem ipsum dolor sit amet adipisicing elit nobis.</p>
                         </div>
                       </div>
@@ -361,7 +412,7 @@
                 <div class="container">
                   <div class="row">
                     <div class="col-sm-6 col-xl-3">
-                      <div class="footer-widget"><a class="footer-logo" href="#"><img src="/static/images/logo.png"
+                      <div class="footer-widget"><a class="footer-logo" href="#"><img src="/static/images/logoFooter.png"
                             alt="logo"></a>
                         <p class="footer-desc">Adipisci asperiores ipsum ipsa repellat consequatur repudiandae
                           quisquam
@@ -377,13 +428,13 @@
                         <h3 class="footer-title">contact us</h3>
                         <ul class="footer-contact">
                           <li><i class="icofont-ui-email"></i>
-                            <p><span>support@example.com</span><span>carrer@example.com</span></p>
+                            <p><span>support@nftarena.in</span><span>career@nftarena.in</span></p>
                           </li>
                           <li><i class="icofont-ui-touch-phone"></i>
-                            <p><span>+120 279 532 13</span><span>+120 279 532 14</span></p>
+                            <p><span>+91 987 654 3210</span><span>+91 987 654 3210</span></p>
                           </li>
                           <li><i class="icofont-location-pin"></i>
-                            <p>1Hd- 50, 010 Avenue, NY 90001 United States</p>
+                            <p>Brototype, Kifra IT Park Building, Kakkanchery, Malappuram</p>
                           </li>
                         </ul>
                       </div>
@@ -398,10 +449,6 @@
                             <li><a href="#">Order Tracking</a></li>
                             <li><a href="#">Best Seller</a></li>
                             <li><a href="#">New Arrivals</a></li>
-                          </ul>
-                          <ul>
-                            <li><a href="#">Location</a></li>
-                            <li><a href="#">Contact</a></li>
                           </ul>
                         </div>
                       </div>
@@ -421,7 +468,7 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="footer-bottom">
-                        <p class="footer-copytext">&copy; All Copyrights Reserved by <a href="#">Greeny</a></p>
+                        <p class="footer-copytext">&copy; All Copyrights Reserved by <a href="#">NFT Arena</a></p>
                         <div class="footer-card"><a href="#"><img src="/static/images/payment/jpg/01.jpg"
                               alt="payment"></a><a href="#"><img src="/static/images/payment/jpg/02.jpg"
                               alt="payment"></a><a href="#"><img src="/static/images/payment/jpg/03.jpg"
