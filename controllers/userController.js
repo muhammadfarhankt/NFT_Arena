@@ -127,11 +127,13 @@ const loadpage = async (req, res) => {
     const productData = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false })
     const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
     const authorData = await Author.find({ isBlocked: false, isDeleted: false })
-    const bannerData = await Banner.find({})
+    const bannerData = await Banner.find({ isBlocked: false })
     const userData = null
     const newlyAddedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).sort({ createdAt: -1 }).limit(10)
+    const wishedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).sort({ createdAt: -1 }).limit(10)
+    const viewedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).sort({ createdAt: 1 }).limit(10)
     // console.log('banner dataaaaaaaaaa ' + bannerData[0].image)
-    res.render('home', { categoryData, authorData, bannerData, productData, userData, newlyAddedProducts })
+    res.render('home', { categoryData, authorData, bannerData, productData, userData, newlyAddedProducts, wishedProducts, viewedProducts })
   } catch (error) {
     console.log(error.message)
   }
@@ -304,8 +306,10 @@ const loadHome = async (req, res) => {
       const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
       const productData = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false })
       const newlyAddedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).sort({ createdAt: -1 }).limit(10)
+      const wishedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).sort({ createdAt: -1 }).limit(10)
+      const viewedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).sort({ createdAt: 1 }).limit(10)
       // console.log(categoryData)
-      res.render('home', { userData, categoryData, bannerData, productData, newlyAddedProducts })
+      res.render('home', { userData, categoryData, bannerData, productData, newlyAddedProducts, wishedProducts, viewedProducts   })
     } else {
       res.redirect('/login')
     }
