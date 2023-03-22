@@ -213,24 +213,24 @@
               </section>
 
 
-              <!------------------ TOP 10 Products  ------------------->
+              <!------------------ TOP 5 Products  ------------------->
 
               <section class="section niche-part">
                 <div class="container">
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="section-heading">
-                        <h2>Browse by Top 10</h2>
+                        <h2>Browse by Top 5</h2>
                       </div>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-lg-12">
                       <ul class="nav nav-tabs">
-                        <li><a href="#top-wish" class="tab-link active" data-bs-toggle="tab"><i
+                        <li><a href="#top-wish1" class="tab-link active" data-bs-toggle="tab"><i
                               class="icofont-price"></i><span>
                                 top Wished NFTs</span></a></li>
-                        <li><a href="#top-view" class="tab-link" data-bs-toggle="tab"><i
+                        <li><a href="#top-view1" class="tab-link" data-bs-toggle="tab"><i
                               class="icofont-star"></i><span>
                                 top Viewed NFTs</span></a></li>
                       </ul>
@@ -238,7 +238,7 @@
                   </div>
 
                   <!------------------ First tab: Top 10 wish listed products (10 cards) ----------------->
-                  <div class="tab-pane fade show active" id="top-wish">
+                  <div class="tab-pane fade show active" id="top-wish1">
                     <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
 
                           <% wishedProducts.forEach(prod=> { %>
@@ -264,7 +264,6 @@
                                 </div>
                                 <div class="product-content">
   
-  
                                   <h6 class="product-name"><a href="/product?id=<%= prod._id %>">
                                       <%= prod.name %>
                                     </a></h6>
@@ -286,7 +285,7 @@
 
                   <!------------------ Second tab: Top 10 most viewed products (10 cards) ----------------->
 
-                  <div class="tab-pane fade" id="top-view">
+                  <div class="tab-pane fade" id="top-view1">
                     <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
 
                       <% viewedProducts.forEach(prod=> { %>
