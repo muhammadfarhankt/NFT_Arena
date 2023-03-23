@@ -60,6 +60,7 @@
 		float: right;
 	}
 </style>
+
 <body>
 
 	<!-- SIDEBAR -->
@@ -250,7 +251,7 @@
 					<span class="text">
 						<h3>
 							<% couponCount %>
-							0
+								0
 						</h3>
 						<p style="text-decoration:line-through;">Coupons</p>
 					</span>
@@ -278,7 +279,7 @@
 
 					<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 					<input type="hidden" value="<%=amount %>" id="amount" />
-					
+
 					<script>
 						const ctx = document.getElementById("myChart");
 						const a = document.getElementById("amount").value
@@ -317,34 +318,23 @@
 					</script>
 				</div>
 				<div class="todo">
+					<input type="hidden" value="<%=totalSales%>" id="circularChart">
+					<input type="hidden" value="<%=categoryNames%>" id="circularChartNames">
 					<div class="head">
-						<h3>Todos</h3>
-						<i class='bx bx-plus'></i>
-						<i class='bx bx-filter'></i>
+						<h3>Category Wise Sales</h3>
+						
 					</div>
-					<ul class="todo-list">
-						<li class="completed">
-							<p>Approve pending Authors</p>
-							<i class='bx bx-dots-vertical-rounded'></i>
-						</li>
-						<li class="completed">
-							<p>Create new offer</p>
-							<i class='bx bx-dots-vertical-rounded'></i>
-						</li>
-						<li class="not-completed">
-							<p>Approve NFTs</p>
-							<i class='bx bx-dots-vertical-rounded'></i>
-						</li>
-						<li class="completed">
-							<p>Block spam users</p>
-							<i class='bx bx-dots-vertical-rounded'></i>
-						</li>
-						<li class="not-completed">
-							<p>Approve new admins</p>
-							<i class='bx bx-dots-vertical-rounded'></i>
-						</li>
-					</ul>
+					<canvas id="myChart1" style="display: block;"></canvas>
 				</div>
+				<div class="todo">
+					<div class="head">
+						<h3>Author Wise Sales</h3>
+						<input type="hidden" value="<%=totalSalesAuthor%>" id="circularChart2">
+						<input type="hidden" value="<%=authorNames%>" id="circularChartNames2">
+					</div>
+					<canvas id="myChart2" style="display: block;"></canvas>
+				</div>
+				
 			</div>
 		</main>
 		<!-- MAIN -->
@@ -353,6 +343,66 @@
 
 
 	<script src="/adminhome/script.js"></script>
+	<script>
+		const category = document.getElementById("circularChart").value.split(',').map(Number)
+		const categoryNames = document.getElementById("circularChartNames").value.split(',').map(String)
+		const author = document.getElementById("circularChart2").value.split(',').map(Number)
+		const authorNames = document.getElementById("circularChartNames2").value.split(',').map(String)
+		console.log(categoryNames)
+		// Set up data for the pie chart
+		const data = {
+			labels: categoryNames,
+			datasets: [{
+				label: 'Sales by Category',
+				data: category,
+				backgroundColor: [
+					'rgba(255, 99, 132, 0.5)',
+					'rgba(54, 162, 235, 0.5)',
+					'rgba(255, 206, 86, 0.5)'
+				],
+				borderColor: [
+					'rgba(255, 99, 132, 1)',
+					'rgba(54, 162, 235, 1)',
+					'rgba(255, 206, 86, 1)'
+				],
+				borderWidth: 1
+			}]
+		};
+		const data2 = {
+			labels: authorNames,
+			datasets: [{
+				label: 'Sales by Author',
+				data: author,
+				backgroundColor: [
+					'rgba(255, 99, 132, 0.5)',
+					'rgba(54, 162, 235, 0.5)',
+					'rgba(255, 206, 86, 0.5)'
+				],
+				borderColor: [
+					'rgba(255, 99, 132, 1)',
+					'rgba(54, 162, 235, 1)',
+					'rgba(255, 206, 86, 1)'
+				],
+				borderWidth: 1
+			}]
+		};
+		// Create the pie chart
+		const ctx1 = document.getElementById('myChart1').getContext('2d');
+		const myChart = new Chart(ctx1, {
+			type: 'pie',
+			data: data,
+			options: {}
+		});
+		// Create the pie chart 2
+		const ctx2 = document.getElementById('myChart2').getContext('2d');
+		const myChart2 = new Chart(ctx2, {
+			type: 'pie',
+			data: data2,
+			options: {}
+		});
+	</script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
 </body>
 
 </html>

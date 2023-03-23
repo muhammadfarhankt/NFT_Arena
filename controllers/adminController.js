@@ -95,10 +95,69 @@ const loadDashboard = async (req, res) => {
 
     const a = orderDataDaily.map((x) => x._id)
     const amount = orderDataDaily.map((x) => x.amount)
-    // console.log('Sum of all orders', total[0].total)
-    // let orderNumber = await User.count({}, function(count){ return count})
-    // const orders = orderNumber.count()
-    res.render('home', { admin: userData, orderCount, userCount, totalAmount: 0, authorCount, productCount, total: total[0].total, categoryCount, bannerCount, couponCount: 40, amount })
+
+    // find category wise sales
+    const getTotalSalesByCategory = async () => {
+      try {
+        const successOrders = await Order.find({ status: 'Success' })
+        const categorySalesMap = new Map()
+        for (const order of successOrders) {
+          for (const item of order.products.item) {
+            const product = await Product.findById(item.productId)
+            if (!categorySalesMap.has(product.category.toString())) {
+              categorySalesMap.set(product.category.toString(), 0)
+            }
+            const currentSales = categorySalesMap.get(product.category.toString())
+            const itemSales = item.quantity * item.price
+            categorySalesMap.set(product.category.toString(), currentSales + itemSales)
+          }
+        }
+        const categorySales = []
+        for (const [categoryId, sales] of categorySalesMap) {
+          const category = await Category.findById(categoryId)
+          categorySales.push({ categoryName: category.name, totalSales: sales })
+        }
+        const categoryNames = categorySales.map(category => category.categoryName)
+        const totalSales = categorySales.map(category => category.totalSales)
+        return { categoryNames, totalSales }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    const { categoryNames, totalSales } = await getTotalSalesByCategory()
+
+    // find author wise sales report
+    const getTotalSalesByAuthor = async () => {
+      try {
+        const successOrders = await Order.find({ status: 'Success' })
+        const authorSalesMap = new Map()
+        for (const order of successOrders) {
+          for (const item of order.products.item) {
+            const product = await Product.findById(item.productId)
+            if (!authorSalesMap.has(product.author.toString())) {
+              authorSalesMap.set(product.author.toString(), 0)
+            }
+            const currentSales = authorSalesMap.get(product.author.toString())
+            const itemSales = item.quantity * item.price;
+            authorSalesMap.set(product.author.toString(), currentSales + itemSales)
+          }
+        }
+        const authorSales = []
+        for (const [authorId, sales] of authorSalesMap) {
+          const author = await Author.findById(authorId)
+          authorSales.push({ authorName: author.name, totalSalesAuthor: sales })
+        }
+        const authorNames = authorSales.map(sale => sale.authorName)
+        const totalSalesAuthor = authorSales.map(sale => sale.totalSalesAuthor)
+        return [authorNames, totalSalesAuthor]
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    const [authorNames, totalSalesAuthor] = await getTotalSalesByAuthor()
+    console.log(authorNames)
+    console.log(totalSalesAuthor)
+    res.render('home', { admin: userData, orderCount, userCount, totalAmount: 0, authorCount, productCount, total: total[0].total, categoryCount, bannerCount, couponCount: 40, amount, categoryNames, totalSales, authorNames, totalSalesAuthor })
   } catch (error) {
     console.log(error.message)
   }
