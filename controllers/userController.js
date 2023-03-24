@@ -79,7 +79,7 @@ const sendResetMail = async (name, email, token) => {
       if (error) {
         console.log(error)
       } else {
-        console.log('email has been send', info.response)
+        // console.log('email has been send', info.response)
       }
     })
   } catch (error) {
