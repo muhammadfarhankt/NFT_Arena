@@ -48,7 +48,7 @@ const sendVerifyMail = async (name, email, userId) => {
       if (error) {
         console.log(error)
       } else {
-        console.log('email has been send', info.response)
+        // console.log('email has been send', info.response)
       }
     })
   } catch (error) {
@@ -92,7 +92,7 @@ const sendResetMail = async (name, email, token) => {
 let otp = otpGenerator.generate(6, { digits: true, upperCaseAlphabets: false, lowerCaseAlphabets: false, specialChars: false })
 const sendOtpMail = async (name, email, otp) => {
   try {
-    console.log('Name : ' + name + 'email : ' + email + 'otp : ' + otp)
+    // console.log('Name : ' + name + 'email : ' + email + 'otp : ' + otp)
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
@@ -113,7 +113,7 @@ const sendOtpMail = async (name, email, otp) => {
       if (error) {
         console.log(error)
       } else {
-        console.log('email has been send', info.response)
+        // console.log('email has been send', info.response)
       }
     })
   } catch (error) {
@@ -280,15 +280,16 @@ const otpPasswordVerify = async (req, res) => {
 }
 
 const otpPasswordVerifyPost = async (req, res) => {
-  console.log('otpPasswordVerifyPost')
-  const userId = req.body.id
+  // console.log('otpPasswordVerifyPost')
+  const userId = req.session.otpUserId
   const userOtp = req.body.otp
-  console.log('userId ' + userId)
-  console.log('user otp : ' + userOtp + '    otp   :  + ' + otp)
+  // console.log('userId ' + userId)
+  // console.log('user otp : ' + userOtp + '    otp   :  + ' + otp)
   if (userOtp === otp) {
     // console.log('otp is correct')
     req.session.user_id = userId
-    res.redirect('/home')
+    req.session.otpUserId = ''
+    res.redirect('/')
   } else {
     // console.log(' Incorrect OTP')
     res.render('otpLoginVerify', { message: 'Incorrect OTP' })
