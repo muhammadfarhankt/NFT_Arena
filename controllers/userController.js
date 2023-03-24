@@ -341,7 +341,7 @@ const forgetLoad = async (req, res) => {
 // forget link
 const forgetLink = async (req, res) => {
   try {
-    const email = req.body.email
+    const email = req.body.email.trim()
     const userData = await User.findOne({ email })
     if (userData) {
       if (userData.isVerified === false) {

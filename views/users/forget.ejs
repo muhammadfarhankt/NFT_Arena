@@ -1,41 +1,80 @@
-<%- include('../partials/header') %>
-<!-- navbar -->
-<%- include('../partials/categories-navbar') %>
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-5 m-auto">
-      <h1 class="mt-4 mb-4">Lost your password ?</h1>
-      <!-- Flash message -->
-	  <p> Change your password following instructions below. This helps to keep your new password secure.
-		</p>
-		<ol>
-			<li>
-				Please enter your email address.
-			</li>
-			<li>
-				You will receive a link to create a new password via email.
-			</li>
-		</ol>
-      <% if(typeof message !=='undefined' ) {%>
-        <div id="flash-msg" class="alert alert-danger">
-          <%= message %>
-        </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="template" content="greeny">
+  <meta name="title" content="NFT Arena - The largest NFT Selling Platform! ">
+  <meta name="keywords" content="nft, nft sell, nft buy, nft arena">
+  <title>Reset Password - NFT Arena</title>
+  <link rel="icon" href="/static/images/favicon.svg">
+  <link rel="stylesheet" href="/static/fonts/flaticon/flaticon.css">
+  <link rel="stylesheet" href="/static/fonts/icofont/icofont.min.css">
+  <link rel="stylesheet" href="/static/fonts/fontawesome/fontawesome.min.css">
+  <link rel="stylesheet" href="/static/vendor/venobox/venobox.min.css">
+  <link rel="stylesheet" href="/static/vendor/slickslider/slick.min.css">
+  <link rel="stylesheet" href="/static/vendor/niceselect/nice-select.min.css">
+  <link rel="stylesheet" href="/static/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/main.css">
+  <link rel="stylesheet" href="/static/css/user-auth.css">
+</head>
 
-        <%}%>
-      <form action="/forget" method="POST">
-        <div class="form-group">
-          <label for="email">Email address<span style="color: red;">*</span></label>
-          <input type="email" class="form-control" name="email" id="email" required />
+<body>
+  <section class="user-form-part">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+          <div class="user-form-logo"><a href="/"><img src="/static/images/logoFooter.png" alt="logo"></a></div>
+          <div class="user-form-card">
+            <div class="user-form-title">
+              <h2>Forgot Your Password ?</h2>
+              <p>No Problem! Just Follow The Simple Way</p>
+            </div>
+            <form class="user-form" id="form-reset-password" action="/forget" method="post">
+              <div class="form-group">
+                  <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required></div>
+                <% if(typeof message !=='undefined' ) {%>
+                  <p class="text-danger text-center mt-2" id="err-msg"><%= message %></p>
+                  <%}%>
+              <div class="form-button"><button type="submit">get reset link</button></div>
+            </form>
+          </div>
+          <div class="user-form-remind">
+            <p>Go Back To<a href="/login">login here</a></p>
+          </div>
+          <div class="user-form-footer">
+            <p>NFT Arena | &COPY; Copyright 2023</a></p>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary button-style">
-          Reset
-        </button>
-      </form>
-      
+      </div>
     </div>
-  </div>
-</div>
-
-<%- include('../partials/footer') %>
+  </section>
+  <script>
+  document.getElementById("email").addEventListener("input", function () {
+    var email = document.getElementById("email").value.trim();
+    if (email == "") {
+      document.getElementById("email").setCustomValidity("Email Cannot be null");
+    } else {
+      document.getElementById("email").setCustomValidity("");
+    }
+  });
+</script>
+  <script src="/static/vendor/bootstrap/jquery-1.12.4.min.js"></script>
+  <script src="/static/vendor/bootstrap/popper.min.js"></script>
+  <script src="/static/vendor/bootstrap/bootstrap.min.js"></script>
+  <script src="/static/vendor/countdown/countdown.min.js"></script>
+  <script src="/static/vendor/niceselect/nice-select.min.js"></script>
+  <script src="/static/vendor/slickslider/slick.min.js"></script>
+  <script src="/static/vendor/venobox/venobox.min.js"></script>
+  <script src="/static/js/nice-select.js"></script>
+  <script src="/static/js/countdown.js"></script>
+  <script src="/static/js/accordion.js"></script>
+  <script src="/static/js/venobox.js"></script>
+  <script src="/static/js/slick.js"></script>
+  <script src="/static/js/main.js"></script>
+  <script src="/static/js/form-login.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js" integrity="sha512-0qU9M9jfqPw6FKkPafM3gy2CBAvUWnYVOfNPDYKVuRTel1PrciTj+a9P3loJB+j0QmN2Y0JYQmkBBS8W+mbezg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+</html>
 
