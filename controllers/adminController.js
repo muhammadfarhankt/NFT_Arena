@@ -299,7 +299,7 @@ const updateBannerPost = async (req, res) => {
   // const bannerData = await Banner.findById({ _id: req.query.id })
   // console.log('baner id ' + bannerId)
   // await Banner.findByIdAndUpdate({ _id: req.query.id }, { $set: { name: req.body.name, link: req.body.link, textHeader: req.body.heading, textContent: req.body.bannerContent } })
-  if (req.file != null) {
+  if (req.file != null) {productEditData
     console.log('update image name :  ' + req.file.filename)
     await Banner.findByIdAndUpdate({ _id: req.body.id }, { $set: { name: req.body.name.trim(), link: req.body.link, textHeader: req.body.heading, textContent: req.body.bannerContent, image: req.file.filename } })
   } else {
@@ -732,7 +732,7 @@ const updateProduct = async (req, res) => {
     const productId = req.body.id
     // console.log('try')
     // console.log(productId)
-    await Product.findByIdAndUpdate({ _id: productId }, { $set: { name: req.body.name, description: req.body.description, author: req.body.author, category: req.body.category, price: req.body.price, stock: req.body.stock } })
+    await Product.findByIdAndUpdate({ _id: productId }, { $set: { name: req.body.name, description: req.body.description, author: req.body.author, category: req.body.category, price: req.body.price, quantity: req.body.quantity } })
     res.redirect('/admin/products')
   } catch (error) {
     console.log(error.mesage)
