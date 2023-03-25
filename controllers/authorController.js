@@ -105,7 +105,7 @@ const addProduct = async (req, res) => {
       image: req.file.filename,
       category: req.body.category,
       author: req.body.author,
-      stock: req.body.stock
+      quantity: req.body.quantity
     })
     await product.save()
     res.redirect('/author/products')
@@ -153,7 +153,7 @@ const updateProduct = async (req, res) => {
     const productId = req.body.id
     console.log('try')
     console.log(productId)
-    await Product.findByIdAndUpdate({ _id: productId }, { $set: { name: req.body.name, description: req.body.description, price: req.body.price, stock: req.body.stock, category: req.body.category } })
+    await Product.findByIdAndUpdate({ _id: productId }, { $set: { name: req.body.name, description: req.body.description, price: req.body.price, quantity: req.body.quantity, category: req.body.category } })
     res.redirect('/author/products')
   } catch (error) {
     console.log(error.mesage)

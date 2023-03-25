@@ -11,3 +11,225 @@
         <%- include('../partials/__user-cart.ejs') %>
           <%- include('../partials/__user-sidenav.ejs') %>
             <%- include('../partials/__user-mobile.ejs') %>
+
+              <!------------------ Wishlist Main Content ---------------------------->
+              <section class="inner-section single-banner"
+                style="background: url(images/single-banner.jpg) no-repeat center;">
+                <div class="container">
+                  <h2>wishlist</h2>
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/shop">shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">wishlist</li>
+                  </ol>
+                </div>
+              </section>
+              <section class="inner-section wishlist-part">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-lg-12">
+
+                      <% if ( wishListData.item.length> 0 ) { %>
+
+                        <div class="table-scroll">
+                          <table class="table-list">
+                            <thead>
+                              <tr>
+                                <th scope="col">Serial</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">description</th>
+                                <th scope="col">shopping</th>
+                                <th scope="col">action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <!-- Product Loop -->
+
+                              <% wishListData.item.forEach((eachItem,index)=>{%>
+
+                                <tr>
+                                  <td class="table-serial">
+                                    <h6>
+                                      <%= index+1 %>
+                                    </h6>
+                                  </td>
+                                  <td class="table-image">
+                                    <a href="/product?id=<%=eachItem.productId._id%>">
+                                      <img src="/imagess/<%= eachItem.productId.image %>" alt="product"></a>
+                                  </td>
+                                  <td class="table-name">
+                                    <h6><a class="text-dark" href="/product?id=<%=eachItem.productId._id%>">
+                                        <%= eachItem.productId.name %>
+                                      </a></h6>
+                                  </td>
+                                  <td class="table-price">
+                                    <h6>$ <%= eachItem.productId.price %>
+                                    </h6>
+                                  </td>
+                                  <td class="table-desc">
+                                    <p>
+                                      <%= eachItem.productId.description.slice(0,25) %><a
+                                          href="/product?id=<%= eachItem.productId._id %>">
+                                          read more</a>
+                                    </p>
+                                  </td>
+
+                                  <td class="table-shop">
+                                    <a class="product-addNew" title="Move to Cart"
+                                      href="/move-to-cart?id=<%= eachItem.productId._id %>">
+                                      <i class="fas fa-shopping-basket" href=""></i><span>Move To Cart</span>
+                                    </a>
+                                  </td>
+
+                                  <td class="table-action">
+                                    <a class="view" href="#" title="Quick View" data-bs-toggle="modal"
+                                      data-bs-target="#id-<%=eachItem._id%>">
+                                      <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a class="trash wishlist"
+                                      href="/remove-from-wishlist?id=<%= eachItem.productId._id %>"
+                                      title="Remove Wishlist">
+                                      <i class="icofont-trash"></i>
+                                    </a>
+                                  </td>
+
+
+                                </tr>
+
+                                <%}) %>
+
+
+                                  <!-- Product Loop End -->
+
+
+
+
+
+                            </tbody>
+                          </table>
+                        </div>
+
+                        <% } else { %>
+                          <h3>Wishlist empty</h3>
+                          <% } %>
+
+                    </div>
+                  </div>
+
+                  <% if ( wishListData.item.length> 0 ) { %>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="section-btn-25"><a href="/empty-wishlist" class="btn btn-outline"><i
+                            class="icofont-trash"></i><span>Remove All</span></a></div>
+                    </div>
+                  </div>
+
+                  <% } else { %>
+
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="section-btn-25"><a href="/shop" class="btn btn-outline">  <span>Shop</span></a></div>
+                      </div>
+                    </div>
+
+                  <% } %>
+                </div>
+                </div>
+              </section>
+
+              <!---------------- Product View Modal ---------------------------->
+
+
+              <% wishListData.item.forEach((eachItem,index)=>{%>
+
+                <div class="modal fade" id="id-<%=eachItem._id%>">
+                  <div class="modal-dialog">
+                    <div class="modal-content"><button class="modal-close icofont-close"
+                        data-bs-dismiss="modal"></button>
+                      <div class="product-view">
+                        <div class="row">
+                          <div class="col-md-6 col-lg-6">
+                            <div class="view-gallery">
+                              <div class="view-label-group"><label class="view-label new">new</label></div>
+                              <ul class="preview-slider slider-arrow">
+                                <li><img src="/imagess/<%= eachItem.productId.image %>" alt="  "></li>
+                              </ul>
+                              <ul class="thumb-slider">
+                                <li><img src="/imagess/<%=eachItem.productId.image%>" alt="product"></li>
+                              </ul>
+                            </div>
+                          </div>
+
+                          <div class="col-md-6 col-lg-6">
+                            <div class="view-details">
+                              <h3 class="view-name"><a href="/product?id=640dbe82524f6e7969cf737f">
+                                  <%=eachItem.productId.name%>
+                                </a></h3>
+                              <div class="view-meta">
+                                <p>SKU:<span>
+                                    <%=eachItem.productId._id%>
+                                  </span></p>
+                              </div>
+
+                              <h3 class="view-price">
+                                <span>$ <%=eachItem.productId.price%></span></h6>
+                              </h3>
+                              <p>
+                                <%= eachItem.productId.description %>
+                              </p>
+                              <div class="view-list-group">
+                                <label class="view-list-title">tags:</label>
+                                <ul class="view-tag-list">
+                                  <% eachItem.productId.tags.forEach(tag=> { %>
+                                    <li><a href="/shop?filter=tags&tag=<%= tag %>">
+                                        <%= tag %>
+                                      </a></li>
+                                    <% }) %>
+
+                                </ul>
+                              </div>
+
+
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <%}) %>
+
+
+
+                  <!---------------- Product View Modal End ---------------------------->
+
+
+                  <%- include('../partials/__user-features.ejs') %>
+                    <%- include('../partials/__user-footer.ejs') %>
+
+                      <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js"
+                        integrity="sha512-0qU9M9jfqPw6FKkPafM3gy2CBAvUWnYVOfNPDYKVuRTel1PrciTj+a9P3loJB+j0QmN2Y0JYQmkBBS8W+mbezg=="
+                        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                      <script src="/static/vendor/swal/sweetalert2.all.min.js"></script>
+                      <script src="/static/js/formControl.js"></script>
+
+                      <script src="/static/vendor/bootstrap/jquery-1.12.4.min.js"></script>
+                      <script src="/static/vendor/bootstrap/popper.min.js"></script>
+                      <script src="/static/vendor/bootstrap/bootstrap.min.js"></script>
+                      <script src="/static/vendor/countdown/countdown.min.js"></script>
+                      <script src="/static/vendor/niceselect/nice-select.min.js"></script>
+                      <script src="/static/vendor/slickslider/slick.min.js"></script>
+                      <script src="/static/vendor/venobox/venobox.min.js"></script>
+                      <script src="/static/js/nice-select.js"></script>
+                      <script src="/static/js/countdown.js"></script>
+                      <script src="/static/js/accordion.js"></script>
+                      <script src="/static/js/venobox.js"></script>
+                      <script src="/static/js/slick.js"></script>
+                      <script src="/static/js/main.js"></script>
+  </body>
+
+  </html>
