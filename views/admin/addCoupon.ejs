@@ -10,7 +10,7 @@
 	<!-- My CSS -->
 	<link rel="stylesheet" href="/adminhome/style.css">
 
-	<title>Edit Order | NFT Arena</title>
+	<title>Add Coupon | NFT Arena</title>
 </head>
 
 <body>
@@ -53,19 +53,19 @@
 					<span class="text">Users</span>
 				</a>
 			</li>
-			<li >
+			<li>
 				<a href="banners">
 					<i class='bx bxs-carousel'></i>
 					<span class="text">Banners</span>
 				</a>
 			</li>
-			<li class="active">
+			<li>
 				<a href="orders">
 					<i class='bx bxs-shopping-bag-alt'></i>
 					<span class="text" >Orders</span>
 				</a>
 			</li>
-			<li>
+			<li  class="active">
 				<a href="/admin/coupons">
 				  <i class='bx bxs-coupon'></i>
 				  <span class="text" >Coupons</span>
@@ -120,56 +120,63 @@
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Order</h1>
+					<h1>Coupon</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a href="#">Dashboard</a>
 						</li>
 						<li><i class='bx bx-chevron-right'></i></li>
 						<li class="active">
-							<a class="active" href="#">Banners</a>
+							<a class="active" href="#">Coupons</a>
 						</li>
 					</ul>
 				</div>
-				<a href="addBanner" class="btn-download">
-					<span class="text">Edit Order</span>
+				<a href="addCoupon" class="btn-download">
+					<span class="text">Add new Coupon</span>
 				</a>
 			</div>
 			<div class="table-data">
 				<div class="order">
 					
                     <div class="head">
-						<h3>Edit Order</h3>
+						<h3>Add Banner</h3>
 						
 					</div>
 
-                    <form action="" method="post" >
+                    <form action="/admin/addCoupon" method="post">
                         <!-- enctype="multipart/form-data"  -->
                         
-                        <label for="" class="mt-3">Order ID   :   </label>
-                        <input type="text" name="id" class="form-control" value="<%= orderData._id %>">
-						
-						
+                        <label for="" class="mt-3">Name   :   </label>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Coupon Name" required>
                       
 						<br><br>
-						<label for="" class="mt-3">Order Status   :   </label>
-						<select name="status" class="form-control">
-							<option value="<%= orderData.status%>"> <%= orderData.status%> </option>
-							<option value="Pending">Pending</option>
-							<option value="Confirmed">Confirmed</option>
-							<option value="Delivered">Delivered</option>
-							<option value="Cancelled">Cancelled</option>
-						</select>
-                      
-                  
-                        
+                        <label for="" class="mt-3">Code   :   </label>
+                        <input type="text" name="code" id="link" class="form-control" placeholder="Coupon Code" required>
+
+                        <br><br>
+                        <label for="" class="mt-3">Minimum Cart Amount   :   </label>
+                        <input type="number" name="minimumbill" id="link" class="form-control" placeholder="Minimum Bill" required>
+
+                        <br><br>
+                        <label for="" class="mt-3">Discount Amount   :   </label>
+                        <input type="number" name="value" id="link" class="form-control" placeholder="Coupon Amount" required>
+
+                        <br><br>
+                        <label for="" class="mt-3">Expiry Date   :   </label>
+                        <input type="date" name="expirydate" id="link" class="form-control" required>
+						
             
                         <br><br>
                         
-                        <div class="head-title">
+                        <div class="head-title" style="display: inline-flex;">
                           <button type="submit" class="btn-download">
                             Submit
                           </button>
+						  <a href="/admin/coupons">
+							<button type="button" class="btn-download">
+								Cancel
+							</button>
+						</a>
                         </div>
           
                     </form>
@@ -187,6 +194,8 @@
 	</section>
 	<!-- CONTENT -->
 
+
+	
 
 	<script src="/adminhome/script.js"></script>
 </body>

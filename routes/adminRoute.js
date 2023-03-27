@@ -69,6 +69,13 @@ adminRoute.post('/updateBanner', upload.single('image'), adminController.updateB
 adminRoute.get('/blockBanner', adminAuth.isLogin, adminController.blockBanner)
 adminRoute.get('/deleteBanner', adminAuth.isLogin, adminController.deleteBanner)
 
+adminRoute.get('/coupons', adminAuth.isLogin, adminController.couponLoad)
+adminRoute.get('/addCoupon', adminAuth.isLogin, adminController.addCouponLoad)
+adminRoute.post('/addCoupon', adminController.addCouponPost)
+adminRoute.get('/updateCoupon', adminAuth.isLogin, adminController.updateCouponLoad)
+adminRoute.post('/updateCoupon', adminController.updateCouponPost)
+adminRoute.get('/blockCoupon', adminAuth.isLogin, adminController.blockCoupon)
+
 adminRoute.get('/user', adminAuth.isLogin, adminController.userLoad)
 adminRoute.get('/blockUser', adminAuth.isLogin, adminController.blockUser)
 

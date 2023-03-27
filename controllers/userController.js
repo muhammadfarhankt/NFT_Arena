@@ -8,7 +8,7 @@ const Category = require('../models/categoryModel')
 const Author = require('../models/authorModel')
 const Orders = require('../models/orderModel')
 const Banner = require('../models/bannerModel')
-// const Offer = require("../models/offerModel")
+const Coupon = require('../models/couponModel')
 
 const { populate } = require('../models/userModel')
 const Razorpay = require('razorpay')
@@ -151,7 +151,6 @@ const loadpage = async (req, res) => {
     res.render('home', { categoryData, authorData, bannerData, productData, userData, newlyAddedProducts, wishedProducts, viewedProducts })
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -161,7 +160,6 @@ const loadRegister = async (req, res) => {
     res.render('registration')
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -196,7 +194,6 @@ const insertUser = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -208,7 +205,6 @@ const verifyMail = async (req, res) => {
     res.render('email-verified')
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -220,7 +216,6 @@ const loginLoad = async (req, res) => {
     res.render('login', { authorData, categoryData })
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -249,7 +244,6 @@ const verifyLogin = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -260,7 +254,6 @@ const otpLogin = async (req, res) => {
     res.render('otpLogin')
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -287,7 +280,6 @@ const otpLoginVerification = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -298,7 +290,6 @@ const otpPasswordVerify = async (req, res) => {
     res.render('otpLoginVerify', { uData })
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -340,7 +331,6 @@ const loadHome = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -351,7 +341,7 @@ const loadHome = async (req, res) => {
 //     res.redirect('/')
 //   } catch (error) {
 //     console.log(error.message)
-// res.render('404')
+//  
 //   }
 // }
 
@@ -361,7 +351,6 @@ const forgetLoad = async (req, res) => {
     res.render('forget')
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -384,7 +373,6 @@ const forgetLink = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -400,7 +388,6 @@ const forgetPasswordLoad = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -415,7 +402,15 @@ const resetPassword = async (req, res) => {
     console.log(updatedData)
   } catch (error) {
     console.log(error.message)
-    res.render('404')
+  }
+}
+
+const changePasswordLoad = async (req, res) => {
+  console.log('change password')
+  try {
+    res.render('changePassword')
+  } catch (error) {
+    console.log(error.message)
   }
 }
 
@@ -448,7 +443,7 @@ const shopLoad = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message)
-    res.render('404')
+     
   }
 }
 
@@ -492,7 +487,6 @@ const logoutUser = async (req, res) => {
     res.redirect('/')
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -502,10 +496,11 @@ const profileLoad = async (req, res) => {
     const userData = await User.findById({ _id: req.session.user_id })
     // console.log('userData')
     // console.log(userData)
-    res.render('profile', { userData })
+    const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
+    const authorData = await Author.find({ isBlocked: false, isDeleted: false })
+    res.render('profile', { userData, authorData, categoryData })
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -519,7 +514,6 @@ const saveUserDetails = async (req, res) => {
     res.redirect('/profile')
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -557,7 +551,6 @@ const getSingleOrderView = async (req, res) => {
     res.render('singleOrderView', { userData, categoryData, authorData, orderData, populatedData })
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -566,9 +559,10 @@ let totalCartPrice = 0
 const checkoutLoad = async (req, res) => {
   try {
     const userData = await User.findById({ _id: req.session.user_id })
+    const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
+    const authorData = await Author.find({ isBlocked: false, isDeleted: false })
     totalCartPrice = userData.cart.totalPrice
-    console.log('total cart price frommmmmmmm chekout ' + totalCartPrice)
-    res.render('checkout', { userData })
+    res.render('checkout', { userData, categoryData, authorData })
   } catch (error) {
     console.log('erroooorrr checkouuuuutttttttttt page')
   }
@@ -580,73 +574,32 @@ const createOrder = async (req, res) => {
     // await Coupons.updateOne({ value: req.body.value }, { $push: { coustomer: req.session.userid } });
     const populatedData = await userData.populate('cart.item.productId')
     // const productData = await Product.find({})
-    let order
-    if (req.body.currentAddress) {
-      const { _id, country, address, city, state, zip, phonenumber, email } = userData
-      order = new Orders({
-        userId: _id,
-        name: userData.name,
-        country,
-        address,
-        city,
-        state,
-        zip,
-        phone: phonenumber,
-        email,
-        products: populatedData.cart,
-        payment: req.body.payment,
-        sellingPrice: totalCartPrice
-      })
-    } else if (req.body.address) {
-      const { name, country, address, city, state, zip, phone, email, payment } = req.body
-      order = new Orders({
-        userId: req.session.user_id,
-        name,
-        country,
-        address,
-        city,
-        state,
-        zip,
-        phone,
-        email,
-        products: populatedData.cart,
-        payment,
-        sellingPrice: totalCartPrice
-      })
-    } else {
-      // req.flash('message', 'Please Fill The Form')
-      console.log('please fil form')
-      return res.render('checkout', { userData, message: 'Please Select Address or Fill Address Form' })
-    }
-    if (!req.body.payment) {
-      // req.flash('message', 'Please Select either one of the payment modes')
-      console.log('pls select payemeeentttt methooooddd')
-      return res.render('checkout', { userData, message: 'Please Select either one of the payment modes' })
-    }
+    const { city, state, zip } = req.body
+    const order = new Orders({
+      userId: req.session.user_id,
+      name: userData.name,
+      address: req.body.address,
+      city,
+      state,
+      zip,
+      phone: userData.mobile,
+      email: userData.email,
+      products: populatedData.cart,
+      payment: 'Razorpay',
+      sellingPrice: totalCartPrice
+    })
     const orderData = await order.save()
     req.session.currentOrderId = orderData._id
     console.log('current order id ' + req.session.currentOrderId)
 
     console.log('order data after save ' + orderData)
     if (orderData) {
-      // await User.updateOne({ _id: req.session.user_id }, { cart: {} })
-      // let afterPrice = 0
-      // let isApplied = 0
-      console.log(req.body.payment)
-      if (req.body.payment === 'Cash on delivery') {
-        // console.log(' cart length ' + userData.cart.item.length)
-        res.redirect('/orderSuccess')
-      } else if (req.body.payment === 'Razorpay') {
-        res.redirect('/payment')
-      } else {
-        res.redirect('/checkout')
-      }
+      res.redirect('/payment')
     } else {
       res.redirect('/checkout')
     }
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -713,7 +666,6 @@ const loadPayment = async (req, res) => {
     res.render('payment', { userData, categoryData, authorData })
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -754,7 +706,6 @@ const cartLoad = async (req, res) => {
     res.render('cart', { userData, authorData, categoryData })
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -865,7 +816,6 @@ const wishlistLoad = async (req, res) => {
     res.render('wishlist', { userData, wishListData: populatedData.wishlist, authorData, categoryData })
   } catch (error) {
     console.log(error.message)
-    res.render('404')
   }
 }
 
@@ -927,6 +877,42 @@ const checkout = async (req, res) => {
   console.log('checkout')
 }
 
+var sellingPrice
+
+const coupenApply = async (req, res) => {
+  console.log('coupon apply')
+  try {
+    const userId = req.session.user_id
+    const userData = await User.findById({ _id: userId })
+    const coupen = req.query.coupen
+    const couponData = await Coupon.findOne({ code: coupen })
+    if (couponData) {
+      if (couponData.isActive) {
+        var minAmt = couponData.Minimumbill
+        var cartTotal = userData.cart.totalPrice
+        if (cartTotal > minAmt) {
+          const coupenAmount = couponData.amount
+          sellingPrice = userData.cart.totalPrice - coupenAmount
+          res.json({ coupenAmount, cartTotal })
+        } else {
+          let b = 1;
+          res.json({ b, cartTotal, minAmt })
+        }
+        const coupenAmount = couponData.amount
+        sellingPrice = userData.cart.totalPrice - coupenAmount
+        res.json({ coupenAmount, cartTotal })
+      } else {
+        let a = 1
+        res.json({ a })
+      }
+    } else {
+      res.json({ message: "Invalid Coupon" });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 // exporting modules
 module.exports = {
   loadpage,
@@ -944,6 +930,7 @@ module.exports = {
   forgetLink,
   forgetPasswordLoad,
   resetPassword,
+  changePasswordLoad,
   shopLoad,
   categoryLoad,
   authorLoad,
@@ -972,5 +959,6 @@ module.exports = {
   checkout,
   loadPayment,
   razorpayCheckout,
-  loadError
+  loadError,
+  coupenApply
 }

@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 const Product = require('../models/productModel')
 const Banner = require('../models/bannerModel')
 const Order = require('../models/orderModel')
-const Offer = require('../models/offerModel')
+const Coupon = require('../models/couponModel')
 const multer = require('multer')
 // const bodyParser = require('body-parser');
 const randomstring = require('randomstring')
@@ -155,8 +155,8 @@ const loadDashboard = async (req, res) => {
       }
     }
     const [authorNames, totalSalesAuthor] = await getTotalSalesByAuthor()
-    console.log(authorNames)
-    console.log(totalSalesAuthor)
+    // console.log(authorNames)
+    // console.log(totalSalesAuthor)
     res.render('home', { admin: userData, orderCount, userCount, totalAmount: 0, authorCount, productCount, total: total[0].total, categoryCount, bannerCount, couponCount: 40, amount, categoryNames, totalSales, authorNames, totalSalesAuthor })
   } catch (error) {
     console.log(error.message)
@@ -243,6 +243,114 @@ const salesReport = async (req, res) => {
 
 // -----------------------------------------------Reports and charts End --------------------------------------------------------------//
 
+// -------------------------------------------- Coupon Start ------------------------------------------------------------------//
+
+// coupon loading
+const couponLoad = async (req, res) => {
+  await Product.find({}).populate('category').populate('author')
+  // console.log('product data ' + productData)
+  const couponData = await Coupon.find({})
+  // console.log('Banner Dataaaaaa' + bannerData)
+  try {
+    res.render('coupons', { couponData })
+  } catch (error) {
+    console.log(error.mesage)
+  }
+}
+
+// add new coupon load
+const addCouponLoad = async (req, res) => {
+  try {
+    const bannerData = await Banner.find({})
+    res.render('addCoupon', { bannerData })
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+function changedateformat (val) {
+  const myArray = val.split('-')
+
+  const year = myArray[0]
+  const month = myArray[1]
+  const day = myArray[2]
+
+  const formatteddate = day + '/' + month + '/' + year
+  return formatteddate
+}
+
+// add coupon post
+const addCouponPost = async (req, res) => {
+  console.log('coupon post')
+  try {
+    const date = req.body.expirydate
+    const coupon = new Coupon({
+      name: req.body.name,
+      amount: req.body.value,
+      code: req.body.code,
+      expirydate: changedateformat(date),
+      Minimumbill: req.body.minimumbill
+    })
+    const couponData = await coupon.save()
+
+    if (couponData) {
+      // req.flash("message", "Coupon Upload Success")
+      res.redirect('/admin/coupons')
+    } else {
+      // req.flash("message", "Upload Failed ")
+      res.redirect('/admin/coupons')
+    }
+  } catch (error) {
+    console.log(error.messaage)
+  }
+}
+
+// update banner load
+const updateCouponLoad = async (req, res) => {
+  const bannerData = await Banner.findById({ _id: req.query.id })
+  res.render('updateBanner', { bannerData })
+}
+
+const updateCouponPost = async (req, res) => {
+  // const bannerData = await Banner.findById({ _id: req.query.id })
+  // console.log('baner id ' + bannerId)
+  // await Banner.findByIdAndUpdate({ _id: req.query.id }, { $set: { name: req.body.name, link: req.body.link, textHeader: req.body.heading, textContent: req.body.bannerContent } })
+  if (req.file != null) {
+    productEditData
+    console.log('update image name :  ' + req.file.filename)
+    await Banner.findByIdAndUpdate({ _id: req.body.id }, { $set: { name: req.body.name.trim(), link: req.body.link, textHeader: req.body.heading, textContent: req.body.bannerContent, image: req.file.filename } })
+  } else {
+    await Banner.findByIdAndUpdate({ _id: req.body.id }, { $set: { name: req.body.name.trim(), link: req.body.link, textHeader: req.body.heading, textContent: req.body.bannerContent } })
+  }
+  //bannerData.name = req.body.name.trim()
+  res.redirect('/admin/banners')
+}
+
+// banner blocking and unblocking
+const blockCoupon = async (req, res) => {
+  try {
+    const bannerId = req.query.id
+    const bannerData = await Banner.findById({ _id: bannerId })
+    // console.log('banner data for blocking : ' + bannerData)
+    // console.log('blocked dddddddddddd   ' + bannerData.isBlocked)
+    const value = bannerData.isBlocked
+    // console.log(value)
+    if (value === true) {
+      await Banner.findByIdAndUpdate({ _id: bannerId }, { $set: { isBlocked: false } })
+      res.redirect('/admin/banners')
+    } else if (value === false) {
+      await Banner.findByIdAndUpdate({ _id: bannerId }, { $set: { isBlocked: true } })
+      res.redirect('/admin/banners')
+      // console.log(bannerData)
+    }
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+
+// ---------------------------------------------------------------Banner End -----------------------------------------------------------//
+
 // -------------------------------------------- Banner Start ------------------------------------------------------------------//
 
 // banner loading
@@ -299,7 +407,8 @@ const updateBannerPost = async (req, res) => {
   // const bannerData = await Banner.findById({ _id: req.query.id })
   // console.log('baner id ' + bannerId)
   // await Banner.findByIdAndUpdate({ _id: req.query.id }, { $set: { name: req.body.name, link: req.body.link, textHeader: req.body.heading, textContent: req.body.bannerContent } })
-  if (req.file != null) {productEditData
+  if (req.file != null) {
+    productEditData
     console.log('update image name :  ' + req.file.filename)
     await Banner.findByIdAndUpdate({ _id: req.body.id }, { $set: { name: req.body.name.trim(), link: req.body.link, textHeader: req.body.heading, textContent: req.body.bannerContent, image: req.file.filename } })
   } else {
@@ -820,5 +929,11 @@ module.exports = {
   cancelOrder,
   postOrderLoad,
   downloadSalesReport,
-  salesReport
+  salesReport,
+  couponLoad,
+  addCouponLoad,
+  addCouponPost,
+  updateCouponLoad,
+  updateCouponPost,
+  blockCoupon
 }

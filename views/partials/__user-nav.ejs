@@ -15,7 +15,7 @@
           <li><a href="/wishlist">Wishlist</a></li>
           <li><a href="/logout">Logout</a></li>
           <% } else { %>
-            <li><a href="/login">Login</a></li>
+            <li><a href="/author">Author Login</a></li>
           <% } %>
 
         </ul>
@@ -87,7 +87,7 @@
           <sup>
             <%= (userData != null ) ? userData.cart.item.length : 0 ; %>
           </sup>
-          <span>total price<small>₹ <%= (userData != null) ? userData.cart.totalPrice : 0.00 ; %></small></span>
+          <span>total price<small>$ <%= (userData != null) ? userData.cart.totalPrice : 0.00 ; %></small></span>
         <!-- </button> -->
         </a>
       </div>
