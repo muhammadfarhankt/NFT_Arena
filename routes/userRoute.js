@@ -41,6 +41,8 @@ userRoute.post('/forget', userController.forgetLink)
 userRoute.get('/forget-password', auth.isLogout, userController.forgetPasswordLoad)
 userRoute.post('/forget-password', userController.resetPassword)
 
+userRoute.get('/change-password', auth.isLogin, userController.changePasswordLoad)
+
 userRoute.get('/shop', userController.shopLoad)
 userRoute.get('/logout', userController.logoutUser)
 
@@ -54,6 +56,8 @@ userRoute.get('/orderSuccess', auth.isLogin, userController.orderSuccess)
 userRoute.get('/cancelOrder', userController.cancelOrder)
 userRoute.get('/singleOrderView', auth.isLogin, userController.getSingleOrderView)
 userRoute.get('/orderFailed', auth.isLogin, userController.orderFailed)
+
+userRoute.post('/coupenApply', userController.coupenApply)
 
 userRoute.get('/payment', auth.isLogin, userController.loadPayment)
 userRoute.post('/payment', auth.isLogin, userController.razorpayCheckout)

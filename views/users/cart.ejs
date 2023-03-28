@@ -1,197 +1,244 @@
-<%- include('../partials/header') %>
-    <!-- navbar -->
-    <%- include('../partials/categories-navbar') %>
-
-        <style>
-            @import url(http://fonts.googleapis.com/css?family=Calibri:400,300,700);
-
-            body {
-                background-color: #eee;
-                font-family: 'Calibri', sans-serif !important;
-            }
-
-            .mt-100 {
-                margin-top: 100px;
-
-            }
+<%- include('../partials/__user-head.ejs') %>
+    <link rel="stylesheet" href="/static/css/checkout.css">
+    <link rel="stylesheet" href="/static/css/wishlist.css">
+    <title>Cart | NFT Arena</title>
+    </head>
 
 
-            .card {
-                margin-bottom: 30px;
-                border: 0;
-                -webkit-transition: all .3s ease;
-                transition: all .3s ease;
-                letter-spacing: .5px;
-                border-radius: 8px;
-                -webkit-box-shadow: 1px 5px 24px 0 rgba(68, 102, 242, .05);
-                box-shadow: 1px 5px 24px 0 rgba(68, 102, 242, .05);
-            }
+    <body>
 
-            .card .card-header {
-                background-color: #fff;
-                border-bottom: none;
-                padding: 24px;
-                border-bottom: 1px solid #f6f7fb;
-                border-top-left-radius: 8px;
-                border-top-right-radius: 8px;
-            }
+        <%- include('../partials/__user-nav.ejs') %>
+            <%- include('../partials/__user-side-cat.ejs') %>
+                <%- include('../partials/__user-cart.ejs') %>
+                    <%- include('../partials/__user-sidenav.ejs') %>
+                        <%- include('../partials/__user-mobile.ejs') %>
 
-            .card-header:first-child {
-                border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
-            }
+                            <!------------------ Cart Main Content ---------------------------->
+                            <section class="inner-section single-banner"
+                                style="background: url(images/single-banner.jpg) no-repeat center;">
+                                <div class="container">
+                                    <h2>Cart</h2>
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                        <li class="breadcrumb-item"><a href="/shop">shop</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">cart</li>
+                                    </ol>
+                                </div>
+                            </section>
+                            <section class="inner-section wishlist-part">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+
+                                            <% if ( userData.cart.item.length> 0 ) { %>
+
+                                                <div class="table-scroll">
+                                                    <table class="table-list">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Serial</th>
+                                                                <th scope="col">Product</th>
+                                                                <th scope="col">Name</th>
+                                                                <th scope="col">Price</th>
+                                                                <th scope="col">shopping</th>
+                                                                <th scope="col">action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <!-- Product Loop -->
+
+                                                            <% userData.cart.item.forEach((eachItem,index)=>{%>
+
+                                                                <tr>
+                                                                    <td class="table-serial">
+                                                                        <h6>
+                                                                            <%= index+1 %>
+                                                                        </h6>
+                                                                    </td>
+                                                                    <td class="table-image">
+                                                                        <a
+                                                                            href="/product?id=<%=eachItem.productId._id%>">
+                                                                            <img src="/imagess/<%= eachItem.image %>"
+                                                                                alt="product"></a>
+                                                                    </td>
+                                                                    <td class="table-name">
+                                                                        <h6><a class="text-dark"
+                                                                                href="/product?id=<%=eachItem.productId._id%>">
+                                                                                <%= eachItem.name %>
+                                                                            </a></h6>
+                                                                    </td>
+                                                                    <td class="table-price">
+                                                                        <h6>$ <%= eachItem.price %>
+                                                                        </h6>
+                                                                    </td>
+
+
+                                                                    <td class="table-shop">
+                                                                        <a class="product-addNew" title="Move to Cart"
+                                                                            href="/move-to-wishlist?id=<%= eachItem.productId._id %>">
+                                                                            <span>Move To Wishlist</span>
+                                                                        </a>
+                                                                    </td>
+
+                                                                    <td class="table-action">
+                                                                        <a class="view" href="#" title="Quick View"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#id-<%=eachItem._id%>">
+                                                                            <i class="fas fa-eye"></i>
+                                                                        </a>
+                                                                        <a class="trash wishlist"
+                                                                            href="/remove-from-cart?id=<%= eachItem.productId._id %>"
+                                                                            title="Remove">
+                                                                            <i class="icofont-trash"></i>
+                                                                        </a>
+                                                                    </td>
+
+
+                                                                </tr>
+
+                                                                <%}) %>
+
+
+                                                                    <!-- Product Loop End -->
 
 
 
-            .card .card-body {
-                padding: 30px;
-                background-color: transparent;
-            }
-
-            .btn-primary,
-            .btn-primary.disabled,
-            .btn-primary:disabled {
-                background-color: #4466f2 !important;
-                border-color: #4466f2 !important;
-            }
-        </style>
-        <div class="container cart">
 
 
-            <% if ( userData.cart.item.length>0 ) { %>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                               
 
-                <h2 style="text-align: center; padding-top: 5px; padding-bottom: 5px;">Cart</h2>
-                <div class="row">
+                                                <% } else { %>
+                                                    <h3>Cart empty</h3>
+                                                    <% } %>
 
+                                        </div>
+                                    </div>
 
-                    <div class="col-md-11 col-sm-12 m-auto table-responsive">
-                        <table class="table text-center">
-                            <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th style="text-align: left;">Details</th>
-                                    <th>&nbsp;</th>
-                                    <th>Quantity</th>
-                                    <th>&nbsp;</th>
-                                    <th>Total</th>
-                                    <th>Subtotal</th>
-                                    <th>&nbsp;</th>
-                                    <th style="text-align: left;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% for(let i=0;i<userData.cart.item.length;i++){%>
+                                    <% if ( userData.cart.item.length> 0 ) { %>
+                                        <div class="row">
 
-                                    <tr class="my-auto">
-                                        <td>
-                                            <a href="/product?id=<%=userData.cart.item[i].productId%>">
-                                                <img src="/imagess/<%= userData.cart.item[i].image %>"
-                                                    class="img-small image-fluid" alt="image thumbnail" width="65px"
-                                                    height="65px" />
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <div class="float-left mb-3">
-                                                <a class="title-link"
-                                                    href="/product?id=<%=userData.cart.item[i].productId%>">
-                                                    <h6 class="text-left">
-                                                        <%= userData.cart.item[i].name %>
-                                                    </h6>
-                                                    <p class="text-left">Product No: <%= userData.cart.item[i].productId
-                                                            %>
-                                                    </p>
+                                            <div class="col-lg-12">
+                                                <div class="section-btn-25"><a href="/checkout?id=<%= userData._id %>"
+                                                        class="btn btn-outline"><i
+                                                            class="icofont-cart"></i><span>Checkout</span></a></div>
                                             </div>
 
-                                            </a>
-                                        </td>
-                                        <% if (userData.cart.item[i].quantity != 1) { %>
-                                        <td class="text-center">
-                                            <a href="/reduce-from-cart?id=<%= userData.cart.item[i].productId %>"><i
-                                                    class="fa fa-minus-square" aria-hidden="true"></i></a>
-                                        </td>
+                                            <div class="col-lg-12">
+                                                <div class="section-btn-25"><a href="/empty-cart"
+                                                        class="btn btn-outline"><i
+                                                            class="icofont-trash"></i><span>Remove All</span></a></div>
+                                            </div>
+                                        </div>
+
                                         <% } else { %>
-                                            <td></td>
-                                        <% } %>
-                                        <td class="text-center">
-                                            <p class="qty-display pt-1">
-                                                <%= userData.cart.item[i].quantity %>
-                                            </p>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href="/add-to-cart?id=<%= userData.cart.item[i].productId %>"><i
-                                                    class="fa fa-plus-square" aria-hidden="true"></i> </a>
-                                        </td>
 
-                                        <td>$ <%= userData.cart.item[i].price %>
-                                        </td>
-                                        <td>$ <%= userData.cart.item[i].price*userData.cart.item[i].quantity %>
-                                        </td>
-                                        <td>
-                                            <a href="/remove-from-cart?id=<%= userData.cart.item[i].productId %>"
-                                                class="btn btn-danger btn-sm button-style-sucess">Remove</a>
-                                        </td>
-                                        <td>
-                                            <a href="/move-to-wishlist?id=<%= userData.cart.item[i].productId %>"
-                                                class="btn btn-danger btn-sm button-style-danger">Move to Wishlist</a>
-                                        </td>
-                                    </tr>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="section-btn-25"><a href="/shop" class="btn btn-outline">
+                                                            <span>Shop</span></a></div>
+                                                </div>
+                                            </div>
 
-                                    <%} %>
+                                            <% } %>
+                                </div>
+                                </div>
+                            </section>
+
+                            <!---------------- Product View Modal ---------------------------->
 
 
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                            <% userData.cart.item.forEach((eachItem,index)=>{%>
+
+                                <div class="modal fade" id="id-<%=eachItem._id%>">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content"><button class="modal-close icofont-close"
+                                                data-bs-dismiss="modal"></button>
+                                            <div class="product-view">
+                                                <div class="row">
+                                                    <div class="col-md-6 col-lg-6">
+                                                        <div class="view-gallery">
+                                                            <div class="view-label-group"><label
+                                                                    class="view-label new">new</label></div>
+                                                            <ul class="preview-slider slider-arrow">
+                                                                <li><img src="/imagess/<%= eachItem.productId.image %>"
+                                                                        alt="  "></li>
+                                                            </ul>
+                                                            <ul class="thumb-slider">
+                                                                <li><img src="/imagess/<%=eachItem.productId.image%>"
+                                                                        alt="product"></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 col-lg-6">
+                                                        <div class="view-details">
+                                                            <h3 class="view-name"><a
+                                                                    href="/product?id=640dbe82524f6e7969cf737f">
+                                                                    <%=eachItem.productId.name%>
+                                                                </a></h3>
+                                                            <div class="view-meta">
+                                                                <p>SKU:<span>
+                                                                        <%=eachItem._id%>
+                                                                    </span></p>
+                                                            </div>
+
+                                                            <h3 class="view-price">
+                                                                <span>$ <%=eachItem.productId.price%></span></h6>
+                                                            </h3>
+                                                            <p>
+                                                                <%= eachItem.productId.description %>
+                                                            </p>
+                                                            <div class="view-list-group">
+                                                                <label class="view-list-title">tags:</label>
+                                                                <ul class="view-tag-list">
+
+
+                                                                </ul>
+                                                            </div>
 
 
 
-                <hr>
-                <div class="row mt-4 mr-auto">
-                    <div class="col-md-11 col-sm-12 m-auto">
-                        <h3 style="text-align: right;">Total : $ <%= userData.cart.totalPrice %>
-                        </h3>
-                    </div>
-                </div>
-                <div class="row mt-2 mr-auto">
-                    <div class="col-md-11 col-sm-12 m-auto">
-                        <a href="/checkout?id=<%= userData._id %>" class="btn btn-dark button-style"
-                            style="float: right;">Checkout</a>
-                        <a href="/empty-cart" class="btn btn-dark button-style-danger" style="float: left;">Remove
-                            All</a>
-                    </div>
-                </div>
-
-                <% } else { %>
-
-                    <div class="container-fluid  mt-100">
-                        <div class="row">
-
-                            <div class="col-md-12">
-
-                                <div class="card">
-                                    <div class="card-body cart">
-                                        <div class="col-sm-12 empty-cart-cls text-center">
-                                            <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130"
-                                                class="img-fluid mb-4 mr-3">
-                                            <h3><strong>Your Cart is Empty</strong></h3>
-                                            <h4>Add something to make me happy :)</h4>
-                                            <a href="/shop" class="btn btn-primary cart-btn-transform m-3"
-                                                data-abc="true">Continue Shopping</a>
-
-
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
+                                <%}) %>
 
-                            </div>
 
-                        </div>
 
-        </div>
+                                    <!---------------- Product View Modal End ---------------------------->
 
-        <% } %>
 
-            </div>
+                                    <%- include('../partials/__user-features.ejs') %>
+                                        <%- include('../partials/__user-footer.ejs') %>
 
-            <%- include('../partials/footer') %>
+                                            <script
+                                                src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js"
+                                                integrity="sha512-0qU9M9jfqPw6FKkPafM3gy2CBAvUWnYVOfNPDYKVuRTel1PrciTj+a9P3loJB+j0QmN2Y0JYQmkBBS8W+mbezg=="
+                                                crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                                            <script src="/static/vendor/swal/sweetalert2.all.min.js"></script>
+                                            <script src="/static/js/formControl.js"></script>
+
+                                            <script src="/static/vendor/bootstrap/jquery-1.12.4.min.js"></script>
+                                            <script src="/static/vendor/bootstrap/popper.min.js"></script>
+                                            <script src="/static/vendor/bootstrap/bootstrap.min.js"></script>
+                                            <script src="/static/vendor/countdown/countdown.min.js"></script>
+                                            <script src="/static/vendor/niceselect/nice-select.min.js"></script>
+                                            <script src="/static/vendor/slickslider/slick.min.js"></script>
+                                            <script src="/static/vendor/venobox/venobox.min.js"></script>
+                                            <script src="/static/js/nice-select.js"></script>
+                                            <script src="/static/js/countdown.js"></script>
+                                            <script src="/static/js/accordion.js"></script>
+                                            <script src="/static/js/venobox.js"></script>
+                                            <script src="/static/js/slick.js"></script>
+                                            <script src="/static/js/main.js"></script>
+    </body>
+
+    </html>

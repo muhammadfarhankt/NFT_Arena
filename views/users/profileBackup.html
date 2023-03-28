@@ -1,0 +1,68 @@
+<%- include('../partials/header') %>
+    <!-- navbar -->
+    <%- include('../partials/categories-navbar') %>
+
+        <div class="container">
+            <div class="container rounded bg-white mt-5 mb-5">
+                <div class="row">
+                    <div class="col-md-3 border-right">
+                        <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img
+                                class="rounded-circle mt-5" width="150px"
+                                src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                            <span class="font-weight-bold">
+                                <%= userData.name %>
+                            </span>
+                            <span><a class="btn btn-info mt-3" href="/orders">My Orders</a></span>
+                        </div>
+                    </div>
+                    <div class="col-md-5 border-right">
+                        <div class="p-3 py-5">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="text-right">User Profile</h4>
+                            </div>
+                            <form action="/updateProfile" method="post">
+                                <div class="row mt-2">
+                                    <div class="col-md-12"><label class="labels">Name</label>
+                                        <input type="text" class="form-control" value="<%= userData.name %>"
+                                            name="name" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12" style="padding-top: 20px;"><label class="labels">Mobile
+                                            Number</label>
+                                        <input type="text" class="form-control" value="<%= userData.mobile %>"
+                                            name="mobile">
+                                    </div>
+                                    <!-- <div class="col-md-12"><label class="labels">Email ID</label>
+                        <input type="text" class="form-control" value="user@user.com " name="email">
+                    </div> -->
+                                </div>
+                                <div class="mt-5 text-center"><button class="btn btn-primary profile-button"
+                                        type="submit">Update Profile</button></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 py-5">
+                            <div class="col-md-12">
+                                <label class="labels">Address</label>
+                                <input type="text" class="form-control" value="<%= userData.address %>" name="address">
+                            </div>
+                            <div class="col-md-12" style="padding-top: 20px;">
+                                <label class="labels">Town / City</label>
+                                <input type="text" class="form-control" value="<%= userData.city %>   " name="city">
+                            </div>
+                            <div class="col-md-12" style="padding-top: 20px;">
+                                <label class="labels">State</label>
+                                <input type="text" class="form-control" value="<%= userData.state %>   " name="state">
+                            </div>
+                            <div class="col-md-12" style="padding-top: 20px;">
+                                <label class="labels">Postcode / ZIP</label>
+                                <input type="text" class="form-control" value="<%= userData.zip %>   " name="zip">
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <%- include('../partials/footer') %>

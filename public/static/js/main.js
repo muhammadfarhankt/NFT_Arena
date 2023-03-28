@@ -421,16 +421,7 @@ $('.coupon-form').on('submit', async function (e) {
   }
 });
 
-$('a.trash.wishlist').on('click', async function (ev) {
-  ev.preventDefault();
-  const pid = $(this).data('pid');
-  const res = await axios({
-    method: 'patch',
-    url: '/wish-remove',
-    data: {
-      pid,
-    },
-  });
+
 
   if (res.data.status === 'success') {
     $(this).closest('tr').remove();

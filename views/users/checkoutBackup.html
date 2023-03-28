@@ -1,0 +1,159 @@
+
+<%- include('../partials/header') %>
+<!-- navbar -->
+<%- include('../partials/categories-navbar') %>
+
+
+
+<section class="">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 ftco-animate">
+                <form action="/placeOrder" class="billing-form" id="billingform" method="post">
+                    <h3 class="mb-4 ">Select Billing Address</h3>
+                    <% if(typeof message !== 'undefined'){%>
+                
+                        <p class="mt-1 ps-2  text-danger" ><%= message %></p>
+                         
+                       <%}%>
+                    <div class="row align-items-end">
+                        <% if(userData.address){ %>
+                        <div class="col-md-12">
+                            <div class="form-group mt-2">
+                                <div class="radio border p-3 pb-1" style="border-radius: 8px; line-height:1.2px;">
+                                    <label style="font-weight: bold;"><input type="radio" name="currentAddress" value="currentAddress"> Bill to Saved Address</label>
+                                    <p class="mt-2" style="padding-top: 10px;"> <%= userData.name %> </p>
+                                    <p style="padding-top: 10px;"><%= userData.address %>, <%= userData.city %> , <%= userData.state %> , <%= userData.zip %></p>
+                                    <p style="padding-top: 10px;">Mobile :<%= userData.mobile %>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %> 
+                        <div class="col-md-6" style="padding-top: 20px;">
+                            <div class="form-group">
+                                <h4 class="ms-2">Add New Billing Address</h4>
+                                <label for="firstname">Name</label>
+                                <input type="text" class="form-control" placeholder="Full Name" name="name" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="lastname">Email Address</label>
+                                <input type="email" class="form-control" placeholder="E-Mail Address" name="email" />
+                            </div>
+                        </div>
+                        <div class="w-100"></div>
+                        <input type="hidden" id="payment" name="payment" value="">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="lastname">Phone Number</label>
+                                <input type="number" class="form-control" placeholder="Contact Number" name="phone" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="streetaddress">Street Address</label>
+                                <input type="text" class="form-control" placeholder="House Number and Street Name" name="address" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="towncity">Town / City</label>
+                                <input type="text" class="form-control" placeholder="Town / City" name="city" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="postcodezip">Postcode / ZIP </label>
+                                <input type="number" name="zip" class="form-control" placeholder="Zip Code" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="lastname">State</label>
+                                <input type="text" class="form-control" placeholder="State" />
+                            </div>
+                        </div>
+                       
+    
+                    </div>
+                </form>
+                <!-- END -->
+
+                <div class="row mt-5 pt-3 d-flex">
+                    <div class="col-md-6 d-flex">
+                        <div class="cart-detail cart-total bg-light p-3 p-md-4">
+                            <h3 class="billing-heading mb-4">Cart Total</h3>
+                            <section id="message" class="text-danger">
+
+                            </section>
+                            
+                            <p class="d-flex">
+                                <span>Subtotal</span>
+                                <span style="font-weight: bold;">$ <%= userData.cart.totalPrice %> </span>
+                            </p>
+
+                            <p class="d-flex">
+                                <span>Processing Fees  </span>
+                                <span style="font-weight: bold;">$ 0 </span>
+                            </p>
+                            <hr />
+                            <p class="d-flex total-price">
+                                <span>Total</span>
+                                <span id="sellingPrice">$ <%= userData.cart.totalPrice %> </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="cart-detail bg-light p-3 p-md-4">
+                            <h3 class="billing-heading mb-4">Select Payment Method</h3>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="radio">
+                                        <label
+                                            ><input type="radio" name="optradio" class="mr-2" value="Cash on delivery"/> Cash On Delivery</label
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="radio">
+                                        <label><input type="radio" name="optradio" class="mr-2" value="Razorpay"/>Debit/Credit Card / UPI</label>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                            <input type="submit" form="billingform" class="btn btn-primary py-3 px-4" value="Place Order" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- .col-md-8 -->
+        </div>
+    </div>
+</section>
+<!-- .section -->
+
+<script>
+
+    let rdbtns = document.querySelectorAll("input[name='optradio']")
+    let output = document.querySelector("#payment")
+    function selected() {
+         let selected = document.querySelector("input[name='optradio']:checked").value
+         output.value = selected
+    }
+    rdbtns.forEach(x=>{
+        x.addEventListener('change',selected)
+    })
+    
+    const apply = document.querySelector("#btn")
+
+   
+</script>
+
+
+
+
+
+<%- include('../partials/footer') %>

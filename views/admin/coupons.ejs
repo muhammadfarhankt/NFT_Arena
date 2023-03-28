@@ -7,12 +7,14 @@
 
   <!-- Boxicons -->
   <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+
   <!-- My CSS -->
   <link rel="stylesheet" href="/adminhome/style.css">
 
+  <!-- Table Pagination -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
 
-
-  <title>Edit Author | NFT Arena</title>
+  <title>Coupons | NFT Arena</title>
 </head>
 
 <body>
@@ -43,7 +45,7 @@
           <span class="text">Categories</span>
         </a>
       </li>
-      <li class="active">
+      <li>
         <a href="author">
           <i class='bx bxs-message-dots'></i>
           <span class="text">Authors</span>
@@ -56,7 +58,7 @@
         </a>
       </li>
       <li>
-        <a href="/banners">
+        <a href="banners">
           <i class='bx bxs-carousel'></i>
           <span class="text">Banners</span>
         </a>
@@ -67,13 +69,12 @@
           <span class="text">Orders</span>
         </a>
       </li>
-      <li>
+      <li class="active">
         <a href="/admin/coupons">
           <i class='bx bxs-coupon'></i>
           <span class="text" >Coupons</span>
         </a>
       </li>
-
     </ul>
     <ul class="side-menu">
       <li>
@@ -123,83 +124,128 @@
     <main>
       <div class="head-title">
         <div class="left">
-          <h1>Author</h1>
+          <h1>Coupons</h1>
           <ul class="breadcrumb">
             <li>
               <a href="#">Dashboard</a>
             </li>
             <li><i class='bx bx-chevron-right'></i></li>
             <li class="active">
-              <a class="active" href="#">Author</a>
+              <a class="active" href="#">Coupons</a>
             </li>
           </ul>
         </div>
-        <a href="addAuthor" class="btn-download">
-          <i class='bx bxs-cloud-download'></i>
-          <span class="text">Add new Author</span>
+        <a href="addCoupon" class="btn-download">
+          <span class="text">Add new Coupon</span>
         </a>
       </div>
       <div class="table-data">
         <div class="order">
-          <!-- <div class="head">
-            <h3>Add Author</h3>
-            <i class='bx bx-search'></i>
-            <i class='bx bx-filter'></i>
-          </div> -->
 
-          <section>
-            <div class="container mt-4">
-              <div class="row">
+          <% if(couponData.length>0){ %>
 
-                <div class="col-md-6">
-                  <h2 class="text-center">Edit Author</h2>
-                  <form action="/admin/updateAuthor" method="post">
-                    <!-- enctype="multipart/form-data"  -->
-                    <!-- Flash message -->
-								<% if(typeof message !=='undefined' ) {%>
-									<div id="flash-msg" class="alert alert-danger" style="color: red;">
-                    <br>
-										<%= message %>
-									</div>
+            <table id="tablePagination" class="display">
+              <thead>
+                <tr>
+                  <th>
+                    <center>Sl No.</center></th>
+                  <th>Name</th>
+                  <th>
+                    <center>
+                    Code
+                  </center>
+                  </th>
+                  <th>
+                    <center>
+                    Minimum Amount
+                  </center>
+                  </th>
+                  <th>
+                    <center>
+                    Discount
+                  </center>
+                  </th>
+                  <th>
+                    <center>
+                    Expiry Date
+                  </center>
+                  </th>
+                  <th>
+                    <center>Edit</th></center>
+                  <th>
+                    <center>Block / Unblock</center>
+                  </th>
+                  <th><center>Delete</center></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for(let i=0;i<couponData.length;i++){ %>
+                  <tr>
+                    <td align="center">
+                      <%= i+1 %>
+                    </td>
+                    <td>
+                      <p>
+                        <%= couponData[i].name %>
+                      </p>
+                    </td>
+                    <td align="center">
+                      <p>
+                        <%= couponData[i].code %>
+                      </p>
+                    </td>
+                    <td align="center">
+                      <p>
+                        <%= couponData[i].Minimumbill %>
+                      </p>
+                    </td>
+                    <td align="center">
+                      <p>
+                        <%= couponData[i].amount %>
+                      </p>
+                    </td>
+                    <td align="center">
+                      <p>
+                        <%= couponData[i].expirydate %>
+                      </p>
+                    </td>
+                    <td align="center"> <a href="/admin/updateCoupon?id=<%= couponData[i]._id %>"><span class="status"
+                          style="background: rgb(8, 38, 15);">Edit</span></a>
+                    </td>
 
-									<% } %>
-                  
-                    <br>
-                    <label for="">Name</label>
-                    <input type="text" name="name" id="name" class="form-control" value="<%= author.name %>" required>
+                    <td align="center">
+                      <p>
 
-                    <br><br>
-                    <label for="">Description</label>
-                    <input type="text" name="description" id="description"  class="form-control" value="<%= author.description %>" required>
+                        <% if(couponData[i].isActive==true){%>
+                          <span class="status block-button" style="background-color: green; align-items: center;"
+                            data-id="<%= couponData[i]._id %>">
+                            Active
+                          </span>
+                          <%}else{%>
+                            <span class="status pending unBlock-button" style="align-items: center;" data-id="<%= couponData[i]._id %>">
+                              Blocked</span>
+                            <%}%>
 
-                    <br><br>
-                    <input type="hidden" name="id" value="<%= author._id %>">
+                      </p>
+                    </td>
 
-                    <div class="head-title" style="display: inline-flex;">
-                      <button type="submit" class="btn-download">
-                        Submit
-                      </button>
-
-                      <a href="/admin/author">
-                        <button type="button" class="btn-download">
-                          Cancel
-                        </button>
-                      </a>
-                      
-                    </div>
-
-                  </form>
-
-                  
-
-                </div>
-              </div>
-            </div>
-          </section>
+                    <td align="center">
+                        <span class="status delete-button" style="background: rgb(215, 9, 33);" data-id="<%= couponData[i]._id %>">
+                          Delete</span>
+                    </td>
 
 
-        </div>
-      </div>
+                  </tr>
+
+                  <% } %>
+
+              </tbody>
+            </table>
+
+            <% } else { %>
+              No Coupons found
+              <% } %>
+
 
 
 
@@ -207,32 +253,91 @@
     </main>
     <!-- MAIN -->
   </section>
+<!--  SweetAlert2 script -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<!-- block button -->
+<script>
+    const blockButtons = document.querySelectorAll('.block-button');
+    blockButtons.forEach((blockButton) => {
+      blockButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        const bannerId = blockButton.getAttribute('data-id');
+        Swal.fire({
+          title: 'Are you sure to block banner ?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Yes, Block'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `/admin/blockBanner?id=${bannerId}`;
+          }
+        });
+      });
+    });
+  </script>
+  
+  <!-- unBlock-button -->
+  <script>
+    const unBlockButtons = document.querySelectorAll('.unBlock-button');
+    unBlockButtons.forEach((unBlockButton) => {
+      unBlockButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        const bannerId = unBlockButton.getAttribute('data-id');
+        Swal.fire({
+          title: 'Are you sure to un-block banner ?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Yes, un-block'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `/admin/blockBanner?id=${bannerId}`;
+          }
+        });
+      });
+    });
+  </script>
+  
+  <script>
+    const deleteButtons = document.querySelectorAll('.delete-button');
+    deleteButtons.forEach((deleteButton) => {
+      deleteButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        const bannerId = deleteButton.getAttribute('data-id');
+        Swal.fire({
+          title: 'Are you sure to delete Banner ?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Yes, delete'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `/admin/deleteBanner?id=${bannerId}`;
+          }
+        });
+      });
+    });
+  </script>
+
   <!-- CONTENT -->
 
+  <!-- Pagination Script  -->
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" charset="utf8"
+    src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
   <script>
-
-    document.getElementById("name").addEventListener("input", function () {
-      var authorName = document.getElementById("name").value;
-      console.log(name)
-
-      if (authorName.trim() == "") {
-        document.getElementById("name").setCustomValidity("Author Name cannot be null");
-        console.log("Name null")
-      } else {
-        document.getElementById("name").setCustomValidity("");
-      }
+    $(document).ready(function () {
+      $('#tablePagination').DataTable();
     });
-
-    document.getElementById("description").addEventListener("input", function () {
-      var description = document.getElementById("description").value;
-      if (description.trim() == "") {
-        document.getElementById("description").setCustomValidity("Description cannot be null");
-      } else {
-        document.getElementById("description").setCustomValidity("");
-      }
-    });
-
   </script>
+
+
 
   <script src="/adminhome/script.js"></script>
 </body>

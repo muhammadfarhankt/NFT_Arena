@@ -108,7 +108,6 @@ userSchema.methods.addToCart = function (product) {
   })
   console.log('indexNumber :  ' + indexNumber)
   if (indexNumber >= 0) {
-    cart.item[indexNumber].quantity += 1
   } else {
     cart.item.push({
       productId: product._id,
@@ -117,8 +116,8 @@ userSchema.methods.addToCart = function (product) {
       name: product.name,
       image: product.image
     })
+    cart.totalPrice += product.price
   }
-  cart.totalPrice += product.price
   return this.save()
 }
 
