@@ -216,18 +216,18 @@
                           console.log('else expired')
                           document.querySelector('#message').innerHTML = "<p>Expired Coupon</p>"
                           document.querySelector('#coupenAmt').innerText = ""
-                          document.querySelector('#sellingPrice').innerText = ""
+                          document.querySelector('#sellingPrice').innerText = value.cartTotal
                         } else if (value.b) {
                           console.log('need more amount to apply')
                           document.querySelector('#coupenAmt').innerText = ""
-                          document.querySelector('#sellingPrice').innerText = ""
-                          document.querySelector('#message').innerHTML += `<p>Minimum $ 100 needed to Apply Coupen</p>`
+                          document.querySelector('#sellingPrice').innerText = value.cartTotal
+                          document.querySelector('#message').innerHTML = `<p>Minimum $ ${value.minAmt} needed to Apply Coupen</p>`
                         }
                         else {
                           console.log('invalied coupon')
                           document.querySelector('#message').innerHTML = "<p>Invalid Coupon</p>"
                           document.querySelector('#coupenAmt').innerText = ""
-                          document.querySelector('#sellingPrice').innerText = ""
+                          document.querySelector('#sellingPrice').innerText = value.cartTotal
                         }
 
                       } catch (error) {
