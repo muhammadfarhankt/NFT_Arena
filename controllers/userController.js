@@ -139,14 +139,14 @@ const loadError = async (req, res) => {
 // loading loadpage
 const loadpage = async (req, res) => {
   try {
-    const productData = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false })
+    const productData = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false })
     const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
     const authorData = await Author.find({ isBlocked: false, isDeleted: false })
     const bannerData = await Banner.find({ isBlocked: false })
     const userData = null
-    const newlyAddedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).sort({ createdAt: -1 }).limit(6)
-    const wishedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).sort({ wishlistCount: -1 }).limit(5)
-    const viewedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).sort({ viewCount: -1 }).limit(5)
+    const newlyAddedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).sort({ createdAt: -1 }).limit(6)
+    const wishedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).sort({ wishlistCount: -1 }).limit(5)
+    const viewedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).sort({ viewCount: -1 }).limit(5)
     // console.log('banner dataaaaaaaaaa ' + bannerData[0].image)
     res.render('home', { categoryData, authorData, bannerData, productData, userData, newlyAddedProducts, wishedProducts, viewedProducts })
   } catch (error) {
@@ -320,10 +320,10 @@ const loadHome = async (req, res) => {
       const authorData = await Author.find({ isBlocked: false, isDeleted: false })
       const bannerData = await Banner.find({ isBlocked: false })
       const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
-      const productData = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false })
-      const newlyAddedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).sort({ createdAt: -1 }).limit(6)
-      const wishedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).sort({ wishlistCount: -1 }).limit(5)
-      const viewedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).sort({ viewCount: -1 }).limit(5)
+      const productData = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false })
+      const newlyAddedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).sort({ createdAt: -1 }).limit(6)
+      const wishedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).sort({ wishlistCount: -1 }).limit(5)
+      const viewedProducts = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).sort({ viewCount: -1 }).limit(5)
       // console.log(categoryData)
       res.render('home', { userData, categoryData, bannerData, productData, newlyAddedProducts, wishedProducts, viewedProducts, authorData })
     } else {
@@ -430,7 +430,7 @@ const shopLoad = async (req, res) => {
     const shopPrice = null
     const shopLimit = 12
     const shopPage = 1
-    const productList = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).populate('category').populate('author')
+    const productList = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).populate('category').populate('author')
     const pageProducts = productList.slice(startIndex, endIndex)
     const totalPages = Math.ceil(productList.length / productsPerPage)
     let userData = null
@@ -612,6 +612,7 @@ const orderSuccess = async (req, res) => {
     // await Product.findByIdAndUpdate({_id: singleId}, {$set: { quantity: cart.item[i].quantity}})
     // console.log('single product detailssssss' + singleProduct)
     singleProduct.quantity -= userData.cart.item[j].quantity
+    singleProduct.isSold = true
     singleProduct.save()
     // console.log('single product detailssssss' + singleProduct)
   }
@@ -911,7 +912,7 @@ const coupenApply = async (req, res) => {
 }
 
 const mainLiveSearch = async (req, res) => {
-  const payload = req.body.payload.trim();
+  const payload = req.body.payload.trim()
   const search = await Product.find({
     name: { $regex: new RegExp(`^${payload}.*`, 'i') }, isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false
   }).limit(10)

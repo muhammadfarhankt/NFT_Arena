@@ -144,7 +144,8 @@
 
                   <label class="filter-label">Show :</label>
                   <select name="page" onchange="location = this.value;" class="form-select filter-select">
-                    <option value="/shop?limit=12" selected>12</option>
+                    <option value="/shop?limit=12" selected>4</option>
+                    <option value="/shop?limit=12" >12</option>
                     <option value="/shop?limit=24">24</option>
                     <option value="/shop?limit=36">36</option>
                   </select>
@@ -227,27 +228,49 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="bottom-paginate">
-                <p class="page-info">Showing 2 of 2 Results</p>
+                <!-- <p class="page-info">Showing 2 of 2 Results</p> -->
                 <ul class="pagination">
+                  <% if (currentPage==1) { %>
                   <li class="page-item">
-                    <a class="page-link" href="/shop?page=1"><i class="fas fa-long-arrow-alt-left"></i></a>
+                    <a class="page-link active" href="/shop?page=1">First</a>
                   </li>
-                  <li class="page-item">
-                    <a class="page-link active" href="/shop?page=1">1</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="/shop?page=2">2</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="/shop?page=3">3</a>
-                  </li>
-                  <li class="page-item">...</li>
-                  <li class="page-item">
-                    <a class="page-link" href="/shop?page=0">0</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="/shop?page=2"><i class="fas fa-long-arrow-alt-right"></i></a>
-                  </li>
+                  <% } else { %>
+                    <li class="page-item">
+                      <a class="page-link" href="/shop?page=1">First</a>
+                    </li>
+                  <% } %>
+                  <% var i=(Number(currentPage)> 5 ? Number(currentPage) - 4 : 1) %>
+                  <% if (i!==1) { %>
+                    <li class="page-item">...</li>
+                  <% } %>
+                  <% for (; i <=(Number(currentPage) + 4) && i <=totalPages; i++) { %>
+                    <% if (i==currentPage) { %>
+                      <li class="page-item">
+                        <a class="page-link active" href="/shop?page=<%= i %>">
+                          <%= i %>
+                        </a>
+                      </li>
+                    <% } else { %>
+                      <li class="page-item">
+                        <a class="page-link" href="/shop?page=<%= i %>">
+                          <%= i %>
+                        </a>
+                        </li>
+                    <% } %>
+                    <% if (i==Number(currentPage) + 4 && i < totalPages) { %>
+                      <li class="page-item">...</li>
+                    <% } %>
+                  <% } %>
+                  <% if (currentPage==totalPages) { %>
+                    <li class="page-item active">
+                      Last</li>
+                  <% } else { %>
+                    <li class="page-item">
+                      <a class="page-link" href="/shop?page=<%= totalPages %>">Last</a>
+                    </li>
+                <% } %>
+                  
+
                 </ul>
               </div>
             </div>
