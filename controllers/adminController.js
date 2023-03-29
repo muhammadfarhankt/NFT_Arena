@@ -25,7 +25,9 @@ const securePassword = async (password) => {
 // admin login
 const loadLogin = async (req, res) => {
   try {
-    res.render('login')
+    const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
+    const authorData = await Author.find({ isBlocked: false, isDeleted: false })
+    res.render('login', { categoryData, authorData })
   } catch (error) {
     console.log(error.message)
   }
@@ -67,7 +69,7 @@ const loadDashboard = async (req, res) => {
     const productCount = await Product.countDocuments()
     const categoryCount = await Category.countDocuments()
     const bannerCount = await Banner.countDocuments()
-    // const couponCount = await Coupon.countDocuments()
+    const couponCount = await Coupon.countDocuments()
     const total = await Order.aggregate([
       { $match: { status: 'Success' } },
       {
@@ -157,7 +159,7 @@ const loadDashboard = async (req, res) => {
     const [authorNames, totalSalesAuthor] = await getTotalSalesByAuthor()
     // console.log(authorNames)
     // console.log(totalSalesAuthor)
-    res.render('home', { admin: userData, orderCount, userCount, totalAmount: 0, authorCount, productCount, total: total[0].total, categoryCount, bannerCount, couponCount: 40, amount, categoryNames, totalSales, authorNames, totalSalesAuthor })
+    res.render('home', { admin: userData, orderCount, userCount, totalAmount: 0, authorCount, productCount, total: total[0].total, categoryCount, bannerCount, couponCount, amount, categoryNames, totalSales, authorNames, totalSalesAuthor })
   } catch (error) {
     console.log(error.message)
   }
@@ -224,11 +226,24 @@ const downloadSalesReport = async function (req, res) {
 
 const salesReport = async (req, res) => {
   try {
+    // const orderData = await Order.aggregate([
+    //   {
+    //     $group: {
+    //       _id: { $dayOfWeek: { date: '$createdAt' } },
+    //       amount: { $sum: '$sellingPrice' }
+    //     }
+    //   }
+    // ])
     const orderData = await Order.aggregate([
       {
         $group: {
           _id: { $dayOfWeek: { date: '$createdAt' } },
           amount: { $sum: '$sellingPrice' }
+        }
+      },
+      {
+        $addFields: {
+          status: 'Success'
         }
       }
     ])
@@ -268,7 +283,7 @@ const addCouponLoad = async (req, res) => {
   }
 }
 
-function changedateformat (val) {
+function changedateformat(val) {
   const myArray = val.split('-')
 
   const year = myArray[0]

@@ -67,7 +67,7 @@
                   <% categoryData.forEach(cat => { %>
                     <li>
                       <div class="shop-widget-content">
-                        <input type="checkbox" name="category" value="<%= cat._id %>" id="<%= cat.name %>" <%= shopCategory && shopCategory.includes(cat._id.toString()) ? "checked" : "" ; %> />
+                        <input type="radio" name="category" value="<%= cat._id %>" id="<%= cat.name %>" <%= shopCategory && shopCategory.includes(cat._id.toString()) ? "checked" : "" ; %> />
   
                         <label for="<%= cat.name %>"><%= cat.name %></label>
                       </div>
@@ -97,7 +97,7 @@
                   <% authorData.forEach(cat => { %>
                     <li>
                       <div class="shop-widget-content">
-                        <input type="checkbox" name="author" value="<%= cat._id %>" id="<%= cat.name %>" <%= shopCategory && shopCategory.includes(cat._id.toString()) ? "checked" : "" ; %> />
+                        <input type="radio" name="author" value="<%= cat._id %>" id="<%= cat.name %>" <%= shopCategory && shopCategory.includes(cat._id.toString()) ? "checked" : "" ; %> />
   
                         <label for="<%= cat.name %>"><%= cat.name %></label>
                       </div>
@@ -154,10 +154,9 @@
 
                   <label class="filter-label">Sort by :</label>
                   <select name="sort" onchange="location = this.value;" class="form-select filter-select">
-                    <option value="/shop?sort=default" selected>default</option>
+                    <option value="/shop?sort=newly-added" selected>newly added</option>
                     <option value="/shop?sort=price-ascending">price (low-high)</option>
                     <option value="/shop?sort=price-descending">price (high-low)</option>
-                    <option value="/shop?sort=newly-added">newly added</option>
                     <option value="/shop?sort=popular">popular</option>
                   </select>
 
@@ -253,245 +252,13 @@
               </div>
             </div>
           </div>
+
+          
         </div>
       </div>
     </div>
   </section>
   <!-- EJS Loop -->
-
-
-  <!------------------- Product view modal --------------------->
-  <div class="modal fade" id="id-640dbe82524f6e7969cf737f">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <button class="modal-close icofont-close" data-bs-dismiss="modal"></button>
-        <div class="product-view">
-          <div class="row">
-            <div class="col-md-6 col-lg-6">
-              <div class="view-gallery">
-
-                <div class="view-label-group">
-
-                  <label class="view-label new">new</label><label class="view-label off">-0%</label>
-
-                </div>
-
-                <ul class="preview-slider slider-arrow">
-                  <!-- EJS Loop -->
-
-                  <li><img src="/images/product/01.jpg" alt="product"></li>
-
-                  <!-- EJS Loop -->
-                </ul>
-                <ul class="thumb-slider">
-                  <!-- EJS Loop -->
-
-                  <li><img src="/images/product/01.jpg" alt="product"></li>
-
-                  <!-- EJS Loop -->
-                </ul>
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-6">
-              <div class="view-details">
-                <h3 class="view-name">
-                  <a href="/product?id=640dbe82524f6e7969cf737f">dfa</a>
-                </h3>
-                <div class="view-meta">
-                  <!-- <p>SKU:<span>1234567</span></p> -->
-                  <p>BRAND:<a href="#">dasfasdfa</a></p>
-                </div>
-                <div class="view-rating">
-
-                  <i class="active icofont-star"></i>
-
-                  <i class="active icofont-star"></i>
-
-                  <i class="active icofont-star"></i>
-
-
-                  <i class="icofont-star"></i>
-
-                  <i class="icofont-star"></i>
-
-                  <a href="href=/product?id=640dbe82524f6e7969cf737f">(1)</a>
-                </div>
-                <h3 class="view-price">
-
-
-                  <span>₹100<small>/kilogram</small></span></h6>
-
-
-                </h3>
-
-                <!-- <del>$38.00</del><span>$24.00<small>/per kilo</small></span> -->
-                <p class="view-desc">
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus nemo accusantium, distinctio
-                  doloribus iste alias amet, asperiores quis eaque labore sit unde hic. Maxime, atque. Repellendus
-                  eligendi nemo numquam fuga beatae explicabo molestiae ea perferendis quidem alias voluptatem cum in
-                  dicta tempore maxime corporis fugiat, sint laboriosam possimus laudantium hic dolores earum incidunt.
-                  Suscipit, atque recusandae sit eum itaque consequuntur.
-                </p>
-                <div class="view-list-group">
-                  <label class="view-list-title">tags:</label>
-                  <ul class="view-tag-list">
-                    <!-- EJS Loop -->
-
-                    <li><a href="/shop?filter=tags&tag=fdasf">fdasf</a></li>
-
-                    <li><a href="/shop?filter=tags&tag=sdfasd">sdfasd</a></li>
-
-                    <!-- EJS Loop -->
-                  </ul>
-                </div>
-                <div class="view-add-group">
-
-
-                  <button class="product-add" title="Add to Cart">
-                    <i class="fas fa-shopping-basket"></i><span>Login to Add</span>
-                  </button>
-                  <div class="product-action" data-pid="640dbe82524f6e7969cf737f" data-action="remove">
-                    <p class="text-danger">Please login to use the cart</p>
-                  </div>
-
-
-
-                </div>
-                <div class="view-action-group">
-                  <a class="view-wish wish " data-pid="640dbe82524f6e7969cf737f" href="#" title="Add Your Wishlist">
-                    <i class="icofont-heart"></i>
-                    <span>add to wish</span>
-                  </a>
-                  <a class="view-compare" href="#" title="Compare This Item">
-                    <i class="fas fa-random"></i>
-                    <span>Compare This</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-
-  <!------------------- Product view modal --------------------->
-  <div class="modal fade" id="id-641e75d9f3a68a17db0b73e2">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <button class="modal-close icofont-close" data-bs-dismiss="modal"></button>
-        <div class="product-view">
-          <div class="row">
-            <div class="col-md-6 col-lg-6">
-              <div class="view-gallery">
-
-                <div class="view-label-group">
-
-                  <label class="view-label new">new</label><label class="view-label off">-0%</label>
-
-                </div>
-
-                <ul class="preview-slider slider-arrow">
-                  <!-- EJS Loop -->
-
-                  <li><img src="/images/product/01.jpg" alt="product"></li>
-
-                  <!-- EJS Loop -->
-                </ul>
-                <ul class="thumb-slider">
-                  <!-- EJS Loop -->
-
-                  <li><img src="/images/product/01.jpg" alt="product"></li>
-
-                  <!-- EJS Loop -->
-                </ul>
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-6">
-              <div class="view-details">
-                <h3 class="view-name">
-                  <a href="/product?id=641e75d9f3a68a17db0b73e2">fdsdafsda</a>
-                </h3>
-                <div class="view-meta">
-                  <!-- <p>SKU:<span>1234567</span></p> -->
-                  <p>BRAND:<a href="#">sdafads</a></p>
-                </div>
-                <div class="view-rating">
-
-                  <i class="active icofont-star"></i>
-
-                  <i class="active icofont-star"></i>
-
-                  <i class="active icofont-star"></i>
-
-
-                  <i class="icofont-star"></i>
-
-                  <i class="icofont-star"></i>
-
-                  <a href="href=/product?id=641e75d9f3a68a17db0b73e2">(1)</a>
-                </div>
-                <h3 class="view-price">
-
-
-                  <span>₹111<small>/kilogram</small></span></h6>
-
-
-                </h3>
-
-                <!-- <del>$38.00</del><span>$24.00<small>/per kilo</small></span> -->
-                <p class="view-desc">
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus nemo accusantium, distinctio
-                  doloribus iste alias amet, asperiores quis eaque labore sit unde hic. Maxime, atque. Repellendus
-                  eligendi nemo numquam fuga beatae explicabo molestiae ea perferendis quidem alias voluptatem cum in
-                  dicta tempore maxime corporis fugiat, sint laboriosam possimus laudantium hic dolores earum incidunt.
-                  Suscipit, atque recusandae sit eum itaque consequuntur.
-                </p>
-                <div class="view-list-group">
-                  <label class="view-list-title">tags:</label>
-                  <ul class="view-tag-list">
-                    <!-- EJS Loop -->
-
-                    <li><a href="/shop?filter=tags&tag=adf">adf</a></li>
-
-                    <li><a href="/shop?filter=tags&tag= adfd"> adfd</a></li>
-
-                    <!-- EJS Loop -->
-                  </ul>
-                </div>
-                <div class="view-add-group">
-
-
-                  <button class="product-add" title="Add to Cart">
-                    <i class="fas fa-shopping-basket"></i><span>Login to Add</span>
-                  </button>
-                  <div class="product-action" data-pid="641e75d9f3a68a17db0b73e2" data-action="remove">
-                    <p class="text-danger">Please login to use the cart</p>
-                  </div>
-
-
-
-                </div>
-                <div class="view-action-group">
-                  <a class="view-wish wish " data-pid="641e75d9f3a68a17db0b73e2" href="#" title="Add Your Wishlist">
-                    <i class="icofont-heart"></i>
-                    <span>add to wish</span>
-                  </a>
-                  <a class="view-compare" href="#" title="Compare This Item">
-                    <i class="fas fa-random"></i>
-                    <span>Compare This</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
 
 
 

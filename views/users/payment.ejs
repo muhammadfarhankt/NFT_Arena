@@ -202,7 +202,7 @@
     <script>
       document.getElementById("rzp-button1").onclick = async function (e) {
         e.preventDefault();
-
+        console.log()
         let response = await fetch("/payment", {
           method: "POST",
           headers: {

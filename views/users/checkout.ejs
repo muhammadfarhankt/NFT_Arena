@@ -16,181 +16,184 @@
               <!------------------ Cart Main Content ---------------------------->
 
               <!------------------ Cart Main Content End ---------------------------->
-              <form action="/placeOrder" id="billingform" method="post">
 
-                <section class="inner-section single-banner"
-                  style="background: url(images/single-banner.jpg) no-repeat center;">
-                  <div class="container">
-                    <h2>checkout</h2>
-                    <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                      <li class="breadcrumb-item"><a href="/shop">shop</a></li>
-                      <li class="breadcrumb-item active" aria-current="page">checkout</li>
-                    </ol>
-                  </div>
-                </section>
-                <section class="inner-section checkout-part">
-                  <div class="container">
-                    <div class="row">
+              <section class="inner-section single-banner"
+                style="background: url(images/single-banner.jpg) no-repeat center;">
+                <div class="container">
+                  <h2>checkout</h2>
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/shop">shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">checkout</li>
+                  </ol>
+                </div>
+              </section>
+              <section class="inner-section checkout-part">
+                <div class="container">
+                  <div class="row">
 
-                      <div class="col-lg-12">
-                        <div class="account-card">
-                          <div class="account-title">
-                            <h4>Your order</h4>
-                          </div>
-                          <div class="account-content" id="append-here">
-                            <div class="table-scroll">
-                              <table class="table-list">
-                                <thead>
+                    <div class="col-lg-12">
+                      <div class="account-card">
+                        <div class="account-title">
+                          <h4>Your order</h4>
+                        </div>
+                        <div class="account-content" id="append-here">
+                          <div class="table-scroll">
+                            <table class="table-list">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Serial</th>
+                                  <th scope="col">Product</th>
+                                  <th scope="col">Name</th>
+                                  <th scope="col">Price</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <!-- Products -->
+
+                                <% userData.cart.item.forEach((eachItem,index)=>{%>
                                   <tr>
-                                    <th scope="col">Serial</th>
-                                    <th scope="col">Product</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Price</th>
+                                    <td class="table-serial">
+                                      <h6>
+                                        <%= index+1 %>
+                                      </h6>
+                                    </td>
+                                    <td class="table-image"><img src="imagess/<%= eachItem.image %>" alt="product">
+                                    </td>
+                                    <td class="table-name">
+                                      <h6>
+                                        <%= eachItem.name %>
+                                      </h6>
+                                    </td>
+                                    <td class="table-price">
+                                      <h6>$ <%= eachItem.price %>
+                                      </h6>
+                                    </td>
+
                                   </tr>
-                                </thead>
-                                <tbody>
-                                  <!-- Products -->
+                                  <%}) %>
+                                    <!-- Products End -->
 
-                                  <% userData.cart.item.forEach((eachItem,index)=>{%>
-                                    <tr>
-                                      <td class="table-serial">
-                                        <h6>
-                                          <%= index+1 %>
-                                        </h6>
-                                      </td>
-                                      <td class="table-image"><img src="imagess/<%= eachItem.image %>" alt="product">
-                                      </td>
-                                      <td class="table-name">
-                                        <h6>
-                                          <%= eachItem.name %>
-                                        </h6>
-                                      </td>
-                                      <td class="table-price">
-                                        <h6>$ <%= eachItem.price %>
-                                        </h6>
-                                      </td>
+                              </tbody>
+                            </table>
+                          </div>
 
-                                    </tr>
-                                    <%}) %>
-                                      <!-- Products End -->
+                        </div>
+                      </div>
+                    </div>
 
-                                </tbody>
-                              </table>
+                    <div class="col-lg-12">
+                      <div class="account-card mb-0">
+                        <div class="account-title">
+                          <h4>payment options</h4>
+                        </div>
+
+                        <div class="col-md-6 col-lg-5 mx-auto">
+                          <div class="form-group">
+                            <section id="message" class="text-danger">
+                            </section>
+
+                            <label class="form-label">Do You have a Coupon ? </label>
+                            <input class="form-control" type="text" id="input">
+                            <a style="margin-top: 7px; align-items: center;" id="btnCoupon" class="btn btn-inline"
+                              id="proceed-button">Apply</a>
+                          </div>
+                        </div>
+
+
+                        <div class="checkout-charge">
+                          <ul>
+                            <li><span>Sub total</span><span>$ <%= userData.cart.totalPrice %></span></li>
+                            <li><span>Processing Fee</span><span>-$ 0</span></li>
+                            <li id="coupon-discount-li"><span>Coupon
+                                Discount</span>
+                              <span id="coupenAmt"></span>
+                            </li>
+                            <li id="checkout-total"><span>Total<small>(Incl.
+                                  VAT)</small></span>
+                              <span id="sellingPrice">$ <%= userData.cart.totalPrice %></span>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="account-content">
+                          <div class="row">
+
+                            <div class="col-md-6 col-lg-4 alert fade show">
+                              <div class="payment-card payment active" data-pay="pay-online"><img
+                                  src="/static/images/razor.png" alt="payment">
+                                <h5>Pay Online</h5>
+                                <h4>Powered by Razorpay</h4>
+                              </div>
                             </div>
 
                           </div>
+
                         </div>
+
                       </div>
+                    </div>
 
-                      <div class="col-lg-12">
-                        <div class="account-card">
-                          <div class="account-title">
-                            <h4>Billing address</h4>
+                    <div class="col-lg-12" style="margin-top: 25px;">
+                      <div class="account-card">
+                        <div class="account-title">
+                          <h4>Billing address</h4>
 
-                          </div>
-                          <div class="account-content">
-                            <div class="row">
+                        </div>
+                        <div class="account-content">
+                          <div class="row">
 
+                            <form action="/placeOrder" id="billingform" method="post">
 
 
                               <div class="col-md-6 col-lg-5">
                                 <div class="form-group">
                                   <label class="form-label">Address</label>
-                                  <input class="form-control" type="text" value="<%= userData.address %>"
+                                  <input class="form-control" type="text" required id="address" value="<%= userData.address %>"
                                     name="address">
                                 </div>
                               </div>
                               <div class="col-md-6 col-lg-5">
                                 <div class="form-group">
                                   <label class="form-label">Town / City</label>
-                                  <input class="form-control" type="text" value="<%= userData.city %>" name="city">
+                                  <input class="form-control" type="text" id="city" required value="<%= userData.city %>"
+                                    name="city">
                                 </div>
                               </div>
                               <div class="col-md-6 col-lg-5">
                                 <div class="form-group">
                                   <label class="form-label">State/Province</label>
-                                  <input class="form-control" type="text" value="<%= userData.state %>" name="state">
+                                  <input class="form-control" type="text" id="state" required value="<%= userData.state %>"
+                                    name="state">
                                 </div>
                               </div>
                               <div class="col-md-6 col-lg-5">
                                 <div class="form-group">
                                   <label class="form-label">Post/ZIP Code</label>
-                                  <input class="form-control" type="number" value="<%= userData.zip %>" name="zip">
+                                  <input class="form-control" type="number" id="zip" required value="<%= userData.zip %>"
+                                    name="zip">
                                 </div>
                               </div>
-              </form>
+
+                              <input type="submit" style="width: 50%; align-items: center;"
+                            style="margin-top: 7px;" class="form-btn" value="Checkout"></input>
+                            </form>
 
 
 
-              </div>
-              </div>
-              </div>
-              </div>
-
-              <div class="col-lg-12">
-                <div class="account-card mb-0">
-                  <div class="account-title">
-                    <h4>payment option</h4>
-                  </div>
-
-                  <div class="col-md-6 col-lg-5 mx-auto">
-                    <div class="form-group">
-                      <section id="message" class="text-danger">
-                      </section>
-
-                      <label class="form-label">Do You have a Coupon ? </label>
-                      <input class="form-control" type="text" id="input">
-                      <a style="margin-top: 7px; align-items: center;" id="btnCoupon"class="btn btn-inline" id="proceed-button">Apply</a>
-                    </div>
-                  </div>
-
-
-                  <div class="checkout-charge">
-                    <ul>
-                      <li><span>Sub total</span><span>$ <%= userData.cart.totalPrice %></span></li>
-                      <li><span>Processing Fee</span><span>-$ 0</span></li>
-                      <li id="coupon-discount-li"><span>Coupon
-                          Discount</span>
-                        <span id="coupenAmt"></span>
-                      </li>
-                      <li id="checkout-total"><span>Total<small>(Incl.
-                            VAT)</small></span>
-                        <span id="sellingPrice">$ <%= userData.cart.totalPrice %></span>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="account-content">
-                    <div class="row">
-
-
-
-                      <div class="col-md-6 col-lg-4 alert fade show">
-                        <div class="payment-card payment active" data-pay="pay-online"><img
-                            src="/static/images/razor.png" alt="payment">
-                          <h5>Pay Online</h5>
-                          <h4>Powered by Razorpay</h4>
+                          </div>
                         </div>
                       </div>
-
                     </div>
 
-                    <input type="submit" form="billingform" style="width: 50%; align-items: center;"
-                      style="margin-top: 7px;" class="form-btn" value="Checkout"></input>
-
                   </div>
-
                 </div>
-              </div>
-
-              </div>
-              </div>
               </section>
 
 
 
               <%- include('../partials/__user-features.ejs') %>
                 <%- include('../partials/__user-footer.ejs') %>
+
                   <script>
                     const apply = document.querySelector("#btnCoupon")
                     const applyCoupen = async () => {
