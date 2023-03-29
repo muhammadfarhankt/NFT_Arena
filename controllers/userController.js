@@ -43,7 +43,7 @@ const sendVerifyMail = async (name, email, userId) => {
       from: process.env.myemail,
       to: email,
       subject: 'Verify your NFT Arena Account',
-      html: '<p> Hello Mr. ' + name + ' , Plesase Click  <a href="http://localhost:3000/verify?id=' + userId + '"> here to verify </a> your NFT Arena account</p>'
+      html: '<p> Hello Mr. ' + name + ' , Plesase Click  <a href="https://www.nftarena.in/verify?id=' + userId + '"> here to verify </a> your NFT Arena account</p>'
     }
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
@@ -74,7 +74,7 @@ const sendResetMail = async (name, email, token) => {
       from: process.env.myemail,
       to: email,
       subject: 'Reset your NFT Arena account password',
-      html: '<p> Hello  Mr.  ' + name + ' , Please Click  <a href="http://localhost:3000/forget-password?token=' + token + '">  here to reset </a> your NFT Arena account password</p>'
+      html: '<p> Hello  Mr.  ' + name + ' , Please Click  <a href="http://www.nftarena.in/forget-password?token=' + token + '">  here to reset </a> your NFT Arena account password</p>'
     }
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
@@ -418,32 +418,28 @@ const changePasswordLoad = async (req, res) => {
 const shopLoad = async (req, res) => {
   try {
     const page = req.query.page || 1
-    const productList = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).populate('category').populate('author')
     const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
     const authorData = await Author.find({ isBlocked: false, isDeleted: false })
     const productsPerPage = 4
     const startIndex = (page - 1) * productsPerPage
     const endIndex = startIndex + productsPerPage
-    const pageProducts = productList.slice(startIndex, endIndex)
-    const totalPages = Math.ceil(productList.length / productsPerPage)
     // const shopSort = newQuery.sort || 'default';
     const shopRating = 5
     const shopCategory = null
-    const shopSort = 'default'
+    const shopSort = req.query.sort || 'default'
     const shopPrice = null
     const shopLimit = 12
     const shopPage = 1
-
+    const productList = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false }).populate('category').populate('author')
+    const pageProducts = productList.slice(startIndex, endIndex)
+    const totalPages = Math.ceil(productList.length / productsPerPage)
+    let userData = null
     if (req.session.user_id) {
-      const userData = await User.findById({ _id: req.session.user_id })
-      res.render('shop', { userData, categoryData, authorData, pageProducts, totalPages, currentPage: parseInt(page, 10), shopRating, shopSort, shopCategory, shopPrice, shopLimit, shopPage })
-    } else {
-      const userData = null
-      res.render('shop', { userData, categoryData, authorData, pageProducts, totalPages, currentPage: parseInt(page, 10), shopRating, shopSort, shopCategory, shopPrice, shopLimit, shopPage })
+      userData = await User.findById({ _id: req.session.user_id })
     }
+    res.render('shop', { userData, categoryData, authorData, pageProducts, totalPages, currentPage: parseInt(page, 10), shopRating, shopSort, shopCategory, shopPrice, shopLimit, shopPage })
   } catch (error) {
     console.log(error.message)
-     
   }
 }
 
@@ -554,14 +550,16 @@ const getSingleOrderView = async (req, res) => {
   }
 }
 
-let totalCartPrice = 0
+// let totalCartPrice = 0
+let sellingPrice
+
 // load checkout page
 const checkoutLoad = async (req, res) => {
   try {
     const userData = await User.findById({ _id: req.session.user_id })
     const categoryData = await Category.find({ isBlocked: false, isDeleted: false })
     const authorData = await Author.find({ isBlocked: false, isDeleted: false })
-    totalCartPrice = userData.cart.totalPrice
+    sellingPrice = userData.cart.totalPrice
     res.render('checkout', { userData, categoryData, authorData })
   } catch (error) {
     console.log('erroooorrr checkouuuuutttttttttt page')
@@ -586,13 +584,13 @@ const createOrder = async (req, res) => {
       email: userData.email,
       products: populatedData.cart,
       payment: 'Razorpay',
-      sellingPrice: totalCartPrice
+      // eslint-disable-next-line object-shorthand
+      sellingPrice: sellingPrice
     })
     const orderData = await order.save()
     req.session.currentOrderId = orderData._id
-    console.log('current order id ' + req.session.currentOrderId)
-
-    console.log('order data after save ' + orderData)
+    // console.log('current order id ' + req.session.currentOrderId)
+    // console.log('order data after save ' + orderData)
     if (orderData) {
       res.redirect('/payment')
     } else {
@@ -675,10 +673,11 @@ const razorpayCheckout = async (req, res) => {
     // const userData = await User.findById({ _id: req.session.user_id })
     // const completeUser = await userData.populate('cart.item.productId')
     const instance = new Razorpay({ key_id: process.env.razorPayId, key_secret: process.env.razorPaySecret })
-    // console.log('razir pay id : ' + process.env.razorPayId + '   razor pay secret : : ' + process.env.razorPaySecret)
-    // console.log(' instanceeeeeeeeeeeeeeeee  ' + instance)
+    console.log('razir pay id : ' + process.env.razorPayId + '   razor pay secret : : ' + process.env.razorPaySecret)
+    console.log(' instanceeeeeeeeeeeeeeeee  ' + instance)
+    console.log('selling price' + sellingPrice)
     const order = await instance.orders.create({
-      amount: totalCartPrice * 100,
+      amount: sellingPrice * 100,
       currency: 'INR',
       receipt: 'receipt#1'
     })
@@ -688,7 +687,7 @@ const razorpayCheckout = async (req, res) => {
       order
     })
   } catch (error) {
-    console.log(error.message)
+    console.log('error' + error.message)
   }
 }
 
@@ -877,10 +876,8 @@ const checkout = async (req, res) => {
   console.log('checkout')
 }
 
-var sellingPrice
-
 const coupenApply = async (req, res) => {
-  console.log('coupon apply')
+  // console.log('coupon apply')
   try {
     const userId = req.session.user_id
     const userData = await User.findById({ _id: userId })
@@ -906,13 +903,24 @@ const coupenApply = async (req, res) => {
         res.json({ a })
       }
     } else {
-      res.json({ message: "Invalid Coupon" });
+      res.json({ message: 'Invalid Coupon' })
     }
   } catch (error) {
     console.log(error.message);
   }
-};
+}
 
+const mainLiveSearch = async (req, res) => {
+  const payload = req.body.payload.trim();
+  const search = await Product.find({
+    name: { $regex: new RegExp(`^${payload}.*`, 'i') }, isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false
+  }).limit(10)
+  console.log('search products : ' + search)
+  res.json({
+    status: 'success',
+    search
+  })
+}
 // exporting modules
 module.exports = {
   loadpage,
@@ -960,5 +968,6 @@ module.exports = {
   loadPayment,
   razorpayCheckout,
   loadError,
-  coupenApply
+  coupenApply,
+  mainLiveSearch
 }

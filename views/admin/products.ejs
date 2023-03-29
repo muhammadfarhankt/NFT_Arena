@@ -1,13 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<!-- Boxicons -->
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	
+
 	<!-- My CSS -->
 	<link rel="stylesheet" href="/adminhome/style.css">
 
@@ -16,6 +16,7 @@
 
 	<title>Products | NFT ARena</title>
 </head>
+
 <body>
 
 	<!-- SIDEBAR -->
@@ -27,31 +28,31 @@
 		<ul class="side-menu top">
 			<li>
 				<a href="dashboard">
-					<i class='bx bxs-dashboard' ></i>
+					<i class='bx bxs-dashboard'></i>
 					<span class="text">Dashboard</span>
 				</a>
 			</li>
 			<li class="active">
 				<a href="products">
-					<i class='bx bxl-product-hunt' ></i>
+					<i class='bx bxl-product-hunt'></i>
 					<span class="text">Products</span>
 				</a>
 			</li>
 			<li>
 				<a href="category">
-					<i class='bx bxs-category-alt' ></i>
+					<i class='bx bxs-category-alt'></i>
 					<span class="text">Categories</span>
 				</a>
 			</li>
 			<li>
 				<a href="author">
-					<i class='bx bxs-message-dots' ></i>
+					<i class='bx bxs-message-dots'></i>
 					<span class="text">Authors</span>
 				</a>
 			</li>
 			<li>
 				<a href="user">
-					<i class='bx bxs-group' ></i>
+					<i class='bx bxs-group'></i>
 					<span class="text">Users</span>
 				</a>
 			</li>
@@ -63,28 +64,28 @@
 			</li>
 			<li>
 				<a href="orders">
-					<i class='bx bxs-shopping-bag-alt' ></i>
-					<span class="text" >Orders</span>
+					<i class='bx bxs-shopping-bag-alt'></i>
+					<span class="text">Orders</span>
 				</a>
 			</li>
 			<li>
 				<a href="/admin/coupons">
-				  <i class='bx bxs-coupon'></i>
-				  <span class="text" >Coupons</span>
+					<i class='bx bxs-coupon'></i>
+					<span class="text">Coupons</span>
 				</a>
-			  </li>
-			
+			</li>
+
 		</ul>
 		<ul class="side-menu">
 			<li>
 				<a href="">
-					<i class='bx bxs-cog' ></i>
+					<i class='bx bxs-cog'></i>
 					<span class="text" style="text-decoration: line-through;">Settings</span>
 				</a>
 			</li>
 			<li>
 				<a href="/admin/adminlogout" class="logout">
-					<i class='bx bxs-log-out-circle' ></i>
+					<i class='bx bxs-log-out-circle'></i>
 					<span class="text">Logout</span>
 				</a>
 			</li>
@@ -98,22 +99,23 @@
 	<section id="content">
 		<!-- NAVBAR -->
 		<nav>
-			<i class='bx bx-menu' ></i>
+			<i class='bx bx-menu'></i>
 			<a href="#" class="nav-link">Search whole data</a>
 			<form action="#">
 				<div class="form-input">
 					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+					<button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
 				</div>
 			</form>
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="notification">
-				<i class='bx bxs-bell' ></i>
+				<i class='bx bxs-bell'></i>
 				<span class="num">8</span>
 			</a>
 			<a href="#" class="profile">
-				<img src="data:image/png;base64,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">
+				<img
+					src="data:image/png;base64,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">
 			</a>
 		</nav>
 		<!-- NAVBAR -->
@@ -126,186 +128,190 @@
 						<li>
 							<a href="#">Dashboard</a>
 						</li>
-						<li><i class='bx bx-chevron-right' ></i></li>
+						<li><i class='bx bx-chevron-right'></i></li>
 						<li>
 							<a class="active" href="#">Products</a>
 						</li>
 					</ul>
 				</div>
 				<a href="addproduct" class="btn-download">
-					<i class='bx bxs-file-plus' ></i>
+					<i class='bx bxs-file-plus'></i>
 					<span class="text">Add new product</span>
 				</a>
 			</div>
 
 
-            <div class="table-data">
+			<div class="table-data">
 				<div class="order">
-					
 
-				<% if (productData.length>0) { %>
-        
-          <table id="tablePagination" class="display">
-						<thead>
-							<tr>
-								<th>
-									<center>Sl No.</center>
-								</th>
-								<th>
-									<center>Name</center>
-								</th>
-                                <th>
-									<center>Image</center>
-								</th>
-								<th>
-									<center>Category</center>
-								</th>
-								<th>
-									<center>Author</center>
-								</th>
-								<th>
-									<center>Price</center>
-								</th>
-								
-								<th>
-									<center>Stock</center>
-								</th>
-							<th>
-								<center>Edit</center>
-							</th>
-							<th>
-								<center>Block/Unblock</center>
-							</th>
-                            <th>
-								<center>Delete</center>
-							</th>
-                        </tr>
-						</thead>
-						<tbody>
-              <% for(let i=0;i<productData.length;i++){ %>
-              <tr>
 
-                <td align="center">
-                  <%= i+1 %>
-                </td>
+					<% if (productData.length>0) { %>
 
-								<td align="center">
-									<p><%= productData[i].name %> </p>
-								</td>
-								<td align="center">
-									<img src="/imagess/<%= productData[i].image %>" alt="">
-								</td>
-								<td align="center">
-									<p>
-										<% if (productData[i].category && productData[i].category.name) { %>
-											<%= productData[i].category.name %>
-										<% } else { %>
-											<font style="color: red;">Category Deleted </font>
-										<% } %>
-									</p>
-								</td>
-								<td align="center">
-									 <p>
-									<% if (productData[i].author && productData[i].author.name) { %>
-										<%= productData[i].author.name %>
-									<% } else { %>
-										<font style="color: red;">Author Deleted </font>
+						<table id="tablePagination" class="display">
+							<thead>
+								<tr>
+									<th>
+										<center>Sl No.</center>
+									</th>
+									<th>
+										<center>Name</center>
+									</th>
+									<th>
+										<center>Image</center>
+									</th>
+									<th>
+										<center>Category</center>
+									</th>
+									<th>
+										<center>Author</center>
+									</th>
+									<th>
+										<center>Price</center>
+									</th>
+									<th>
+										<center>Edit</center>
+									</th>
+									<th>
+										<center>Block/Unblock</center>
+									</th>
+									<th>
+										<center>Delete</center>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% for(let i=0;i<productData.length;i++){ %>
+									<tr>
+
+										<td align="center">
+											<%= i+1 %>
+										</td>
+
+										<td align="center">
+											<p>
+												<%= productData[i].name %>
+											</p>
+										</td>
+										<td align="center">
+											<img src="/imagess/<%= productData[i].image %>" alt="">
+										</td>
+										<td align="center">
+											<p>
+												<% if (productData[i].category && productData[i].category.name) { %>
+													<%= productData[i].category.name %>
+														<% } else { %>
+															<font style="color: red;">Category Deleted </font>
+															<% } %>
+											</p>
+										</td>
+										<td align="center">
+											<p>
+												<% if (productData[i].author && productData[i].author.name) { %>
+													<%= productData[i].author.name %>
+														<% } else { %>
+															<font style="color: red;">Author Deleted </font>
+															<% } %>
+											</p>
+										</td>
+										<td align="center">
+											<p>
+												<%= productData[i].price %>
+											</p>
+										</td>
+
+										<td align="center">
+											<a href="/admin/updateProduct?id=<%= productData[i]._id %>"><span
+													class="status completed">Edit</span></a>
+										</td>
+
+
+										<td align="center">
+											<% if(productData[i].isBlocked==false){%>
+												<a href="/admin/blockProduct?id=<%= productData[i]._id%>"
+													onclick="return block_alert(this)">
+													<script type="text/javascript">
+														function block_alert(node) {
+															return confirm("Do you want to block category ? ")
+														}
+													</script>
+													<span class="status"
+														style="background-color: green; align-items: center;">Active</span>
+												</a>
+
+												<%}else{%>
+													<a href="/admin/blockProduct?id=<%= productData[i]._id%>"
+														onclick="return unblock_alert(this)">
+														<script type="text/javascript">
+															function unblock_alert(node) {
+																return confirm("Do you want to un-block category ? ")
+															}
+														</script>
+														<span class="status pending">Blocked</span>
+													</a>
+													<%}%>
+										</td>
+
+										<td align="center">
+											<p>
+												<% if(productData[i].isDeleted==false){%>
+													<a href="/admin/deleteProduct?id=<%= productData[i]._id%>"
+														onclick="return delete_alert(this)">
+														<script type="text/javascript">
+															function delete_alert(node) {
+																return confirm("Do you want to delete product ? ")
+															}
+														</script>
+														<span class="status"
+															style="background-color: green; align-items: center;">Active</span>
+													</a>
+
+													<%} else if (productData[i].isDeleted==true){%>
+														<a href="/admin/deleteProduct?id=<%= productData[i]._id%>"
+															onclick="return undelete_alert(this)">
+															<script type="text/javascript">
+																function undelete_alert(node) {
+																	return confirm("Do you want to undo-delete ? ")
+																}
+															</script>
+															<span class="status"
+																style="background: red; align-items: center;">Deleted</span>
+														</a>
+														<% } %>
+											</p>
+										</td>
+
+
+									</tr>
 									<% } %>
-									</p>
-								</td>
-								<td align="center">
-									<p> <%= productData[i].price %></p>
-								</td>
-                                
-								<td align="center">
-								 <%= productData[i].quantity %></td>
-                                 
-
-								<td align="center"> 
-									<a href="/admin/updateProduct?id=<%= productData[i]._id %>"><span class="status completed">Edit</span></a>
-								</td>
-
-			
-								  <td align="center">
-									<% if(productData[i].isBlocked==false){%>
-									  <a href="/admin/blockProduct?id=<%= productData[i]._id%>" onclick="return block_alert(this)">
-										<script type="text/javascript">
-										  function block_alert(node) {
-											return confirm("Do you want to block category ? ")
-										  }
-										</script>
-										<span class="status" style="background-color: green; align-items: center;">Active</span>
-									  </a>
-			  
-									  <%}else{%>
-										<a href="/admin/blockProduct?id=<%= productData[i]._id%>"
-										  onclick="return unblock_alert(this)">
-										  <script type="text/javascript">
-											function unblock_alert(node) {
-											  return confirm("Do you want to un-block category ? ")
-											}
-										  </script>
-										  <span class="status pending">Blocked</span>
-										</a>
-										<%}%>
-								  </td>
-
-                                <td align="center">
-                      			<p>
-                        		<% if(productData[i].isDeleted == false){%>
-                       		   <a href="/admin/deleteProduct?id=<%= productData[i]._id%>" onclick="return delete_alert(this)">
-                            		<script type="text/javascript">
-                              			function delete_alert(node) {
-	                               		return confirm("Do you want to delete product ? ")
-   		                            }
-        		                    </script>
-                	            <span class="status" style="background-color: green; align-items: center;">Active</span>
-                    		      </a>
-
-	                          <%} else if (productData[i].isDeleted == true){%>
-    		                        <a href="/admin/deleteProduct?id=<%= productData[i]._id%>" onclick="return undelete_alert(this)">
-            		                  <script type="text/javascript">
-                		                function undelete_alert(node) {
-                        		          return confirm("Do you want to undo-delete ? ")
-                            		    }
-                              			</script>
-                              			<span class="status" style="background: red; align-items: center;">Deleted</span>
-		                            </a>
-        	                    <% } %>
-            		          </p>
-                    		  </td>
-
-								
-							</tr>
-						<% } %>
-						
-							
-						</tbody>
-					</table>
-					
-					<% } else { %>
-						No Products Found
-					<% } %>
 
 
-				
-			
-		
+							</tbody>
+						</table>
+
+						<% } else { %>
+							No Products Found
+							<% } %>
+
+
+
+
+
 		</main>
 		<!-- MAIN -->
 	</section>
-	
+
 	<!-- Pagination Script  -->
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" charset="utf8"
-	  src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+		src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
 	<script>
-	  $(document).ready(function () {
-		$('#tablePagination').DataTable();
-	  });
+		$(document).ready(function () {
+			$('#tablePagination').DataTable();
+		});
 	</script>
 
 	<script src="/adminhome/script.js"></script>
 </body>
+
 </html>

@@ -421,29 +421,6 @@ $('.coupon-form').on('submit', async function (e) {
   }
 });
 
-
-
-  if (res.data.status === 'success') {
-    $(this).closest('tr').remove();
-
-    $('.header-widget-group>a.header-widget>sup.wishlist-count').text(
-      res.data.wishlist.products.length
-    );
-    $('#mob-wish-sup').text(res.data.wishlist.products.length);
-
-    $('#wish-round').css('filter', 'drop-shadow(0px 0px 12px red)');
-    $('#wish-round').css('transition', 'all 0.25s ease-out');
-    $('#mob-wish-round').css('filter', 'drop-shadow(0px 0px 5px red)');
-    $('#mob-wish-round').css('color', 'orangered');
-    $('#mob-wish-round').css('transition', 'all 0.25s ease-out');
-    setTimeout(() => {
-      $('#wish-round').css('filter', 'none');
-      $('#mob-wish-round').css('filter', 'none');
-      $('#mob-wish-round').css('color', '#555555');
-    }, 1000);
-  }
-});
-
 $('#invoice-pdf').on('click', (e) => {
   e.preventDefault();
   $('#invoice-div').printThis();
@@ -1111,7 +1088,7 @@ async function sendData(e) {
       <div class="ms-2 me-auto">
         <a href="/product?id=${cur._id}" class="text-success">${cur.name}</a>
       </div>
-      <span class="badge bg-success rounded-pill">₹${cur.price}/${cur.unitIn}</span>
+      <span class="badge bg-success rounded-pill">$ ${cur.price}</span>
     </li>`,
         ``
       );

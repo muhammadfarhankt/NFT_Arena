@@ -82,4 +82,6 @@ userRoute.get('/empty-wishlist', auth.isLogin, userController.emptyWishlist)
 userRoute.get('/move-to-cart', auth.isLogin, userController.moveToCart)
 userRoute.get('/checkout', auth.isLogin, userController.checkout)
 
+userRoute.post('/main-live-search', userController.mainLiveSearch)
+
 module.exports = userRoute
