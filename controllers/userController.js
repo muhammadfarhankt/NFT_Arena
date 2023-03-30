@@ -2,6 +2,7 @@ require('dotenv').config()
 const User = require('../models/userModel')
 const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
+const moment = require('moment')
 const randomstring = require('randomstring')
 const Product = require('../models/productModel')
 const Category = require('../models/categoryModel')
@@ -415,6 +416,7 @@ const changePasswordLoad = async (req, res) => {
 }
 
 // shopLoad
+let productList = Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).populate('category').populate('author')
 const shopLoad = async (req, res) => {
   try {
     const page = req.query.page || 1
@@ -430,7 +432,27 @@ const shopLoad = async (req, res) => {
     const shopPrice = null
     const shopLimit = 12
     const shopPage = 1
-    const productList = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).populate('category').populate('author')
+    if (req.query.sort) {
+      console.log('sort query')
+      if (req.query.sort === 'newly-added') {
+        productList = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).sort({ createdAt: -1 }).populate('category').populate('author')
+      } else if (req.query.sort === 'price-ascending') {
+        productList = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).sort({ price: 1 }).populate('category').populate('author')
+      } else if (req.query.sort === 'price-descending') {
+        productList = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).sort({ price: -1 }).populate('category').populate('author')
+      } else if (req.query.sort === 'popular') {
+        productList = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).sort({ viewCount: -1 }).populate('category').populate('author')
+      }
+    } else if (req.query.category) {
+      console.log('category query')
+      productList = await Product.find({ category: req.query.category, isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).populate('category').populate('author')
+    } else if (req.query.author) {
+      console.log('author query')
+      productList = await Product.find({ author: req.query.author, isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).populate('category').populate('author')
+    } else {
+      console.log('else query')
+      productList = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).populate('category').populate('author')
+    }
     const pageProducts = productList.slice(startIndex, endIndex)
     const totalPages = Math.ceil(productList.length / productsPerPage)
     let userData = null
@@ -517,8 +539,9 @@ const saveUserDetails = async (req, res) => {
 const orderLoad = async (req, res) => {
   try {
     const userData = await User.findById({ _id: req.session.user_id })
-    const orderData = await Orders.find({ userId: req.session.user_id })
-    res.render('orders', { userData, orderData })
+    const orderData = await Orders.find({ userId: req.session.user_id }).sort({ createdAt: -1 }).populate('products.item.productId').populate('products.item.productId.category')
+    // console.log('order data' + orderData)
+    res.render('orders', { userData, orderData, moment })
   } catch (error) {
     console.log('orders load error')
   }
@@ -621,7 +644,10 @@ const orderSuccess = async (req, res) => {
   userData.save()
   // console.log('current order id ' + req.session.currentOrderId)
   await Orders.updateOne({ userId: req.session.user_id, _id: req.session.currentOrderId }, { $set: { status: 'Success' } })
-  res.render('orderSuccess', { userData, categoryData, authorData })
+  const orderId = req.session.currentOrderId
+  const orderData = await Orders.findOne({ _id: orderId })
+  const populatedData = await orderData.populate('products.item.productId')
+  res.render('orderSuccess', { userData, categoryData, authorData, orderData, populatedData, moment })
 }
 
 // ordered successfully

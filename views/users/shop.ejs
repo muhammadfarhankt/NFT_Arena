@@ -9,7 +9,7 @@
 
 <%- include('../partials/__user-head.ejs') %>
   <link rel="stylesheet" href="/static/css/index.css">
-  <title>NFT Arena</title>
+  <title>Shop | NFT Arena</title>
   </head>
 
 
@@ -155,7 +155,8 @@
 
                   <label class="filter-label">Sort by :</label>
                   <select name="sort" onchange="location = this.value;" class="form-select filter-select">
-                    <option value="/shop?sort=newly-added" selected>newly added</option>
+                    <option value="/shop?sort=default" selected>Default</option>
+                    <option value="/shop?sort=newly-added" >Newly Added</option>
                     <option value="/shop?sort=price-ascending">price (low-high)</option>
                     <option value="/shop?sort=price-descending">price (high-low)</option>
                     <option value="/shop?sort=popular">popular</option>

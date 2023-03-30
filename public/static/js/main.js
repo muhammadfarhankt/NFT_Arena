@@ -1052,7 +1052,7 @@ $('.order-cancel-button').on('click', (e) => {
   }).then((result) => {
     if (result.isConfirmed) {
       Swal.fire('Cancelled!', 'Your order has been cancelled.', 'success');
-      location.href = `/order-cancel?id=${id}`;
+      location.href = `/cancelOrder?id=${id}`;
     }
   });
 });
