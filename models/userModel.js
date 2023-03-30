@@ -106,8 +106,9 @@ userSchema.methods.addToCart = function (product) {
     // eslint-disable-next-line no-new-wrappers
     return new String(objInItems.productId).trim() === new String(product._id).trim()
   })
-  console.log('indexNumber :  ' + indexNumber)
+  // console.log('indexNumber :  ' + indexNumber)
   if (indexNumber >= 0) {
+    
   } else {
     cart.item.push({
       productId: product._id,
@@ -126,7 +127,7 @@ userSchema.methods.addWishlist = function (productId) {
   const wishlist = this.wishlist
   // eslint-disable-next-line no-new-wrappers
   const indexNumber = wishlist.item.findIndex(objInItems => new String(objInItems.productId).trim() === new String(productId).trim())
-  console.log('wish indexNumber :   ' + indexNumber)
+  // console.log('wish indexNumber :   ' + indexNumber)
   if (indexNumber < 0) {
     wishlist.item.push({ productId })
   }

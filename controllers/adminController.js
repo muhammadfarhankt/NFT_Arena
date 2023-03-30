@@ -1,3 +1,4 @@
+/* eslint-disable */
 const User = require('../models/userModel')
 const Category = require('../models/categoryModel')
 const Author = require('../models/authorModel')
@@ -296,7 +297,7 @@ function changedateformat(val) {
 
 // add coupon post
 const addCouponPost = async (req, res) => {
-  console.log('coupon post')
+  // console.log('coupon post')
   try {
     const date = req.body.expirydate
     const coupon = new Coupon({
@@ -322,40 +323,32 @@ const addCouponPost = async (req, res) => {
 
 // update banner load
 const updateCouponLoad = async (req, res) => {
-  const bannerData = await Banner.findById({ _id: req.query.id })
-  res.render('updateBanner', { bannerData })
+  const couponData = await Coupon.findById({ _id: req.query.id })
+  res.render('updateCoupon', { couponData })
 }
 
 const updateCouponPost = async (req, res) => {
-  // const bannerData = await Banner.findById({ _id: req.query.id })
-  // console.log('baner id ' + bannerId)
-  // await Banner.findByIdAndUpdate({ _id: req.query.id }, { $set: { name: req.body.name, link: req.body.link, textHeader: req.body.heading, textContent: req.body.bannerContent } })
-  if (req.file != null) {
-    productEditData
-    console.log('update image name :  ' + req.file.filename)
-    await Banner.findByIdAndUpdate({ _id: req.body.id }, { $set: { name: req.body.name.trim(), link: req.body.link, textHeader: req.body.heading, textContent: req.body.bannerContent, image: req.file.filename } })
-  } else {
-    await Banner.findByIdAndUpdate({ _id: req.body.id }, { $set: { name: req.body.name.trim(), link: req.body.link, textHeader: req.body.heading, textContent: req.body.bannerContent } })
-  }
-  //bannerData.name = req.body.name.trim()
-  res.redirect('/admin/banners')
+  const date = req.body.expirydate
+  const id = req.body.id
+  await Coupon.findByIdAndUpdate({ _id: id }, { $set: { name: req.body.name.trim(), code: req.body.code, minimumbill: req.body.minimumbill, amount: req.body.value, expirydate: changedateformat(date) } })
+  res.redirect('/admin/coupons')
 }
 
-// banner blocking and unblocking
+// coupon blocking and unblocking
 const blockCoupon = async (req, res) => {
   try {
     const bannerId = req.query.id
-    const bannerData = await Banner.findById({ _id: bannerId })
+    const bannerData = await Coupon.findById({ _id: bannerId })
     // console.log('banner data for blocking : ' + bannerData)
     // console.log('blocked dddddddddddd   ' + bannerData.isBlocked)
-    const value = bannerData.isBlocked
+    const value = bannerData.isActive
     // console.log(value)
     if (value === true) {
-      await Banner.findByIdAndUpdate({ _id: bannerId }, { $set: { isBlocked: false } })
-      res.redirect('/admin/banners')
+      await Coupon.findByIdAndUpdate({ _id: bannerId }, { $set: { isActive: false } })
+      res.redirect('/admin/coupons')
     } else if (value === false) {
-      await Banner.findByIdAndUpdate({ _id: bannerId }, { $set: { isBlocked: true } })
-      res.redirect('/admin/banners')
+      await Coupon.findByIdAndUpdate({ _id: bannerId }, { $set: { isActive: true } })
+      res.redirect('/admin/coupons')
       // console.log(bannerData)
     }
   } catch (error) {
@@ -524,6 +517,36 @@ const deleteProduct = async (req, res) => {
     console.log(error.message)
   }
 }
+
+// block product
+const blockProduct = async (req, res) => {
+  try {
+    const productId = req.query.id
+    // console.log('product id : ' + productId)
+    const productData = await Product.findOne({ _id: productId })
+    const value = productData.isBlocked
+    // console.log(value)
+    if (value === false) {
+      // console.log('false')
+      await Product.findByIdAndUpdate({ _id: productId }, { $set: { isBlocked: true } })
+      // productData.isDeleted = {$toBool: 1}
+      // productData.save()
+      res.redirect('/admin/products')
+      // console.log(productData)
+    } else {
+      // console.log('true')
+      await Product.findByIdAndUpdate({ _id: productId }, { $set: { isBlocked: false } })
+      // productData.isDeleted = {$toBool: false}
+      // productData.save()
+      res.redirect('/admin/products')
+    }
+    // const deleteData = await Product.findByIdAndUpdate({ _id: productId },{$set:{isDeleted: true}})
+    // res.redirect('/admin/products')
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
 // user loading
 const userLoad = async (req, res) => {
   try {
@@ -913,6 +936,7 @@ module.exports = {
   addProductLoad,
   addProduct,
   deleteProduct,
+  blockProduct,
   userLoad,
   blockUser,
   categoryLoad,
