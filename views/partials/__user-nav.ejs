@@ -110,7 +110,7 @@
               <ul class="dropdown-position-list">
                 <% if(typeof categoryData!=='undefined' ) { %>
                   <% for(let i=0;i<categoryData.length;i++){%>
-                    <li><a class="dropdown-item" href="/category?id=<%= categoryData[i]._id%>">
+                    <li><a class="dropdown-item" href="/shop?category=<%= categoryData[i]._id%>">
                         <%= categoryData[i].name%>
                       </a></li>
 
@@ -123,14 +123,14 @@
             </li>
 
             <li class="navbar-item dropdown">
-              <a class="navbar-link dropdown-arrow" href="/category">Authors</a>
+              <a class="navbar-link dropdown-arrow" href="/">Authors</a>
 
               <ul class="dropdown-position-list">
 
 
                 <% if(typeof authorData!=='undefined' ) { %>
                   <% for(let i=0;i<authorData.length;i++){%>
-                    <li><a class="dropdown-item" href="/author-products?id=<%= authorData[i]._id%>">
+                    <li><a class="dropdown-item" href="/shop?author=<%= authorData[i]._id%>">
                       <%= authorData[i].name%>
                     </a></li>
                   <%} %>

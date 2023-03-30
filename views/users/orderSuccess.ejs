@@ -1,53 +1,207 @@
-<%- include('../partials/header') %>
-<!-- navbar -->
-<%- include('../partials/categories-navbar') %>
+<%- include('../partials/__user-head.ejs') %>
+ <link rel="stylesheet" href="/static/css/invoice.css">
+ <title>Invoice | NFT Arena</title>
+ </head>
 
-<style>
-    body{margin-top:20px;}
-.mail-seccess {
-    text-align: center;
-	background: #fff;
-	border-top: 1px solid #eee;
-}
-.mail-seccess .success-inner {
-	display: inline-block;
-}
-.mail-seccess .success-inner h1 {
-	font-size: 100px;
-	text-shadow: 3px 5px 2px #3333;
-	color: #006DFE;
-	font-weight: 700;
-}
-.mail-seccess .success-inner h1 span {
-	display: block;
-	font-size: 25px;
-	color: #333;
-	font-weight: 600;
-	text-shadow: none;
-	margin-top: 20px;
-}
-.mail-seccess .success-inner p {
-	padding: 20px 15px;
-}
-.mail-seccess .success-inner .btn{
-	color:#fff;
-}
-</style>
 
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-<section class="mail-seccess section" style="padding-top: 10%;">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-6 offset-lg-3 col-12">
-				<!-- Error Inner -->
-				<div class="success-inner">
-					<h1><i class="fa fa-envelope"></i><span>Your Order Placed Successfully!</span></h1>
-					<p><a href="/" class="btn btn-primary btn-lg mb-5 mr-3">Go Home</a> <a href="/orders" class="btn btn-primary btn-lg mb-5">My Orders</a></a></p>
-				</div>
-				<!--/ End Error Inner -->
-			</div>
-		</div>
-	</div>
-</section>
+ <body>
 
-<%- include('../partials/footer') %>
+  <%- include('../partials/__user-nav.ejs') %>
+   <%- include('../partials/__user-side-cat.ejs') %>
+    <%- include('../partials/__user-cart.ejs') %>
+     <%- include('../partials/__user-sidenav.ejs') %>
+      <%- include('../partials/__user-mobile.ejs') %>
+
+
+       <section class="inner-section single-banner" style="background: url(images/single-banner.jpg) no-repeat center;">
+        <div class="container">
+         <h2>Order invoice</h2>
+         <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/home">Home</a></li>
+          <li class="breadcrumb-item"><a href="/shop">shop</a></li>
+          <li class="breadcrumb-item"><a href="/checkout">checkout</a></li>
+          <li class="breadcrumb-item active" aria-current="page">invoice</li>
+         </ol>
+        </div>
+       </section>
+       <section class="inner-section invoice-part">
+        <div class="container">
+         <div class="row" id="invoice-div">
+          <div class="col-lg-12">
+           <div class="alert-info">
+            <p>Thank you! We have recieved your order.</p>
+           </div>
+          </div>
+          <div class="col-lg-12">
+           <div class="account-card">
+            <div class="account-title">
+             <h4>order recieved</h4>
+            </div>
+            <div class="account-content">
+             <div class="invoice-recieved">
+              <h6>order ID <span>
+                <%= orderData._id %>
+               </span></h6>
+              <h6>order date <span>
+                <%= moment(orderData.createdAt).format('LL') %>
+               </span></h6>
+              <h6>total amount <span>$ <%= orderData.sellingPrice %></span></h6>
+              <h6>payment method <span>
+                <%= orderData.payment %>
+               </span></h6>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="col-lg-6">
+           <div class="account-card">
+            <div class="account-title">
+             <h4>Order Details</h4>
+            </div>
+            <div class="account-content">
+             <ul class="invoice-details">
+              <li>
+               <h6>Total Item</h6>
+               <p>
+                <%= orderData.products.item.length %>
+               </p>
+              </li>
+              <li>
+               <h6>Order Time</h6>
+               <p>
+                <%= moment(orderData.createdAt).format('LLL') %>
+               </p>
+              </li>
+
+              <li>
+               <h6>Delivery Address</h6>
+               <p>
+                <%= orderData.address %>
+                 <br>
+                 <%= orderData.city %><br>
+                  <%= orderData.state %><br>
+                   <%= orderData.zip %>
+               </p>
+              </li>
+              
+              <li>
+               <h6>Coupon Used</h6>
+               <p>
+                <% if ((orderData.products.totalPrice-orderData.sellingPrice)>0) { %>
+                 Yes
+                 <% } else { %>
+                  None
+                  <% } %>
+               </p>
+              </li>
+             </ul>
+            </div>
+           </div>
+          </div>
+          <div class="col-lg-6">
+           <div class="account-card">
+            <div class="account-title">
+             <h4>Amount Details</h4>
+            </div>
+            <div class="account-content">
+             <ul class="invoice-details">
+              <li>
+               <h6>Sub Total</h6>
+               <p>$ <%= orderData.products.totalPrice %></p>
+              </li>
+              <li>
+               <h6>Product's Discount</h6>
+               <p>-$ 0</p>
+              </li>
+              <li>
+               <h6>Coupon Discount</h6>
+               <p>- $ <%= orderData.products.totalPrice-orderData.sellingPrice %></p>
+              </li>
+              <li>
+               <h6>Gas Charge</h6>
+               <p>+$ 0</p>
+              </li>
+              <li>
+               <h6>Total<small>(Incl. VAT)</small></h6>
+               <p>$ <%= orderData.sellingPrice %></p>
+              </li>
+              <li>
+               <h6>Payment Method</h6>
+               <p>Online Payment</p>
+              </li>
+             </ul>
+            </div>
+           </div>
+          </div>
+          <div class="col-lg-12">
+           <div class="table-scroll">
+            <table class="table-list">
+             <thead>
+               <tr>
+                 <th scope="col">Serial</th>
+                 <th scope="col">Product</th>
+                 <th scope="col">Name</th>
+                 <th scope="col">Price</th>
+                 
+               </tr>
+             </thead>
+             <tbody>
+               <% orderData.products.item.forEach((prodObj,index) => { %>
+
+               <!-- Products in order -->
+
+
+               <tr>
+                 <td class="table-serial">
+                   <h6><%= index+1 %></h6>
+                 </td>
+                 <td class="table-image"><img src="/imagess/<%= prodObj.productId.image %>" alt="product"></td>
+                 <td class="table-name">
+                   <h6> <%= prodObj.productId.name %> </h6>
+                 </td>
+                 <td class="table-price">
+                   <h6>$ <%= prodObj.productId.price %></h6>
+                 </td>
+                 
+               </tr>
+
+
+               <% }) %>
+               <!-- Products in order -end -->
+
+             </tbody>
+           </table>
+           </div>
+          </div>
+         </div>
+         <div class="row">
+          <div class="col-lg-12 text-center mt-5"><a class="btn btn-inline" id="invoice-pdf" href="#"><i
+             class="icofont-download"></i><span>download invoice</span></a>
+           <div class="back-home"><a href="/home">Back to Home</a></div>
+          </div>
+         </div>
+        </div>
+       </section>
+      
+
+       <%- include('../partials/__user-features.ejs') %>
+        <%- include('../partials/__user-footer.ejs') %>
+         <script src="/static/vendor/bootstrap/jquery-1.12.4.min.js"></script>
+         <script src="/static/vendor/bootstrap/popper.min.js"></script>
+         <script src="/static/vendor/bootstrap/bootstrap.min.js"></script>
+         <script src="/static/vendor/countdown/countdown.min.js"></script>
+         <script src="/static/vendor/niceselect/nice-select.min.js"></script>
+         <script src="/static/vendor/slickslider/slick.min.js"></script>
+         <script src="/static/vendor/venobox/venobox.min.js"></script>
+         <script src="/static/vendor/print-this/printThis.js"></script>
+         <script src="/static/js/nice-select.js"></script>
+         <script src="/static/js/countdown.js"></script>
+         <script src="/static/js/accordion.js"></script>
+         <script src="/static/js/venobox.js"></script>
+         <script src="/static/js/slick.js"></script>
+         <script src="/static/js/main.js"></script>
+
+
+ </body>
+
+ </html>

@@ -1,144 +1,198 @@
-<%- include('../partials/header') %>
-<!-- navbar -->
-<%- include('../partials/categories-navbar') %>
-
-<style>
-    @import url(http://fonts.googleapis.com/css?family=Calibri:400,300,700);
-
-body {
-    background-color: #eee;
-    font-family: 'Calibri', sans-serif !important;
-}
-
-.mt-100{
-   margin-top:100px;
-
-}
+<%- include('../partials/__user-head.ejs') %>
+  <link rel="stylesheet" href="/static/css/orderlist.css">
+  <title>My Orders | NFT Arena</title>
+  </head>
 
 
-.card {
-    margin-bottom: 30px;
-    border: 0;
-    -webkit-transition: all .3s ease;
-    transition: all .3s ease;
-    letter-spacing: .5px;
-    border-radius: 8px;
-    -webkit-box-shadow: 1px 5px 24px 0 rgba(68,102,242,.05);
-    box-shadow: 1px 5px 24px 0 rgba(68,102,242,.05);
-}
+  <body>
 
-.card .card-header {
-    background-color: #fff;
-    border-bottom: none;
-    padding: 24px;
-    border-bottom: 1px solid #f6f7fb;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-}
-
-.card-header:first-child {
-    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
-}
+    <%- include('../partials/__user-nav.ejs') %>
+      <%- include('../partials/__user-side-cat.ejs') %>
+        <%- include('../partials/__user-cart.ejs') %>
+          <%- include('../partials/__user-sidenav.ejs') %>
+            <%- include('../partials/__user-mobile.ejs') %>
 
 
-
-.card .card-body {
-    padding: 30px;
-    background-color: transparent;
-}
-
-.btn-primary, .btn-primary.disabled, .btn-primary:disabled {
-    background-color: #4466f2!important;
-    border-color: #4466f2!important;
-}
-</style>
-
-<% if (orderData.length >0) { %>
-<div class="container mt-5">
-    <div class="">
-        <div class="comment-wrapper">
-            <div class="panel panel-info">
-                <div class="panel-heading text-center">
-                    <h3>My Orders</h3>
+              <section class="inner-section single-banner"
+                style="background: url(images/single-banner.jpg) no-repeat center;">
+                <div class="container">
+                  <h2>Order History</h2>
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Orderlist</li>
+                  </ol>
                 </div>
-                <div class="panel-body p-4">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Sl No.</th>
-                                <th scope="col">Order Id</th>
-                                <th scope="col">Payment Method</th>
-                                <th scope="col">Amount</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Action</th>
-                                <th scope="col">View</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% for(let i=0;i<orderData.length;i++){ %> 
-                            <tr>
-                                <td><%= i+1 %> </td>
-                                <td><%= orderData[i]._id %> </td>
-                                <td><%= orderData[i].payment %> </td>
-                                <td>$ <%= orderData[i].sellingPrice %> </td>
-                                <%if(orderData[i].status=="Cancelled") { %>     
-                                <td  style="text-decoration: red;"><%= orderData[i].status %> </td>
-                                    <%  }else{ %>
-                                        <td class="text-success"><%= orderData[i].status %> </td>        
-                                    <% } %> 
-                                    <% if(orderData[i].status != "Canceled") { %> 
-                                    <td>
-                                    <a  class="btn btn-danger" href="/cancelOrder?id=<%= orderData[i]._id %>" onclick="return confirm('Are you sure you want to cancel this order?')">Cancel</a>
-                                    </td> 
-                                    <td>
-                                    <a class="btn btn-info" href="/singleOrderView?id=<%= orderData[i]._id %>">View</a>
-                                    </td>
-                                    <%}else{ %>
-                                        <td>
-                                        <h6>Order Cancelled</h6>
-                                        </td>
-                                        <td>
-                                        <a class="btn btn-info" href="/singleOrderView?id=<%= orderData[i]._id %>">View</a>
-                                        </td>
-                                    <% } %> 
-                                </td>
-                            </tr>
-                            <% } %> 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+              </section>
+              <section class="inner-section orderlist-part">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="orderlist-filter">
+                        <h5>Total orders <span>- <%= orderData.length %></span></h5>
+                        <!-- <div class="filter-short"><label class="form-label">short by:</label><select class="form-select">
+                            <option value="all" selected>all order</option>
+                            <option value="recieved">recieved order</option>
+                            <option value="processed">processed order</option>
+                            <option value="shipped">shipped order</option>
+                            <option value="delivered">delivered order</option>
+                          </select></div> -->
+                      </div>
+                    </div>
+                  </div>
 
-<% } else { %>
+                  <div class="row">
+                    <div class="col-lg-12">
 
-    <div class="container-fluid  mt-100">
-        <div class="row">
-        
-           <div class="col-md-12">
-           
-                   <div class="card">
-               <div class="card-body cart">
-                       <div class="col-sm-12 empty-cart-cls text-center">
-                           <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130" class="img-fluid mb-4 mr-3">
-                           <h3><strong>You have no orders</strong></h3>
-                           <h4>Buy something to make me happy :)</h4>
-                           <a href="/shop" class="btn btn-primary cart-btn-transform m-3" data-abc="true">Continue Shopping</a>
+
+                      <% orderData.forEach((order,index) => { %>
+
+
+                      <div class="orderlist">
+                        <div class="orderlist-head">
+                          <h5>order#<%= index+1 %></h5>
+                          <% if (order.status === 'Success') { %>
+                          <h5>STATUS : <%= order.status %></h5>
+                          <% } else { %>
+                            <h5 style="color: red;">STATUS : <%= order.status %></h5>
+                            <% } %>
+                        </div>
+                        <div class="orderlist-body">
+                          <div class="row">
                            
-                       
-                       </div>
-               </div>
-       </div>
-               
-           
-           </div>
-        
-        </div>
-       
-       </div>
+                            <div class="col-lg-5">
+                              <ul class="orderlist-details">
+                                <li>
+                                  <h6>order id</h6>
+                                  <p><%= order._id %></p>
+                                </li>
+                                <li>
+                                  <h6>Total Item</h6>
+                                  <p> <%= order.products.item.length %> Items</p>
+                                </li>
+                                <li>
+                                  <h6>Order Time</h6>
+                                  <p> <%= moment(order.createdAt).format('LLL') %></p>
+                                </li>
+                                <li>
+                                  <h6>Confirm Time</h6>
+                                  <p> <%= moment(order.createdAt).format('LLL') %></p>
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="col-lg-4">
+                              <ul class="orderlist-details">
+                                <li>
+                                  <h6>Sub Total</h6>
+                                  <p>$ <%= order.products.totalPrice %></p>
+                                </li>
+                                <li>
+                                  <h6>discount</h6>
+                                  <p>$ <%= order.products.totalPrice-order.sellingPrice %></p>
+                                </li>
+                                <li>
+                                  <h6>Gas fee</h6>
+                                  <p>$ 0</p>
+                                </li>
+                                <li>
+                                  <h6>Total<small>(Incl. VAT)</small></h6>
+                                  <p>$ <%= order.sellingPrice %></p>
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="col-lg-3">
+                              <div class="orderlist-deliver">
+                                <h6>Billing Address</h6>
+                                <p>
+                                  <%= order.address %><br>
+                                  <%= order.city %><br>
+                                  <%= order.state %><br>
+                                  <%= order.zip %>
+                                </p>
+                              </div>
+                            </div>
+                            <div class="col-lg-12">
+                              <div class="table-scroll">
+                                <table class="table-list">
+                                  <thead>
+                                    <tr>
+                                      <th scope="col">Serial</th>
+                                      <th scope="col">Product</th>
+                                      <th scope="col">Name</th>
+                                      <th scope="col">Price</th>
+                                      
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <% order.products.item.forEach((prodObj,index) => { %>
+            
+                                    <!-- Products in order -->
 
-<% } %>
 
-<%- include('../partials/footer') %>
+                                    <tr>
+                                      <td class="table-serial">
+                                        <h6><%= index+1 %></h6>
+                                      </td>
+                                      <td class="table-image"><img src="/imagess/<%= prodObj.productId.image %>" alt="product"></td>
+                                      <td class="table-name">
+                                        <h6> <%= prodObj.productId.name %> </h6>
+                                      </td>
+                                      <td class="table-price">
+                                        <h6>$ <%= prodObj.productId.price %></h6>
+                                      </td>
+                                      
+                                    </tr>
+
+
+                                    <% }) %>
+                                    <!-- Products in order -end -->
+
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+
+                          <% if (order.status != 'Success') { %>
+                          <div class="text-center mb-4">
+                            <a href="/cancelOrder?id=<%= order._id %>" data-oid="<%= order._id %>"
+                              class="btn btn-secondary order-cancel-button">Cancel this
+                              order</a>
+                          </div>
+                          <% } %>
+
+
+                        </div>
+                      </div>
+
+
+
+                      <% }) %>
+                     
+
+
+                    </div>
+                  </div>
+                 
+                </div>
+              </section>
+
+
+              <%- include('../partials/__user-features.ejs') %>
+                <%- include('../partials/__user-footer.ejs') %>
+                  <script src="/static/vendor/bootstrap/jquery-1.12.4.min.js"></script>
+                  <script src="/static/vendor/bootstrap/popper.min.js"></script>
+                  <script src="/static/vendor/bootstrap/bootstrap.min.js"></script>
+                  <script src="/static/vendor/countdown/countdown.min.js"></script>
+                  <script src="/static/vendor/niceselect/nice-select.min.js"></script>
+                  <script src="/static/vendor/slickslider/slick.min.js"></script>
+                  <script src="/static/vendor/venobox/venobox.min.js"></script>
+                  <script src="/static/js/nice-select.js"></script>
+                  <script src="/static/js/countdown.js"></script>
+                  <script src="/static/js/accordion.js"></script>
+                  <script src="/static/js/venobox.js"></script>
+                  <script src="/static/js/slick.js"></script>
+                  <script src="/static/js/main.js"></script>
+
+  </body>
+
+  </html>
