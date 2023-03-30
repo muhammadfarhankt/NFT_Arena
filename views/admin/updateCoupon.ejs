@@ -143,28 +143,29 @@
 						
 					</div>
 
-                    <form action="/admin/addCoupon" method="post">
+                    <form action="/admin/updateCoupon" method="post">
                         <!-- enctype="multipart/form-data"  -->
                         
                         <label for="" class="mt-3">Name   :   </label>
-                        <input type="text" name="name" id="name" class="form-control" placeholder="Coupon Name" required>
+                        <input type="text" name="name" id="name" class="form-control" value="<%= couponData.name %>" required>
                       
 						<br><br>
                         <label for="" class="mt-3">Code   :   </label>
-                        <input type="text" name="code" id="link" class="form-control" placeholder="Coupon Code" required>
+                        <input type="text" name="code" id="link" class="form-control"value="<%= couponData.code %>" required>
 
                         <br><br>
                         <label for="" class="mt-3">Minimum Cart Amount   :   </label>
-                        <input type="number" name="minimumbill" id="link" class="form-control" placeholder="Minimum Bill" required>
+                        <input type="number" name="minimumbill" id="link" class="form-control" value="<%= couponData.Minimumbill %>" required>
 
                         <br><br>
                         <label for="" class="mt-3">Discount Amount   :   </label>
-                        <input type="number" name="value" id="link" class="form-control" placeholder="Coupon Amount" required>
+                        <input type="number" name="value" id="link" class="form-control" value="<%= couponData.amount %>" required>
 
                         <br><br>
                         <label for="" class="mt-3">Expiry Date   :   </label>
-                        <input type="date" name="expirydate" id="link" class="form-control" required>
-						
+                        <input type="date" name="expirydate" id="link" class="form-control" value="<%= couponData.expirydate %>" required>
+                        <input type="hidden" name="id" value="<%= couponData._id %>">
+
             
                         <br><br>
                         

@@ -168,6 +168,9 @@
 									<th>
 										<center>Price</center>
 									</th>
+                  <th>
+										<center>Sold</center>
+									</th>
 									<th>
 										<center>Edit</center>
 									</th>
@@ -219,6 +222,12 @@
 											</p>
 										</td>
 
+                    <td align="center">
+											<p>
+												<%= productData[i].isSold %>
+											</p>
+										</td>
+
 										<td align="center">
 											<a href="/admin/updateProduct?id=<%= productData[i]._id %>"><span
 													class="status completed">Edit</span></a>
@@ -227,26 +236,16 @@
 
 										<td align="center">
 											<% if(productData[i].isBlocked==false){%>
-												<a href="/admin/blockProduct?id=<%= productData[i]._id%>"
-													onclick="return block_alert(this)">
-													<script type="text/javascript">
-														function block_alert(node) {
-															return confirm("Do you want to block category ? ")
-														}
-													</script>
-													<span class="status"
-														style="background-color: green; align-items: center;">Active</span>
+													<span class="status block-button"
+														style="background-color: green; align-items: center;"
+                            data-id="<%= productData[i]._id %>">
+                            Active</span>
 												</a>
 
 												<%}else{%>
-													<a href="/admin/blockProduct?id=<%= productData[i]._id%>"
-														onclick="return unblock_alert(this)">
-														<script type="text/javascript">
-															function unblock_alert(node) {
-																return confirm("Do you want to un-block category ? ")
-															}
-														</script>
-														<span class="status pending">Blocked</span>
+														<span class="status pending unBlock-button"
+                            data-id="<%= productData[i]._id %>">
+                              Blocked</span>
 													</a>
 													<%}%>
 										</td>
@@ -254,26 +253,14 @@
 										<td align="center">
 											<p>
 												<% if(productData[i].isDeleted==false){%>
-													<a href="/admin/deleteProduct?id=<%= productData[i]._id%>"
-														onclick="return delete_alert(this)">
-														<script type="text/javascript">
-															function delete_alert(node) {
-																return confirm("Do you want to delete product ? ")
-															}
-														</script>
-														<span class="status"
-															style="background-color: green; align-items: center;">Active</span>
+													<span class="status delete-button" data-id="<%= productData[i]._id %>"
+															style="background-color: green; align-items: center;">
+                              Active
+                            </span>
 													</a>
 
 													<%} else if (productData[i].isDeleted==true){%>
-														<a href="/admin/deleteProduct?id=<%= productData[i]._id%>"
-															onclick="return undelete_alert(this)">
-															<script type="text/javascript">
-																function undelete_alert(node) {
-																	return confirm("Do you want to undo-delete ? ")
-																}
-															</script>
-															<span class="status"
+															<span class="status unDelete-button" data-id="<%= productData[i]._id %>"
 																style="background: red; align-items: center;">Deleted</span>
 														</a>
 														<% } %>
@@ -299,6 +286,106 @@
 		</main>
 		<!-- MAIN -->
 	</section>
+
+   <!--  SweetAlert2 script -->
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+   <!-- Delete -->
+   <script>
+     const deleteButtons = document.querySelectorAll('.delete-button');
+     deleteButtons.forEach((deleteButton) => {
+       deleteButton.addEventListener('click', (event) => {
+         event.preventDefault();
+         const categoryId = deleteButton.getAttribute('data-id');
+ 
+         Swal.fire({
+           title: 'Are you sure?',
+           text: 'Do you want to delete this product?',
+           icon: 'warning',
+           showCancelButton: true,
+           confirmButtonColor: '#d33',
+           cancelButtonColor: '#3085d6',
+           confirmButtonText: 'Yes, delete!'
+         }).then((result) => {
+           if (result.isConfirmed) {
+             window.location.href = `/admin/deleteProduct?id=${categoryId}`;
+           }
+         });
+       });
+     });
+   </script>
+ 
+   <!-- undelete -->
+   <script>
+     const unDeleteButtons = document.querySelectorAll('.unDelete-button');
+     unDeleteButtons.forEach((unDeleteButton) => {
+       unDeleteButton.addEventListener('click', (event) => {
+         event.preventDefault();
+         const categoryId = unDeleteButton.getAttribute('data-id');
+ 
+         Swal.fire({
+           title: 'Are you sure?',
+           text: 'Do you want to un-delete this product?',
+           icon: 'warning',
+           showCancelButton: true,
+           confirmButtonColor: '#d33',
+           cancelButtonColor: '#3085d6',
+           confirmButtonText: 'Yes, un delete!'
+         }).then((result) => {
+           if (result.isConfirmed) {
+             window.location.href = `/admin/deleteProduct?id=${categoryId}`;
+           }
+         });
+       });
+     });
+   </script>
+ 
+   <!-- block -->
+   <script>
+     const blockButtons = document.querySelectorAll('.block-button');
+     blockButtons.forEach((blockButton) => {
+       blockButton.addEventListener('click', (event) => {
+         event.preventDefault();
+         const authorId = blockButton.getAttribute('data-id');
+         Swal.fire({
+           title: 'Are you sure to block Product ?',
+           icon: 'warning',
+           showCancelButton: true,
+           confirmButtonColor: '#d33',
+           cancelButtonColor: '#3085d6',
+           confirmButtonText: 'Yes, Block'
+         }).then((result) => {
+           if (result.isConfirmed) {
+             window.location.href = `/admin/blockProduct?id=${authorId}`;
+           }
+         });
+       });
+     });
+   </script>
+ 
+   <!-- unBlock-button -->
+   <script>
+     const unBlockButtons = document.querySelectorAll('.unBlock-button');
+     unBlockButtons.forEach((unBlockButton) => {
+       unBlockButton.addEventListener('click', (event) => {
+         event.preventDefault();
+         const authorId = unBlockButton.getAttribute('data-id');
+         Swal.fire({
+           title: 'Are you sure to un-block Product ?',
+           icon: 'warning',
+           showCancelButton: true,
+           confirmButtonColor: '#d33',
+           cancelButtonColor: '#3085d6',
+           confirmButtonText: 'Yes, un-block'
+         }).then((result) => {
+           if (result.isConfirmed) {
+             window.location.href = `/admin/blockProduct?id=${authorId}`;
+           }
+         });
+       });
+     });
+   </script>
+
 
 	<!-- Pagination Script  -->
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>

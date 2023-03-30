@@ -188,23 +188,15 @@
                     <td align="center">
                       <p>
                         <% if(userData[i].isBlocked==false){%>
-                          <a href="/admin/blockUser?id=<%= userData[i]._id%>" onclick="return confirm_alert(this)">
-                            <script type="text/javascript">
-                              function confirm_alert(node) {
-                                return confirm("Do you want to block user ? ")
-                              }
-                            </script>
-                            <span class="status" style="background-color: green;">Active</span>
+                            <span class="status block-button" style="background-color: green;"
+                            data-id="<%= userData[i]._id %>">
+                            Active</span>
                           </a>
 
                           <%}else{%>
-                            <a href="/admin/blockUser?id=<%= userData[i]._id%>" onclick="return unblock_alert(this)">
-                              <script type="text/javascript">
-                                function unblock_alert(node) {
-                                  return confirm("Do you want to un-block user ? ")
-                                }
-                              </script>
-                              <span class="status" style="background: red;">Blocked</span>
+                              <span class="status unBlock-button" style="background: red;"
+                              data-id="<%= userData[i]._id %>">
+                              Blocked</span>
                             </a>
                             <%}%>
                       </p>
@@ -232,6 +224,53 @@
   </section>
 
 
+<!--  SweetAlert2 script -->
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+   <!-- block -->
+  <script>
+    const blockButtons = document.querySelectorAll('.block-button');
+    blockButtons.forEach((blockButton) => {
+      blockButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        const authorId = blockButton.getAttribute('data-id');
+        Swal.fire({
+          title: 'Are you sure to block User ?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Yes, Block'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `/admin/blockUser?id=${authorId}`;
+          }
+        });
+      });
+    });
+  </script>
+
+  <!-- unBlock-button -->
+  <script>
+    const unBlockButtons = document.querySelectorAll('.unBlock-button');
+    unBlockButtons.forEach((unBlockButton) => {
+      unBlockButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        const authorId = unBlockButton.getAttribute('data-id');
+        Swal.fire({
+          title: 'Are you sure to un-block User ?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Yes, un-block'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `/admin/blockUser?id=${authorId}`;
+          }
+        });
+      });
+    });
+  </script>
 
   <script src="/adminhome/script.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>

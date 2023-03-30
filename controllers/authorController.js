@@ -1,3 +1,4 @@
+/* eslint-disable */
 const Author = require('../models/authorModel')
 const Category = require('../models/categoryModel')
 const nodemailer = require('nodemailer')
@@ -56,10 +57,10 @@ const verifyLogin = async (req, res) => {
 // load author dashboard
 const loadDashboard = async (req, res) => {
   try {
-    console.log('loadDashboard')
+    // console.log('loadDashboard')
     const authorData = await Author.findById({ _id: req.session.author_id })
-    console.log('authorData')
-    console.log(authorData)
+    // console.log('authorData')
+    // console.log(authorData)
     res.render('home', { author: authorData })
   } catch (error) {
     console.log(error.message)
@@ -69,11 +70,11 @@ const loadDashboard = async (req, res) => {
 // product loading
 const productLoad = async (req, res) => {
   const authorId = req.session.author_id
-  console.log('authorId :  ' + authorId)
+  // console.log('authorId :  ' + authorId)
   const authorName = await Author.findOne({ _id: authorId })
-  console.log('Author Name :  ' + authorName)
+  // console.log('Author Name :  ' + authorName)
   const productData = await Product.find({ author: authorName._id }).populate('category')
-  console.log('product data ' + productData)
+  // console.log('product data ' + productData)
   try {
     res.render('products', { productData })
   } catch (error) {
@@ -87,7 +88,7 @@ const addProductLoad = async (req, res) => {
     const authorId = req.session.author_id
     const productData = await Category.find({})
     const authorData = await Author.findOne({ _id: authorId })
-    console.log(authorData.name)
+    // console.log(authorData.name)
     res.render('newproduct', { productData, authorData })
   } catch (error) {
     console.log(error.message)
@@ -97,7 +98,7 @@ const addProductLoad = async (req, res) => {
 // add new product
 const addProduct = async (req, res) => {
   try {
-    console.log('try add product')
+    // console.log('try add product')
     const product = new Product({
       name: req.body.name,
       description: req.body.description,
@@ -138,7 +139,7 @@ const logout = async (req, res) => {
 const updateProductLoad = async (req, res) => {
   try {
     const productId = req.query.id
-    console.log('hii')
+    // console.log('hii')
     const categoryData = await Category.find({})
     const productData = await Product.findOne({ _id: productId }).populate('category')
     res.render('updateProduct', { productData, categoryData })
@@ -151,8 +152,8 @@ const updateProductLoad = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const productId = req.body.id
-    console.log('try')
-    console.log(productId)
+    // console.log('try')
+    // console.log(productId)
     await Product.findByIdAndUpdate({ _id: productId }, { $set: { name: req.body.name, description: req.body.description, price: req.body.price, quantity: req.body.quantity, category: req.body.category } })
     res.redirect('/author/products')
   } catch (error) {
@@ -224,9 +225,9 @@ const sendVerifyMail = async (name, email, userId) => {
     }
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-        console.log(error)
+        // console.log(error)
       } else {
-        console.log('email has been send', info.response)
+        // console.log('email has been send', info.response)
       }
     })
   } catch (error) {
@@ -238,7 +239,7 @@ const sendVerifyMail = async (name, email, userId) => {
 const verifyMail = async (req, res) => {
   try {
     const updateInfo = await Author.updateOne({ _id: req.query.id }, { $set: { isVerified: true } })
-    console.log(updateInfo)
+    // console.log(updateInfo)
     res.render('email-verified')
   } catch (error) {
     console.log(error.message)
@@ -297,9 +298,9 @@ const sendResetMail = async (name, email, token) => {
     }
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-        console.log(error)
+        // console.log(error)
       } else {
-        console.log('email has been send', info.response)
+        // console.log('email has been send', info.response)
       }
     })
   } catch (error) {
@@ -311,7 +312,7 @@ const forgetPasswordLoad = async (req, res) => {
   try {
     const token = req.query.token
     const tokenData = await Author.findOne({ token })
-    console.log(tokenData)
+    // console.log(tokenData)
     if (tokenData) {
       res.render('forget-password', { userId: tokenData })
     } else {
@@ -326,11 +327,11 @@ const resetPassword = async (req, res) => {
   try {
     const password = req.body.password
     const userId = req.body.user_id
-    console.log(userId)
+    // console.log(userId)
     const sPassword = await securePassword(password)
     const updatedData = await Author.findByIdAndUpdate({ _id: userId }, { $set: { password: sPassword, token: '' } })
     res.render('forget success', { message: 'Password Updated Succesfully' })
-    console.log(updatedData)
+    // console.log(updatedData)
   } catch (error) {
     console.log(error.message)
   }

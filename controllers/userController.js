@@ -1,3 +1,4 @@
+/* eslint-disable */
 require('dotenv').config()
 const User = require('../models/userModel')
 const bcrypt = require('bcrypt')
@@ -48,7 +49,7 @@ const sendVerifyMail = async (name, email, userId) => {
     }
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-        console.log(error)
+        // console.log(error)
       } else {
         // console.log('email has been send', info.response)
       }
@@ -79,7 +80,7 @@ const sendResetMail = async (name, email, token) => {
     }
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-        console.log(error)
+        // console.log(error)
       } else {
         // console.log('email has been send', info.response)
       }
@@ -202,7 +203,7 @@ const insertUser = async (req, res) => {
 const verifyMail = async (req, res) => {
   try {
     const updateInfo = await User.updateOne({ _id: req.query.id }, { $set: { isVerified: true } })
-    console.log(updateInfo)
+    // console.log(updateInfo)
     res.render('email-verified')
   } catch (error) {
     console.log(error.message)
@@ -251,7 +252,7 @@ const verifyLogin = async (req, res) => {
 // otp login
 const otpLogin = async (req, res) => {
   try {
-    console.log('otp          :     ' + otp)
+    // console.log('otp          :     ' + otp)
     res.render('otpLogin')
   } catch (error) {
     console.log(error.message)
@@ -400,14 +401,14 @@ const resetPassword = async (req, res) => {
     const sPassword = await securePassword(password)
     const updatedData = await User.findByIdAndUpdate({ _id: userId }, { $set: { password: sPassword, token: '' } })
     res.render('forget success', { message: 'Password Updated Succesfully' })
-    console.log(updatedData)
+    // console.log(updatedData)
   } catch (error) {
     console.log(error.message)
   }
 }
 
 const changePasswordLoad = async (req, res) => {
-  console.log('change password')
+  // console.log('change password')
   try {
     res.render('changePassword')
   } catch (error) {
@@ -433,7 +434,7 @@ const shopLoad = async (req, res) => {
     const shopLimit = 12
     const shopPage = 1
     if (req.query.sort) {
-      console.log('sort query')
+      // console.log('sort query')
       if (req.query.sort === 'newly-added') {
         productList = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).sort({ createdAt: -1 }).populate('category').populate('author')
       } else if (req.query.sort === 'price-ascending') {
@@ -444,13 +445,13 @@ const shopLoad = async (req, res) => {
         productList = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).sort({ viewCount: -1 }).populate('category').populate('author')
       }
     } else if (req.query.category) {
-      console.log('category query')
+      // console.log('category query')
       productList = await Product.find({ category: req.query.category, isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).populate('category').populate('author')
     } else if (req.query.author) {
-      console.log('author query')
+      // console.log('author query')
       productList = await Product.find({ author: req.query.author, isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).populate('category').populate('author')
     } else {
-      console.log('else query')
+      // console.log('else query')
       productList = await Product.find({ isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false }).populate('category').populate('author')
     }
     const pageProducts = productList.slice(startIndex, endIndex)
@@ -543,7 +544,7 @@ const orderLoad = async (req, res) => {
     // console.log('order data' + orderData)
     res.render('orders', { userData, orderData, moment })
   } catch (error) {
-    console.log('orders load error')
+    console.log(error.message)
   }
 }
 
@@ -555,7 +556,7 @@ const cancelOrder = async (req, res) => {
     await Orders.findOneAndUpdate({ _id: orderId }, { $set: { isorder: false } })
     res.redirect('/orders')
   } catch (error) {
-    console.log('order cancel error')
+    console.log(error.message)
   }
 }
 
@@ -585,7 +586,7 @@ const checkoutLoad = async (req, res) => {
     sellingPrice = userData.cart.totalPrice
     res.render('checkout', { userData, categoryData, authorData })
   } catch (error) {
-    console.log('erroooorrr checkouuuuutttttttttt page')
+    console.log(error.message)
   }
 }
 
@@ -696,25 +697,25 @@ const loadPayment = async (req, res) => {
 
 const razorpayCheckout = async (req, res) => {
   try {
-    console.log('razor pay post')
+    // console.log('razor pay post')
     // const userData = await User.findById({ _id: req.session.user_id })
     // const completeUser = await userData.populate('cart.item.productId')
     const instance = new Razorpay({ key_id: process.env.razorPayId, key_secret: process.env.razorPaySecret })
-    console.log('razir pay id : ' + process.env.razorPayId + '   razor pay secret : : ' + process.env.razorPaySecret)
-    console.log(' instanceeeeeeeeeeeeeeeee  ' + instance)
-    console.log('selling price' + sellingPrice)
+    // console.log('razir pay id : ' + process.env.razorPayId + '   razor pay secret : : ' + process.env.razorPaySecret)
+    // console.log(' instanceeeeeeeeeeeeeeeee  ' + instance)
+    // console.log('selling price' + sellingPrice)
     const order = await instance.orders.create({
       amount: sellingPrice * 100,
       currency: 'INR',
       receipt: 'receipt#1'
     })
-    console.log(' rzor pay order ' + order)
+    // console.log(' rzor pay order ' + order)
     res.status(201).json({
       success: true,
       order
     })
   } catch (error) {
-    console.log('error' + error.message)
+    console.log(error.message)
   }
 }
 
@@ -748,7 +749,7 @@ const addToCart = async (req, res) => {
     userData.addToCart(productData)
     res.redirect('/cart')
   } catch (error) {
-    console.log('add to cart error')
+    console.log(error.message)
   }
 }
 
@@ -814,7 +815,7 @@ const emptyCart = async (req, res) => {
 
 // move an item from cart to wishlist
 const moveToWishlist = async (req, res) => {
-  console.log('move to wishlist')
+  // console.log('move to wishlist')
   const productId = req.query.id
   const userData = await User.findById({ _id: req.session.user_id })
   // const productIndex = await userData.cart.item.findIndex((p) => p.productId === productId)
@@ -861,7 +862,7 @@ const addToWishlist = async (req, res) => {
     // console.log(wishList)
     res.redirect('/wishlist')
   } catch (error) {
-    console.log('add to wish list catch error')
+    console.log(error.message)
   }
 }
 
@@ -900,7 +901,7 @@ const moveToCart = async (req, res) => {
 // ---------------------------------------------End Wish List ------------------------------------------------//
 
 const checkout = async (req, res) => {
-  console.log('checkout')
+  // console.log('checkout')
 }
 
 const coupenApply = async (req, res) => {
@@ -942,7 +943,7 @@ const mainLiveSearch = async (req, res) => {
   const search = await Product.find({
     name: { $regex: new RegExp(`^${payload}.*`, 'i') }, isBlocked: false, isDeleted: false, isAuthorBlocked: false, isCategoryBlocked: false, isSold: false
   }).limit(10)
-  console.log('search products : ' + search)
+  // console.log('search products : ' + search)
   res.json({
     status: 'success',
     search

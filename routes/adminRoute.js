@@ -11,8 +11,7 @@ adminRoute.set('view engine', 'ejs')
 adminRoute.set('views', './views/admin')
 
 const multer = require('multer')
-
-const mime = require('mime')
+// const mime = require('mime')
 
 const path = require('path')
 const adminController = require('../controllers/adminController')
@@ -60,6 +59,7 @@ adminRoute.post('/addproduct', upload.single('image'), adminController.addProduc
 adminRoute.get('/updateProduct', adminAuth.isLogin, adminController.updateProductLoad)
 adminRoute.post('/updateProduct', adminController.updateProduct)
 adminRoute.get('/deleteProduct', adminAuth.isLogin, adminController.deleteProduct)
+adminRoute.get('/blockProduct', adminAuth.isLogin, adminController.blockProduct)
 
 adminRoute.get('/banners', adminAuth.isLogin, adminController.bannerLoad)
 adminRoute.get('/addBanner', adminAuth.isLogin, adminController.addBannerLoad)

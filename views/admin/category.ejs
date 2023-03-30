@@ -72,7 +72,7 @@
       <li>
         <a href="/admin/coupons">
           <i class='bx bxs-coupon'></i>
-          <span class="text" >Coupons</span>
+          <span class="text">Coupons</span>
         </a>
       </li>
 
@@ -191,37 +191,37 @@
                     </td>
                     <td align="center">
                       <a href="/admin/updateCategory?id=<%= categoryData[i]._id %>"><span class="status completed">
-                        Edit</span></a>
+                          Edit</span></a>
                     </td>
 
                     <td align="center">
 
                       <% if(categoryData[i].isBlocked==false){%>
-                        <span class="status block-button" style="background-color: green; align-items: center;" 
-                        data-id="<%= categoryData[i]._id %>">
-                        Active
-                      </span>
-                    <%}else{%>
-                          <span class="status pending unBlock-button" style="align-items: center;"
+                        <span class="status block-button" style="background-color: green; align-items: center;"
                           data-id="<%= categoryData[i]._id %>">
-                          Blocked</span>
-                    <%}%>
+                          Active
+                        </span>
+                        <%}else{%>
+                          <span class="status pending unBlock-button" style="align-items: center;"
+                            data-id="<%= categoryData[i]._id %>">
+                            Blocked</span>
+                          <%}%>
 
-                      
+
                     </td>
 
                     <td align="center">
 
                       <% if(categoryData[i].isDeleted==false){%>
-                        <span class="status delete-button" style="background-color: green; align-items: center;" 
-                        data-id="<%= categoryData[i]._id %>">
-                        Active
-                      </span>
-                    <%}else{%>
-                          <span class="status unDelete-button" style="align-items: center; background-color: red;"
+                        <span class="status delete-button" style="background-color: green; align-items: center;"
                           data-id="<%= categoryData[i]._id %>">
-                          Deleted</span>
-                    <%}%>
+                          Active
+                        </span>
+                        <%}else{%>
+                          <span class="status unDelete-button" style="align-items: center; background-color: red;"
+                            data-id="<%= categoryData[i]._id %>">
+                            Deleted</span>
+                          <%}%>
                     </td>
 
 
@@ -256,7 +256,7 @@
     const deleteButtons = document.querySelectorAll('.delete-button');
     deleteButtons.forEach((deleteButton) => {
       deleteButton.addEventListener('click', (event) => {
-        event.preventDefault(); 
+        event.preventDefault();
         const categoryId = deleteButton.getAttribute('data-id');
 
         Swal.fire({
@@ -281,7 +281,7 @@
     const unDeleteButtons = document.querySelectorAll('.unDelete-button');
     unDeleteButtons.forEach((unDeleteButton) => {
       unDeleteButton.addEventListener('click', (event) => {
-        event.preventDefault(); 
+        event.preventDefault();
         const categoryId = unDeleteButton.getAttribute('data-id');
 
         Swal.fire({
@@ -301,53 +301,53 @@
     });
   </script>
 
-<!-- block -->
-<script>
-  const blockButtons = document.querySelectorAll('.block-button');
-  blockButtons.forEach((blockButton) => {
-    blockButton.addEventListener('click', (event) => {
-      event.preventDefault();
-      const authorId = blockButton.getAttribute('data-id');
-      Swal.fire({
-        title: 'Are you sure to block Category ?',
-        text: 'All product of Category will be blocked and not display in Shop',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, Block'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = `/admin/blockCategory?id=${authorId}`;
-        }
+  <!-- block -->
+  <script>
+    const blockButtons = document.querySelectorAll('.block-button');
+    blockButtons.forEach((blockButton) => {
+      blockButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        const authorId = blockButton.getAttribute('data-id');
+        Swal.fire({
+          title: 'Are you sure to block Category ?',
+          text: 'All product of Category will be blocked and not display in Shop',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Yes, Block'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `/admin/blockCategory?id=${authorId}`;
+          }
+        });
       });
     });
-  });
-</script>
+  </script>
 
-<!-- unBlock-button -->
-<script>
-  const unBlockButtons = document.querySelectorAll('.unBlock-button');
-  unBlockButtons.forEach((unBlockButton) => {
-    unBlockButton.addEventListener('click', (event) => {
-      event.preventDefault();
-      const authorId = unBlockButton.getAttribute('data-id');
-      Swal.fire({
-        title: 'Are you sure to un-block Category ?',
-        text: 'All product with same Category will be unblocked and display in Shop',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, un-block'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = `/admin/blockCategory?id=${authorId}`;
-        }
+  <!-- unBlock-button -->
+  <script>
+    const unBlockButtons = document.querySelectorAll('.unBlock-button');
+    unBlockButtons.forEach((unBlockButton) => {
+      unBlockButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        const authorId = unBlockButton.getAttribute('data-id');
+        Swal.fire({
+          title: 'Are you sure to un-block Category ?',
+          text: 'All product with same Category will be unblocked and display in Shop',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Yes, un-block'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `/admin/blockCategory?id=${authorId}`;
+          }
+        });
       });
     });
-  });
-</script>
+  </script>
 
   <!-- Pagination Script  -->
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
